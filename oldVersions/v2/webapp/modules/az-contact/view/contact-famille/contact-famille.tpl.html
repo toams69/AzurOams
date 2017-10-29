@@ -1,0 +1,59 @@
+<div class="az-contact-information-toolbar">
+	<button class="btn btn-icon save-contact" title="<%- i18n.contact_information_save_label %>" disabled>
+		<i class="fa fa-floppy-o"></i>
+	</button>
+	<button class="btn btn-icon reset-contact" title="<%- i18n.contact_information_reset_label %>" disabled>
+		<i class="fa fa-undo"></i>
+	</button>
+</div>
+<div class="alert-container">
+</div>
+<div class="az-contact-information-form">
+	<div class="az-contact-information-empty-contact"><%- i18n.contact_information_empty_contact_info %></div>
+	<div class="az-contact-information-famille">
+		<div class="form-group az-contact-famille-date-inscription">
+			<label for="<%- id %>DateInscription"><%- i18n.famille_date_inscription_label%></label>
+			<span></span>
+		</div>
+		<div class="form-group az-contact-famille-nom">
+			<label><%- i18n.famille_nom_label %></label>
+			<input type="text" class="form-control" id="<%- id %>NomFamille" name="nom" placeholder="">
+		</div>
+		<div class="form-group az-contact-famille-quartier">
+			<label for="<%- id %>Quartier"><%- i18n.famille_quartier_label %></label>
+			<select class="form-control" id="<%- id %>Quartier" >
+				
+			</select>
+		</div>
+		<hr />
+
+		<div class="form-group az-contact-famille-caf">
+			<label for="<%- id %>Caf"><%- i18n.famille_caf_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Caf" name="caf" placeholder="">
+		</div>
+		<div class="form-group az-contact-famille-caf-quotient">
+			<label for="<%- id %>CafQuotient"><%- i18n.famille_caf_quotient_label %></label>
+			<input type="text" class="form-control" id="<%- id %>CafQuotient" name="quotient" placeholder="">
+		</div>
+		
+
+		<hr />
+		<div class="form-group az-contact-famille-msa">
+			<label for="<%- id %>Msa"><%- i18n.famille_msa_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Msa" name="msa" placeholder="">
+		</div>
+		<div class="form-group az-contact-famille-msa-quotient">
+			<label for="<%- id %>MsaQuotient"><%- i18n.famille_msa_quotient_label %></label>
+			<input type="text" class="form-control" id="<%- id %>MsaQuotient" name="quotient" placeholder="">
+		</div>
+		<hr />
+		<div class="form-group az-contact-famille-avoir">
+			<label><%- i18n.famille_avoir_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Avoir" name="avoir" placeholder="">
+		</div>
+		<hr />
+		<label><%- i18n.famille_membre_label %></label>
+		<ul class="contact-list">
+		</ul>
+	</div>
+</div>

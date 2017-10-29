@@ -1,0 +1,156 @@
+<div class="az-contact-information-toolbar">
+	<button class="btn btn-icon save-contact" title="<%- i18n.contact_information_save_label %>" disabled>
+		<i class="fa fa-floppy-o"></i>
+	</button>
+	<button class="btn btn-icon reset-contact" title="<%- i18n.contact_information_reset_label %>" disabled>
+		<i class="fa fa-undo"></i>
+	</button>
+</div>
+
+<div class="alert-container">
+</div>
+<div class="az-contact-information-form">
+	<div class="az-contact-information-empty-contact"><%- i18n.contact_information_empty_contact_info %></div>
+	<div class="az-contact-information-enfant">
+		<div class="form-group az-contact-information-civilite">
+			<label for="<%- id %>Civilite"><%- i18n.civilite_label %></label>
+			<select class="form-control" id="<%- id %>Civilite" >
+				
+			</select>
+		</div>
+		<div class="form-group az-contact-information-nom">
+			<label for="<%- id %>Nom"><%- i18n.contact_information_nom_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Nom" name="nom" placeholder="<%- i18n.contact_information_nom_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-prenom">
+			<label for="<%- id %>Prenom"><%- i18n.contact_information_prenom_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Prenom" name="prenom" placeholder="<%- i18n.contact_information_prenom_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-date-naissance">
+			<label for="<%- id %>DateNaissance"><%- i18n.contact_information_date_naissance_label %></label>
+			<input type="text" class="form-control" id="<%- id %>DateNaissance" name="naissance" placeholder="<%- i18n.contact_information_date_naissance_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-telephone">
+			<label for="<%- id %>Telephone"><%- i18n.contact_information_telephone_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Telephone" name="telephone" placeholder="<%- i18n.contact_information_telephone_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-residence">
+			<label for="<%- id %>ResideChez"><%- i18n.contact_information_reside_chez_label %></label>
+			<select class="form-control" id="<%- id %>ResideChez" >
+				
+			</select>
+		</div>
+		<hr />
+		<div class="checkbox az-contact-information-certificat-medical form-group">
+			<label>
+				<input type="checkbox" class="cer" id="<%- id %>CertificatMedical"> <%- i18n.contact_information_certificat_label %>
+			</label>
+		</div>
+		<div class="checkbox az-contact-information-droit-image form-group">
+			<label>
+				<input type="checkbox"> <%- i18n.contact_information_droit_image_label %>
+			</label>
+		</div>
+		<div class="checkbox  az-contact-information-rentre-seul form-group">
+			<label>
+				<input type="checkbox" class='az-contact-information-rentre-seul-checkbox'> <%- i18n.contact_information_rentre_seul_label %>
+			</label>
+			<input type="text" class="form-control az-contact-information-rentre-seul-input" name="time">
+		</div>
+		<hr />
+		<div class="az-contact-information-textareas">
+			<label><%- i18n.contact_information_recommendation_label %></label>
+			<textarea class="az-contact-information-recomemndation form-control" rows="3"></textarea>
+			<label><%- i18n.contact_information_info_medicale_label %></label>
+			<textarea class="az-contact-information-info-medical form-control" rows="3"></textarea>
+		</div>
+	</div>
+
+	<div class="az-contact-information-adulte">
+		<div class="form-group az-contact-information-civilite">
+			<label for="<%- id %>Civilite"><%- i18n.civilite_label %></label>
+			<select class="form-control" id="<%- id %>Civilite" >
+				
+			</select>
+		</div>
+		<div class="form-group az-contact-information-nom">
+			<label for="<%- id %>NomAdulte"><%- i18n.contact_information_nom_label %></label>
+			<input type="text" class="form-control" id="<%- id %>NomAdulte" name="nom" placeholder="<%- i18n.contact_information_nom_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-prenom">
+			<label for="<%- id %>PrenomAdulte"><%- i18n.contact_information_prenom_label %></label>
+			<input type="text" class="form-control" id="<%- id %>PrenomAdulte" name="prenom" placeholder="<%- i18n.contact_information_prenom_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-date-naissance">
+			<label for="<%- id %>DateNaissanceAdulte"><%- i18n.contact_information_date_naissance_label %></label>
+			<input type="text" class="form-control" id="<%- id %>DateNaissanceAdulte" name="naissance" placeholder="<%- i18n.contact_information_date_naissance_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-telephone">
+			<label for="<%- id %>TelephoneAdulte"><%- i18n.contact_information_telephone_label %></label>
+			<input type="text" class="form-control" id="<%- id %>TelephoneAdulte" name="telephone" placeholder="<%- i18n.contact_information_telephone_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-telephone2">
+			<label for="<%- id %>Telephone2"><%- i18n.contact_information_telephone_label %> 2</label>
+			<input type="text" class="form-control" id="<%- id %>Telephone2Adulte" name="telephone" placeholder="<%- i18n.contact_information_telephone_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-email">
+			<label for="<%- id %>EmailAdulte"><%- i18n.contact_information_email_label %></label>
+			<input type="text" class="form-control" id="<%- id %>EmailAdulte" name="email" placeholder="<%- i18n.contact_information_email_placeholder %>">
+		</div>
+
+		<hr />
+		
+		<div class="form-group az-contact-information-adresse">
+			<label for="<%- id %>AdresseAdulte"><%- i18n.contact_information_adresse_label %></label>
+			<input type="text" class="form-control" id="<%- id %>AdresseAdulte" name="adresse" placeholder="<%- i18n.contact_information_adresse_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-cdp">
+			<label for="<%- id %>CodePostalAdulte"><%- i18n.contact_information_cdp_label %></label>
+			<input type="text" class="form-control" id="<%- id %>CodePostalAdulte" name="codePostal" placeholder="<%- i18n.contact_information_cdp_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-ville">
+			<label for="<%- id %>VilleAdulte">Ville</label>
+			<select class="form-control" id="<%- id %>VilleAdulte" >
+				
+			</select>
+		</div>
+
+		<hr />
+		
+		<div class="form-group az-contact-information-secu">
+			<label for="<%- id %>SecuAdulte"><%- i18n.contact_information_secu_label %></label>
+			<input type="text" class="form-control" id="<%- id %>SecuAdulte" name="nomEnfant" placeholder="<%- i18n.contact_information_secu_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-employeur">
+			<label for="<%- id %>Employeur"><%- i18n.contact_information_employeur_label %></label>
+			<input type="text" class="form-control" id="<%- id %>Employeur" name="prenomEnfant" placeholder="<%- i18n.contact_information_employeur_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-lieu-travail">
+			<label for="<%- id %>LieuTravail"><%- i18n.contact_information_lieu_travail_label %></label>
+			<input type="text" class="form-control" id="<%- id %>LieuTravail" name="naissanceEnfant" placeholder="<%- i18n.contact_information_lieu_travail_placeholder %>">
+		</div>
+		<div class="form-group az-contact-information-telephone-travail">
+			<label for="<%- id %>TelephoneTravail"><%- i18n.contact_information_telephone_travail_label %></label>
+			<input type="text" class="form-control" id="<%- id %>TelephoneTravail" name="telephoneEnfant" placeholder="<%- i18n.contact_information_telephone_travail_placeholder %>">
+		</div>
+
+		<hr/>
+		<div class="checkbox az-contact-information-parent form-group">
+			<label>
+				<input type="checkbox"> <%- i18n.contact_information_parent_label %>
+			</label>
+		</div>
+		<div class="checkbox az-contact-information-allocataire-caf form-group">
+			<label>
+				<input type="checkbox"> <%- i18n.contact_information_allocataire_caf_label %>
+			</label>
+		</div>
+		<div class="checkbox az-contact-information-allocataire-msa form-group">
+			<label>
+				<input type="checkbox"> <%- i18n.contact_information_allocataire_msa_label %>
+			</label>
+		</div>
+	</div>
+</div>
+
+<div class="loader"><img src="/img/ajax-loader.gif"></div>

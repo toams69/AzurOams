@@ -1,0 +1,58 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel"><%- i18n.adhesion_dialog_title %></h4>
+    </div>
+    <div class="modal-body">
+      <table class="adesion_table">
+      <tr class="adhesion_nom_part">
+        <td>
+          <%- i18n.adhesion_dialog_nom_label %> : 
+        </td>
+        <td class="value"></td>
+      </tr>
+      <tr class="adhesion_prenom_part">
+        <td>
+          <%- i18n.adhesion_dialog_prenom_label %> :
+        </td>
+        <td class="value"></td>
+      </tr>
+
+      <tr class="adhesion_annee_part">
+        <td>
+          <%- i18n.adhesion_dialog_annee_label %> :
+        </td>
+        <td class="value"></td>
+      </tr>
+
+      <tr class="adhesion_number_part">
+        <td>
+          <%- i18n.adhesion_dialog_numero_label %> :
+        </td>
+        <td class="value"><input type="text" class="form-control" id="<%- id %>NumeroAdherent" name="numeroAdherent" placeholder=""></td>
+      </tr>
+
+      <tr class="adhesion_tarif_part">
+        <td>
+          <%- i18n.adhesion_dialog_tarif_label %> :
+        </td>
+        <td>
+           <select></select>
+        </td>
+      </tr>
+
+      <tr class="adhesion_montant_part">
+        <td>
+          <%- i18n.adhesion_dialog_montant_label %> :
+        </td>
+        <td class="value"></td>
+      </tr>
+
+    </div>
+    </table>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal"><%- i18n.adhesion_dialog_annuler_label %></button>
+      <button type="button" class="btn btn-primary submit"><%- i18n.adhesion_dialog_submit_label %></button>
+    </div>
+  </div>
+</div>

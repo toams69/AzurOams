@@ -1,0 +1,68 @@
+<div class="az-contact-information-toolbar">
+	<button class="btn btn-icon save-contact" title="<%- i18n.contact_information_save_label %>" disabled>
+		<i class="fa fa-floppy-o"></i>
+	</button>
+	<button class="btn btn-icon reset-contact" title="<%- i18n.contact_information_reset_label %>" disabled>
+		<i class="fa fa-undo"></i>
+	</button>
+
+
+	<button class="btn btn-icon add-activite-contact" title="<%- i18n.contact_information_inscription_activite_label %>">
+		<i class="fa fa-cubes"></i>
+	</button>
+
+	<button class="btn btn-icon add-cl-contact" title="<%- i18n.contact_information_inscription_cl_label %>">
+		<i class="fa fa-paint-brush"></i>
+	</button>
+
+
+	<button class="btn btn-icon adhesion" title="<%- i18n.contact_information_adhesion_label %>">
+		<i class="fa fa-home"></i>
+	</button>
+	
+</div>
+
+<div class="alert-container">
+</div>
+
+<div class="az-contact-information-form">
+	<div class="az-contact-information-empty-contact"><%- i18n.contact_information_empty_contact_info %></div>
+
+	<div class="az-contact-information-activite">
+
+		<div class=="header annee">
+			<div class="numero-adherent">
+				<div class="form-group az-contact-annee">
+					<label for="<%- id %>AnneeAdhesion"><%- i18n.contact_activite_annee_label %></label>
+					<select class="annee-select form-control" id="<%- id %>AnneeAdhesion" name="annee">
+					</select>
+				</div>
+			</div>
+		</div>
+
+		
+
+		<div class="contact-adherent-part">
+			<div class="numero-adherent">
+				<div class="form-group az-contact-numero-adherent">
+					<label for="<%- id %>NumeroAdherent"><%- i18n.contact_activite_numero_adherent %></label>
+					<input type="text" class="form-control" id="<%- id %>NumeroAdherent" name="numeroAdherent" placeholder="">
+				</div>
+			</div>
+			<hr/>
+			<div class="activites-adherent">
+				<label>
+					<%- i18n.contact_activite_liste_activite_label %>
+				</label>
+				<ul class="activites">
+				</ul>
+			</div>
+		</div>
+
+		<div class="contact-non-adherent-part">
+			<div>
+				<%- i18n.contact_non_adherent_label %>
+			</div>
+		</div>
+	</div>
+</div>

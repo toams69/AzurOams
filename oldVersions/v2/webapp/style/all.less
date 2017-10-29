@@ -1,0 +1,1724 @@
+
+@import "variables.less";
+@import "mixins.less";
+
+body {
+	background-color: white;
+	font-size: 13px;
+}
+
+.main-body {
+	height:100%;
+	width:100%;
+	background-color: @BackgroundColor;
+	background-image:url("/img/wave.png");
+	position: absolute;
+}
+
+.print-body {
+	display: none;
+}
+
+.alert {
+	border: none;
+	.border-radius(0px);
+	&.alert-danger {
+		background-color: @AlertErrorBackgroundColor;
+		color: @AlertErrorColor;
+	}
+	&.alert-info {
+		background-color: @AlertInfoBackgroundColor;
+		color: @AlertInfoColor;
+	}
+}
+
+input, select {
+	&:hover, &.focused{
+		border-color:@InputHoverBackgroundColor!important;
+	}
+}
+
+.ui-resizable-s, .ui-resizable-e {
+	&:hover {
+			background-color: @ResizeHoverBackgroundColor;
+			opacity: 0.2;
+	}
+}
+.ui-resizable-s {
+	height: 3px;
+	bottom: -1px;
+}
+
+//////////////////
+// DATEPICKER
+//////////////////
+.ui-datepicker-header {
+	.ui-datepicker-title {
+		select {
+			color: grey;
+		}
+	}
+}
+
+/* begin: jQuery UI Datepicker moving pixels fix */
+table.ui-datepicker-calendar {border-collapse: separate;}
+.ui-datepicker-calendar td {border: 1px solid transparent;}
+/* end: jQuery UI Datepicker moving pixels fix */
+
+/* begin: jQuery UI Datepicker emphasis on selected dates */
+.ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
+	background: #743620 none;
+	color: white;
+}
+/* end: jQuery UI Datepicker emphasis on selected dates */
+
+
+/* begin: jQuery UI Datepicker hide datepicker helper */
+#ui-datepicker-div {display:none;}
+/* end: jQuery UI Datepicker hide datepicker helper */
+
+
+//////////////////
+// DATATABLES
+//////////////////
+
+// Header
+.ui-state-default {
+	color:@DataTableTopColor;
+	font-weight: bold;
+	background: none;
+	#gradient.vertical(@DataTableTopColorGradiant1, @DataTableTopColorGradiant2);
+	border-top: none;
+	&:hover {
+		#gradient.vertical(@DataTableTopHoverColorGradiant1, @DataTableTopHoverColorGradiant2);
+		color: @DataTableTopHoverColor;
+	}
+	>div {
+		height: 23px;
+	}
+}
+// Table
+table.dataTable {
+	margin: 0 auto;
+	clear: both;
+	width: 100%;
+}
+
+table.dataTable thead th {
+	height: 23px;
+	line-height: 23px;
+	border-bottom: 1px solid #B8B8B8;
+	cursor: pointer;
+	padding-left: 5px;
+	text-align: left;
+	white-space: nowrap;
+	*cursor: hand;
+}
+
+table.dataTable tfoot th {
+	padding: 3px 18px 3px 10px;
+	border-top: 1px solid black;
+	font-weight: bold;
+}
+
+table.dataTable .ui-icon {
+	display: inline-block;
+	height: 13px;
+	&.ui-icon-carat-2-n-s{
+		display: none;
+	}
+}
+
+table.dataTable td {
+	padding: 3px 10px;
+	white-space: nowrap;
+}
+
+table.dataTable td.center,
+table.dataTable td.dataTables_empty {
+	text-align: center;
+	cursor: default;
+}
+
+table.dataTable tr {
+	&.even, &.odd {height: 29px;}
+	&.even {
+		color:@DataTableEvenRowTextColor;
+		background-color: @DataTableEvenRowBackgroundColor;
+		i {
+			color: @DataTableEvenRowTextColor;
+		}
+		.caret {
+			border-top: 4px solid @DataTableEvenRowTextColor;
+		}
+		&.active {
+			background-color: @DataTableActiveRowBackgroundColor;
+			color:@DataTableActiveRowTextColor;
+			i {
+				color: @DataTableActiveRowTextColor!important;
+			}
+			.caret {
+				border-top: 4px solid @DataTableActiveRowTextColor;
+			}
+		}
+	}
+	&.odd {
+		color: @DataTableOddRowTextColor;
+		background-color: @DataTableOddRowBackgroundColor;
+		i {
+			color: @DataTableOddRowTextColor;
+		}
+		.caret {
+			border-top: 4px solid @DataTableOddRowTextColor;
+		}
+		&.active {
+			background-color: @DataTableActiveRowBackgroundColor;
+			color:@DataTableActiveRowTextColor;
+			i {
+				color: @DataTableActiveRowTextColor!important;
+			}
+			.caret {
+				border-top: 4px solid @DataTableActiveRowTextColor;
+			}
+		}
+	}
+	&:hover {
+		cursor: pointer;
+		color: @DataTableRowHoverColor;
+		.caret {
+			border-top: 4px solid @DataTableRowHoverColor;
+		}
+		i {
+			color: @DataTableRowHoverColor;
+		}
+	}
+	
+}
+
+//////////////////
+// TABS
+//////////////////
+
+
+.az-tab-header {
+	list-style: none;
+	margin: 0px 0px -1px 0px;
+	border: 1px solid @TabBorderColor;
+	background-color: @TabHeaderBackgroundColor;
+	width: 100%;
+	height: 36px;
+	padding: 0;
+}
+
+.az-tab-header li{
+	display:inline;
+	margin-left: 0px;
+	cursor: pointer;
+	padding: 3px 8px 0px 8px;
+
+	&.az-tab-top {
+		.border-radius(0 0 0 0);
+		border-bottom-left-radius: 0;
+		padding: 6px 5px;
+		border-width: 0px 1px 0 0px;
+		border-style: solid;
+		background-image: none;
+		background-color: @TabBackgroundColor;
+
+		/*.box-shadow-inset(white, 0, 1, 0, 0);*/
+		
+		border-bottom: 1px solid @TabBorderColor;
+		border-color: @TabBorderColor;
+
+		a, >button {
+			background: none;
+			font-size: 13px;
+			color: @TabTopColor;
+			font-weight: bold!important;
+			line-height: 22px;
+			padding: 0;
+			margin: 0;
+			vertical-align: initial;
+			border: 1px solid transparent;
+			.border-radius(4px 4px 0 0);
+			padding-right: 12px;
+			padding-left: 12px;
+
+			cursor: pointer;
+			background-color: transparent;
+			border: none;
+			&:hover {
+				text-decoration:none;
+				color: @TabTopActiveColor;
+			}
+		}
+
+		&.active {
+			background-image: none;
+			background-color: @TabTopActiveBackgroundColor;
+			border-bottom: 1px solid @TabTopActiveBackgroundColor;
+			margin-bottom: -1px;
+
+			a, >div, >button {
+				color: @TabTopActiveColor;
+				cursor: pointer;
+				background-color: transparent;
+				border: none;
+				&:hover {
+					text-decoration:none;
+				}
+			}
+		}
+		&:first-child {
+			border-width: 0px 1px 1px 0px;
+			 margin-left: 0px;
+		}
+	}
+}
+
+.az-tab-content {
+	border: 1px solid @TabBorderColor;
+	margin: 0;
+	position: absolute;
+	background: white;
+	bottom: 0;
+	top: 36px;
+	left: 0;
+	right: 0;
+	border-top: none;
+	overflow: auto;
+}
+
+.az-tab-panel {
+	background-color: @TabBackgroundColor;
+	margin-top: -2px;
+}
+
+
+
+//////////////////
+// LOGIN
+//////////////////
+.login {
+	position: absolute;
+	top: 33%;
+	width: 100%;
+	.container {
+		.row {
+			>div {
+				min-height: 310px;
+				padding: 20px;
+				border: 1px solid @LoginPanelBorderColor;
+				background-color: @LoginPanelBackgroundColor;
+			}
+			.form {
+				.info {
+					margin-bottom: 10px;
+					width: 100%;
+					text-align: center;
+					border-bottom: 1px solid @LoginPanelBorderColor;
+					label {
+						font-size: 18px;
+					}
+				}
+				.bottom {
+					width: 100%;
+					text-align: center;
+					margin-top: 35px;
+				}
+				.alert {
+					padding: 4px 10px;
+					margin-bottom: 22px;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+//////////////////
+// DESKTOP
+//////////////////
+.navbar-default {
+	.border-radius(0px);
+	background-color: @DesktopNavBarBackgroundColor;
+	border-color: @DesktopNavBarBorderColor;
+	border-left: none;
+	margin-bottom: 0px;
+	height:50px;
+	.navbar-text {
+		color:  @DesktopNavBarColor;
+	}
+	[class$="-link"] {
+		cursor: pointer;
+		z-index: 2;
+	}
+	.current-link {
+		font-weight: bold;
+		div {
+			display: inline-block;
+			margin: 0px 0 0 10px;
+		}
+	}
+}
+.quick-link {
+	background-color: @DesktopNavBarBackgroundColor;
+	border: 1px solid  @DesktopNavBarBorderColor;
+	border-right: none;
+	ul {
+		list-style: none;
+		margin-top: 60px;
+		li {
+			color: @DesktopQuickLinkColor;
+			display: table-row;
+			cursor: pointer;
+			height: 40px;
+			width: 100%;
+			i, span {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			span {
+				padding-left: 6px;
+			}
+			&:hover {
+				i, span {
+					color:@DesktopQuickLinkHoverColor;
+				}
+			}
+			&.active {
+				i, span {
+					color:@DesktopQuickLinkActiveColor;
+				}
+			}
+		}
+	}
+}
+.desktop {
+	height: 100%;
+	.scotch-panel-wrapper {
+		height: 100%;
+	}
+}
+.desktop-container {
+	background-color: @DesktopBackgroundColor;
+	border-color: @DesktopBorderColor;
+	position: absolute;
+	right: 0px;
+	left:0px;
+	top: 54px;
+	bottom: 0px;
+	overflow: auto;
+}
+
+/////////////////////////////
+// Widget
+/////////////////////////////
+
+@WidgetBorderColor: #E1E1E1;
+@WidgetBackgroundColor: #FFFFFF;
+@WidgetHeaderBackgroundColor:#F1F1F1;
+@WidgetHeaderTextColor:#3c474d;
+@WidgetHeaderActionIconColor:#83898F;
+@WidgetHeaderActionIconHoverColor:#3c474d;
+@WidgetHeaderInfoIconColor:#86A9FF;
+@WidgetHeaderAlertIconColor:#F2B863;
+
+.widget-board-view {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	.widget-board-list {
+		width: 100%!important;
+		height: 100%!important;
+		margin: 0 auto;
+		opacity: .8;
+		.widget-view {
+	    	-webkit-transition: opacity .6s;
+	    	-moz-transition: opacity .6s;
+	    	-o-transition: opacity .6s;
+	    	-ms-transition: opacity .6s;
+	    	transition: opacity .6s;
+	    }
+	}
+}
+
+.widget-view {
+	-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+	min-width: 300px;
+	max-width: 500px;
+	margin: 10px;
+	position: relative;
+	float:left;
+	border: 1px solid @WidgetBorderColor;
+	background-color: @WidgetBackgroundColor;
+	&.maximize {
+		z-index: 10;
+		min-width: initial;
+		max-width: initial;
+		width: 100%;
+		height: 100%;
+		box-sizing: border-box;
+		margin: 0px;
+	}
+	.w-header {
+		cursor:move;
+		height: 32px;
+		min-width: 200px;
+		padding: 5px;
+		font-weight: bold;
+		font-size: 14px;
+		font-color: @WidgetHeaderTextColor;
+		background-color: @WidgetHeaderBackgroundColor;
+		border-bottom: 1px solid @WidgetBorderColor;
+		position: relative;
+		.w-title{
+
+		}
+		.w-warning {
+
+		}
+		.w-actions {
+			position: absolute;
+			top: 1px;
+			right: 2px;
+			.btn-group >.btn {
+				box-shadow: none;
+				padding: 3px 7px;
+				background: none;
+			}
+			>div {
+				height: 100%;
+				vertical-align: middle;
+				display:inline-block;
+				&.wwe-sprite-login-info {
+					color: @WidgetHeaderInfoIconColor;
+				}
+				&.wwe-sprite-alert-triangle {
+					color: @WidgetHeaderAlertIconColor;
+				}
+			}
+		}
+	}
+	.w-body {
+		padding:5px;
+		min-height: 50px;
+		position: relative;
+		background-color:@WidgetBackgroundColor;
+		.loader {
+			display: none;
+			position: absolute;
+			top: 0px;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			background-color: rgb(238, 238, 238);
+			z-index: 10;
+			opacity: 0.9;
+			img {
+				top: 45%;
+				position: absolute;
+				left: 45%;
+			}
+		}
+	}
+	.w-configuration {
+		font-weight: normal;
+		background-color: white;
+		padding: 5px;
+		position: relative;
+		min-width: 210px;
+		min-height: 70px;
+		position: relative;
+		cursor: default;
+		.buttons {
+			position: absolute;
+			bottom: 0px;
+			right: 6px;
+		}
+	}
+	&.loading {
+		.loader {
+			display: block;
+		}
+	}
+}
+//////////////////////
+// Stats
+//////////////////////
+
+.factures-stats {
+	canvas {
+		width: 150px;
+		height: 150px;
+		margin: 10px 0px 0px 6px;
+		display: inline-block;
+	}
+	.nombreTotalFacture {
+		position: absolute;
+		top: 73px;
+		width: 150px;
+		text-align: center;
+		margin-left: 6px;
+		font-weight: bold;
+		font-size: 26px;
+	}
+	.legend {
+		display: inline-block;
+		width: 180px;
+		margin-left: 7px;
+		top: -46px;
+		position: relative;
+		.color {
+			padding: 3px;
+			div {
+				width: 20px;
+				height: 9px;
+			}
+		}
+	}
+}
+
+.membres-stats {
+	canvas {
+		width: 150px;
+		height: 150px;
+		margin: 10px 0px 0px 6px;
+		display: inline-block;
+	}
+	.nombreTotalInscrit {
+		position: absolute;
+		top: 73px;
+		width: 150px;
+		text-align: center;
+		margin-left: 6px;
+		font-weight: bold;
+		font-size: 26px;
+	}
+	.legend {
+		display: inline-block;
+		width: 180px;
+		margin-left: 7px;
+		top: -46px;
+		position: relative;
+		.color {
+			padding: 3px;
+			div {
+				width: 20px;
+				height: 9px;
+			}
+		}
+	}
+}
+.last-inscription {
+	max-width: 800px;
+	width: 800px;
+}
+
+//////////////////////
+// CONTACT
+//////////////////////
+.az-contact-directory {
+	position: absolute;
+	top: 5px;
+	bottom: 5px;
+	left: 10px;
+	right: 10px;
+	.loader {
+		display: none;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	.ui-resizable-e {
+		right: -9px;
+		width: 3px;
+	}
+
+	.az-contact-directory-top {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		top: 1px;
+		bottom: 50%;
+		&.left {
+			right: 50%;
+			bottom: 0px;
+			margin-right: 0px;
+		}
+		&.maximize {
+			left: 0px;
+			bottom: 0px;
+		}
+
+		.az-alert-container {
+			.alert {
+				padding: 4px 35px 4px 14px;
+				margin: 0px;
+				-webkit-border-radius: 0px;
+				-moz-border-radius: 0px;
+				border-radius: 0px;
+				div {
+					display: inline-block;
+					margin-right: 10px;
+					margin-top: 0px;
+					padding: 0px;
+					position: relative;
+					top: 1px;
+				}
+				.close {
+					top: 0px;
+				}
+			}
+		}
+		.az-contact-directory-search-toolbar {
+			margin:3px;
+			.btn-group {
+				float: right;
+			}
+		}
+
+		.az-contact-directory-input-container {
+			position: relative;
+			height: 28px;
+			>div {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				margin-right: 22px;
+			}
+			button {
+				transition: border linear 0.2s, box-shadow linear 0.2s;
+				position: absolute;
+				right: 0;
+				width: 22px;
+				padding: 0;
+				margin: 0;
+				height: 100%;
+				background: white;
+				border: 1px solid #cccccc;
+				border-left: 0;
+			}
+			.az-contact-directory-search-input {
+				padding: 0px 4px;
+				.box-shadow(none);
+				width: 100%;
+				.box-sizing(border-box);
+				height: 28px;
+				.border-radius(0px);
+				
+				background: white;
+				border: 1px solid #cccccc;
+				border-right: 0px;
+			}
+			&:hover, &.focused{
+				button {
+					border-color:@InputHoverBackgroundColor!important;
+				}
+			}
+		}
+
+		.az-contact-directory-result-grid {
+			position: absolute;
+			background-color: white;
+			top: 69px;
+			bottom: 30px;
+			right: 0;
+			left: 0;
+			border: 1px solid #cccccc;
+			.dataTables_filter {
+				display: none;
+			}
+			.dataTables_paginate {
+				position: absolute;
+				bottom: -25px;
+				right: 0px;
+				.ui-button {
+					margin-right:5px;
+				}
+			}
+		}
+
+	}
+	.az-contact-directory-bottom {
+		position: absolute;
+		top: 50%;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		margin-top:13px;
+		min-width: 370px;
+		&.right {
+			top: 0px;
+			left: 50%;
+			margin-top:0px;
+			margin-left:13px;
+		}
+	}
+
+	&.loading {
+		.az-contact-directory-top, .az-contact-directory-bottom {
+			opacity: 0.8;
+		}
+		.loader {
+			display: block;
+		}
+	}
+}
+
+.az-contact-list-view {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	table {
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.az-contact-panel {
+	height: 100%;
+	width: 100%;
+	position: relative;
+	.contact-panel-content {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+}
+.az-contact-information {
+	background-color: @ContactInformationBackgroundColor;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	overflow: auto;
+	.loader {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity: 1;
+		text-align: center;
+		display:none;
+		img {
+			position: absolute;
+			top: 50%;
+		}
+	}
+	.az-contact-information-toolbar {
+		height: 30px;
+		background-color:@ContactInformationToolbarBackgroundColor;
+		color: @ContactInformationToolbarColor;
+		padding:2px 8px;
+		box-sizing: border-box;
+		position: absolute;
+		right: 8px;
+		left: 8px;
+		top: 8px;
+
+		.btn {
+			background: none;
+			padding: 2px 4px;
+		}
+		i {
+			color: @ContactInformationToolbarColor;
+		}
+	}
+	.az-contact-information-form {
+		position: absolute;
+		top: 48px;
+		bottom: 0px;
+		right: 0;
+		left: 0;
+		overflow: auto;
+		padding: 15px 5px 5px;
+		.form-group {
+			margin-left: 10px;
+			margin-bottom: 18px;
+			display: inline-block;
+			.form-control {
+				display: inline-block;
+				width: 190px;
+				height: 28px;
+				padding: 3px 3px 3px 6px;
+				.border-radius(0);
+				.box-shadow(none);
+				border: none;
+				border-bottom: 1px dotted;
+			}
+			label {
+				display: inline-block;
+				width: 90px;
+				height: 28px;
+				vertical-align: middle;
+				margin-bottom: 0px;
+				padding: 6px 6px;
+			}
+			&.az-contact-information-civilite {
+				display: block;
+				select {
+					width: 100px;
+					padding: 0px 2px;
+				}
+			}
+			&.checkbox {
+				display: block;
+				width: 292px;
+				label {
+					width: auto;
+					margin-right: 10px;
+					margin-left: 20px;
+					line-height: 21px;
+				}
+			}
+			.form-control-feedback {
+				top: -2px;
+			}
+		}
+		.az-contact-information-textareas {
+			margin: 0 10px;
+			textarea {
+				resize: none;
+				.border-radius(0);
+				.box-shadow(none);
+				margin-bottom: 20px;
+			}
+		}
+		.az-contact-information-empty-contact {
+			text-align: center;
+		}
+		.az-contact-information-famille {
+			.form-group {
+				display: block;
+				label {
+					width:220px;
+				}
+			}
+		}
+		.az-contact-information-activite {
+			.form-group {
+				display: block;
+				width: 415px;
+				label {
+					width:220px;
+				}
+			}
+			.activites-adherent {
+				label {
+					margin: 10px;
+				}
+				ul {
+					list-style: none;
+					li {
+						padding: 10px 5px;
+						width: 387px;
+						cursor: pointer;
+						&.odd {
+							color:@DataTableOddRowTextColor;
+							background-color: @DataTableOddRowBackgroundColor;
+						}
+						&.even {
+							color:@DataTableEvenRowTextColor;
+							background-color: @DataTableEvenRowBackgroundColor;
+						}
+						&:hover {
+							color: @DataTableRowHoverColor;
+						}
+						i {
+							float: right;
+							display: none;
+						}
+						&:hover, &.active {
+							i {
+								display: block;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.help-block {
+			position: absolute;
+			top: 23px;
+			right: 0px;
+		}
+	}
+
+	.alert-container {
+		display: none;
+		top: 47px;
+		position: absolute;
+		left: 8px;
+		right: 8px;
+		.alert {
+			padding:10px;
+		}
+	}
+	&.loading {
+		.az-contact-information-toolbar, .az-contact-information-form {
+			opacity: 0.8;
+		}
+		.loader {
+			display: block;
+		}
+	}
+	&.alert-displayed {
+		.alert-container{
+			display: block;
+		}
+		.az-contact-information-form {
+			top:90px;
+		}
+	}
+}
+
+.adesion_table {
+	margin-bottom: 24px;
+	margin-top: 10px;
+	tr td:nth-child(1) {
+		font-weight: bold;
+		padding-right: 30px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	input {
+		height: 20px;
+		line-height: 20px;
+		padding: 0 5px;
+		margin: 0;
+		border: 1px solid #cccccc;
+	}
+}
+
+.az-contact-facture {
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	left: 10px;
+	right: 10px;
+	.bottom-area {
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
+		left: 0px;
+		margin-top: 4px;
+		top: 50%;
+	}
+	.middle-area {
+		position: absolute;
+		top: 0px;
+		bottom: 50%;
+		right: 0px;
+		left: 0px;
+		&.maximize {
+			bottom: 4px!important;
+			height:auto!important;
+			.ui-resizable-handle ui-resizable-s {
+				display:none;
+			}
+		}
+		.az-contact-facture-toolbar {
+			height: 30px;
+			background-color: @FactureToolbarBackgroundColor;
+			color: @FactureToolbarColor;
+			padding: 2px 8px;
+			box-sizing: border-box;
+			position: absolute;
+			right: 0px;
+			left: 0px;
+			top: 0px;
+			button {
+				background: none;
+				padding: 2px 4px;
+			}
+		}
+		.contact-facture-list-area {
+			position: absolute;
+			right: 0;
+			left:0;
+			bottom: 20px;
+			top: 36px;
+			.dataTables_paginate {
+				position: absolute;
+				right: 0;
+				bottom: -18px;
+				.ui-button {
+					margin-left: 5px;
+				}
+			}
+		}
+	}
+}
+//////////////////////
+// FACTURE
+//////////////////////
+.az-facture-list-view {
+	.tooltip-inner {
+    	white-space:pre-wrap;
+	}
+	width: 100%;
+	height: 100%;
+	border: 1px solid @TabBorderColor;
+	table, .dataTables_scroll, .dataTables_wrapper {
+		height: 100%;
+	}
+	.fa-circle {
+		color: @FactureCompleteIconColor!important;
+	}
+	.fa-adjust {
+		color: @FactureSemiCompleteIconColor!important;
+	}
+	.fa-circle-o {
+		color: @FactureEmptyIconColor!important;
+	}
+	.motif-column{
+		max-width: 350px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.az-detail-facture {
+	background-color: @FactureBackgroundColor;
+	padding: 10px;
+
+	.az-facture-empty-facture {
+		margin-top: 10px;
+		text-align: center;
+	}
+	table {
+		margin: 10px 5px;;
+		tr td {
+			padding: 5px 0px 0px 0px;
+			&:first-child {
+				font-weight: bold;
+				padding: 5px 20px 0px 0px;
+			}
+		}
+	}
+
+	.motif_part{
+		margin: 20px 15px;
+		font-style: italic;
+	}
+
+	.loader {
+		display: none;
+		position: absolute;
+		top: 40%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+
+	&.loading {
+		.loader {
+			display: block;
+		}
+		.az-facture-information-part, .az-facture-empty-facture {
+			opacity: 0.8;
+		}
+	}
+}
+
+.az-reglement-facture {
+	
+	.tooltip-inner {
+    	white-space:pre-wrap;
+	}
+
+	.fa-check {
+		color:@ReglementEncaisseIconColor;
+		margin: 0px 5px;
+	}
+	.btn-part {
+		float: right;
+		margin-bottom: 6px;
+		button {
+			padding: 0px 3px;
+		}
+	}
+
+	background-color: @ReglementBackgroundColor;
+	padding: 10px;
+
+	.az-facture-reglement-empty-facture {
+		margin-top: 10px;
+		text-align: center;
+	}
+
+	.loader {
+		display: none;
+		position: absolute;
+		top: 40%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	table {
+		i {
+			cursor: pointer;
+		}
+		tr {
+			cursor: pointer;
+			&.active {
+				background-color: @ReglementActiveBackgroundColor;
+				color: @ReglementActiveColor;
+				td {
+					background-color: @ReglementActiveBackgroundColor;
+					color: @ReglementActiveColor;
+				}
+				.fa-check, i {
+					color: @ReglementActiveColor;
+				}
+			}
+		}
+	}
+	&.loading {
+		.loader {
+			display: block;
+		}
+		.az-facture-reglement-information-part, .az-facture-reglement-empty-facture {
+			opacity: 0.8;
+		}
+	}
+}
+
+.az-add-reglement {
+	table {
+		&.reglement_table {
+			tr {
+				height: 40px;
+			}
+
+			.has-error .form-control-feedback, .has-success .form-control-feedback {
+				top: 3px;
+			}
+
+			.has-error .help-block {
+				position: absolute;
+				left: 235px;
+				width: 500px;
+				top: 8px;
+			}
+		}
+		tr {
+		 	td {
+				&:first-child {
+					width: 150px;
+					font-weight: bold;
+				}
+			}
+		}
+
+
+	}
+	.loader {
+		display: none;
+		position: absolute;
+		top: 40%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	hr {
+		border-color: @ReglementSeparatorColor;
+	}
+	&.loading {
+		.loader {
+			display: block;
+		}
+		.content, .modal-footer{
+			opacity: 0.4;
+			pointer-events: none;
+		}
+	}
+}
+
+///////////////////////
+// Inscription Activite
+///////////////////////
+.az-inscription-activite {
+	tr {
+		height: 45px;
+		vertical-align: middle;
+		td {
+			&:first-child {
+				width: 150px;
+				font-weight: bold;
+			}
+		}
+
+	}
+	hr {
+		border-color: @InscriptionSeparatorColor;
+	}
+	.input-group {
+		margin-bottom: 0px;
+		margin-top: 4px;
+		margin-left: 10px;
+		select {
+			padding-left: 8px;
+		}
+	}
+	.form-control-feedback {
+		top:0px;
+		right: 30px;
+	}
+	.help-block {
+		position: absolute;
+		left: 269px;
+		white-space: nowrap;
+	}
+	.loader {
+		display: none;
+		position: absolute;
+		top: 40%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	&.loading {
+		.loader {
+			display: block;
+		}
+		.content, .modal-footer{
+			opacity: 0.4;
+			pointer-events: none;
+		}
+	}
+}
+
+
+//////////////////////
+// Inscription Membre
+//////////////////////
+
+.az-ajout-contact-dialog {
+
+	tr {
+		height: 45px;
+		vertical-align: middle;
+		td {
+			&:first-child {
+				width: 150px;
+				font-weight: bold;
+			}
+
+			.form-control-feedback {
+				top:5px;
+			}
+			.help-block {
+				position: absolute;
+				left: 235px;
+				white-space: nowrap;
+				top: 9px;
+			}
+		}
+
+	}
+	hr {
+		border-color: @InscriptionSeparatorColor;
+	}
+	
+	.loader {
+		display: none;
+		position: absolute;
+		top: 40%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	&.loading {
+		.loader {
+			display: block;
+		}
+		.content, .modal-footer{
+			opacity: 0.4;
+			pointer-events: none;
+		}
+	}
+
+	
+}
+
+
+//////////////////////
+// Centre Loisirs
+//////////////////////
+
+.az-clsh-directory {
+	position: absolute;
+	top: 5px;
+	bottom: 5px;
+	left: 10px;
+	right: 10px;
+	.loader {
+		display: none;
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: 0;
+		text-align: center;
+	}
+	.ui-resizable-e {
+		right: -9px;
+		width: 3px;
+	}
+
+	.az-clsh-directory-top {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		top: 1px;
+		bottom: 50%;
+		&.left {
+			right: 50%;
+			bottom: 0px;
+			margin-right: 0px;
+		}
+		&.maximize {
+			left: 0px;
+			bottom: 0px;
+		}
+
+		.az-alert-container {
+			.alert {
+				padding: 4px 35px 4px 14px;
+				margin: 0px;
+				-webkit-border-radius: 0px;
+				-moz-border-radius: 0px;
+				border-radius: 0px;
+				div {
+					display: inline-block;
+					margin-right: 10px;
+					margin-top: 0px;
+					padding: 0px;
+					position: relative;
+					top: 1px;
+				}
+				.close {
+					top: 0px;
+				}
+			}
+		}
+		.az-clsh-directory-search-toolbar {
+			margin:3px;
+			.btn-group {
+				float: right;
+			}
+		}
+
+		.az-clsh-directory-input-container {
+			position: relative;
+			height: 28px;
+			>div {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				margin-right: 22px;
+			}
+			button {
+				transition: border linear 0.2s, box-shadow linear 0.2s;
+				position: absolute;
+				right: 0;
+				width: 22px;
+				padding: 0;
+				margin: 0;
+				height: 100%;
+				background: white;
+				border: 1px solid #cccccc;
+				border-left: 0;
+			}
+			.az-clsh-directory-search-input {
+				padding: 0px 4px;
+				.box-shadow(none);
+				width: 100%;
+				.box-sizing(border-box);
+				height: 28px;
+				.border-radius(0px);
+				
+				background: white;
+				border: 1px solid #cccccc;
+				border-right: 0px;
+			}
+			&:hover, &.focused{
+				button {
+					border-color:@InputHoverBackgroundColor!important;
+				}
+			}
+		}
+
+		.az-clsh-directory-result-grid {
+			position: absolute;
+			background-color: white;
+			top: 69px;
+			bottom: 30px;
+			right: 0;
+			left: 0;
+			border: 1px solid #cccccc;
+			overflow: auto;
+			.secteursList {
+				list-style: none;
+				margin: 5px 20px;
+				font-weight: bold;
+				padding: 0;
+				.secteurTitle {
+					i {
+						cursor: pointer;
+						margin-right: 10px;
+					}
+				}
+				.sejoursList {
+					font-weight: normal;
+					list-style: none;
+					padding-left: 20px;
+					>li {
+						cursor: pointer;
+						padding: 5px;
+						&.active {
+							background-color: @CLSHActiveRowBackgroundColor;
+							color: @CLSHActiveRowColor;
+						}
+					}
+				}
+			}
+		}
+
+	}
+	.az-clsh-directory-bottom {
+		position: absolute;
+		top: 50%;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		margin-top:13px;
+		min-width: 370px;
+		&.right {
+			top: 0px;
+			left: 50%;
+			margin-top:0px;
+			margin-left:13px;
+		}
+	}
+
+	&.loading {
+		.az-clsh-directory-top, .az-clsh-directory-bottom {
+			opacity: 0.8;
+		}
+		.loader {
+			display: block;
+		}
+	}
+}
+
+
+//////////////////////
+// Centre Loisirs Inscrits
+//////////////////////
+
+.az-clsh-inscription {
+	.az-clsh-inscription-toolbar {
+		height: 30px;
+		background-color:@CLSHInscriptionToolbarBackgroundColor;
+		color: @CLSHInscriptionToolbarColor;
+		padding:2px 8px;
+		box-sizing: border-box;
+		position: absolute;
+		right: 8px;
+		left: 8px;
+		top: 8px;
+
+		.btn {
+			background: none;
+			padding: 2px 4px;
+		}
+		i {
+			color: @CLSHInscriptionToolbarColor;
+		}
+	}
+	.inscription-form {
+		position: absolute;
+		top: 40px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 5px;
+		background: transparent;
+		.inscrits-list {
+			position: absolute;
+			top: 40px;
+			bottom: 200px;
+			left: 10px;
+			right: 10px;
+			overflow: auto;
+		}
+		.total {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			right: 10px;
+		}
+	}
+}
+
+.az-clsh-information {
+	background-color: @ContactInformationBackgroundColor;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	overflow: auto;
+	.loader {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		opacity: 1;
+		text-align: center;
+		display:none;
+		img {
+			position: absolute;
+			top: 50%;
+		}
+	}
+	.az-clsh-information-toolbar {
+		height: 30px;
+		background-color:@ContactInformationToolbarBackgroundColor;
+		color: @ContactInformationToolbarColor;
+		padding:2px 8px;
+		box-sizing: border-box;
+		position: absolute;
+		right: 8px;
+		left: 8px;
+		top: 8px;
+
+		.btn {
+			background: none;
+			padding: 2px 4px;
+		}
+		i {
+			color: @ContactInformationToolbarColor;
+		}
+	}
+	.az-clsh-information-form {
+		position: absolute;
+		top: 48px;
+		bottom: 0px;
+		right: 0;
+		left: 0;
+		overflow: auto;
+		padding: 15px 5px 5px;
+		.form-group {
+			margin-left: 10px;
+			margin-bottom: 18px;
+			display: inline-block;
+			.form-control {
+				display: inline-block;
+				width: 190px;
+				height: 28px;
+				padding: 3px 3px 3px 6px;
+				.border-radius(0);
+				.box-shadow(none);
+				border: none;
+				border-bottom: 1px dotted;
+			}
+			label {
+				display: inline-block;
+				width: 151px;
+				height: 28px;
+				vertical-align: middle;
+				margin-bottom: 0px;
+				padding: 6px 6px;
+			}
+		
+			&.checkbox {
+				display: block;
+				width: 292px;
+				label {
+					width: auto;
+					margin-right: 10px;
+					margin-left: 20px;
+					line-height: 21px;
+				}
+			}
+			.form-control-feedback {
+				top: -2px;
+			}
+		}
+
+		.az-clsh-information-nom {
+			display: block;
+			.form-control {
+				width: 64%;
+			}
+		}
+		
+		.az-clsh-information-empty-clsh {
+			text-align: center;
+		}
+
+		.help-block {
+			position: absolute;
+			top: 23px;
+			right: 0px;
+		}
+	}
+
+	.alert-container {
+		display: none;
+		top: 47px;
+		position: absolute;
+		left: 8px;
+		right: 8px;
+		.alert {
+			padding:10px;
+		}
+	}
+	&.loading {
+		.az-clsh-information-toolbar, .az-clsh-information-form {
+			opacity: 0.8;
+		}
+		.loader {
+			display: block;
+		}
+	}
+	&.alert-displayed {
+		.alert-container{
+			display: block;
+		}
+		.az-clsh-information-form {
+			top:90px;
+		}
+	}
+
+	.az-clsh-information-journees {
+		max-height: 400px;
+		overflow: auto;
+	}
+	.az-clsh-information-journees table{
+		thead tr th:not(:first-child) {
+			text-align: center;
+			cursor: pointer;
+		}
+		tbody td {
+			cursor: pointer;
+		}
+		tbody td.selected {
+			text-align: center;
+			color: @CLSHInformationPeriodeSelectedColor;
+			background-color: @CLSHInformationPeriodeSelectedBackgroundColor;
+		}
+	}
+}

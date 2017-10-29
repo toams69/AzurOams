@@ -1,0 +1,138 @@
+
+<div class="widget-view last-inscription">
+	<div class="w-header">
+		<div class="w-title">Dernières Inscriptions</div>
+		<div class="w-actions">
+			<div class="btn-group">
+				<button class="btn btn-icon dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>		
+				<ul class="dropdown-menu pull-right">
+					<div class="w-configuration">
+						<div class="content">
+							Afficher <select class="number-elem"><option value="10">10</option><option value="15">15</option><option value="20">20</option><option value="20">25</option></select>
+						</div>
+
+						<div class="buttons">
+							<button class="btn apply">Appliquer</button>
+							<button class="btn cancel">Annuler</button>
+						</div>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="w-body">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Nom</th>
+					<th>Prenom</th>
+					<th>Date</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<div class="loader"><img src="/img/ajax-loader.gif"></div>
+	</div>
+</div>
+
+<div class="widget-view factures-stats">
+	<div class="w-header">
+		<div class="w-title">Factures</div>
+		<div class="w-actions">
+			<div class="btn-group">
+				<button class="btn btn-icon dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>		
+				<ul class="dropdown-menu pull-right">
+					<div class="w-configuration">
+						<div class="content">
+							Pour l'année <select class="anneeSelect"><option value="">Toutes</option></select>
+						</div>
+
+						<div class="buttons">
+							<button class="btn apply">Appliquer</button>
+							<button class="btn cancel">Annuler</button>
+						</div>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="w-body">
+		<canvas id="myFactureChart" width="150" height="150"></canvas>
+		<div class="nombreTotalFacture" title="Nombre de factures"></div>
+		<table class="legend">
+			<tr>
+				<td class="color"><div style="background-color:#0095E1"></div></td>
+				<td>Réglée</td>
+			</tr>
+			<tr>
+				<td class="color"><div style="background-color:#6CCDFF"></div></td>
+				<td>Partiellement réglée</td>
+			</tr>
+			<tr>
+				<td class="color"><div style="background-color:#CACACA"></div></td>
+				<td>A réglée</td>
+			</tr>
+		</table>
+		<div class="loader"><img src="/img/ajax-loader.gif"></div>
+	</div>
+</div>
+<div class="widget-view membres-stats">
+	<div class="w-header">
+		<div class="w-title">Membres</div>
+		<div class="w-actions">
+			<div class="btn-group">
+				<button class="btn btn-icon dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>		
+				<ul class="dropdown-menu pull-right">
+					<div class="w-configuration">
+						<div class="content">
+							Pour l'année <select class="anneeSelect"><option value="">Toutes</option></select>
+						</div>
+
+						<div class="buttons">
+							<button class="btn apply">Appliquer</button>
+							<button class="btn cancel">Annuler</button>
+						</div>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="w-body">
+		<canvas id="membreChart" width="150" height="150"></canvas>
+		<div class="nombreTotalInscrit" title="Nombre d'inscrit"></div>
+		<table class="legend">
+			<tr>
+				<td class="color"><div style="background-color:#FFBB00"></div></td>
+				<td>Femme</td>
+			</tr>
+			<tr>
+				<td class="color"><div style="background-color:#F7E033"></div></td>
+				<td>Fille</td>
+			</tr>
+			<tr>
+				<td class="color"><div style="background-color:#075500"></div></td>
+				<td>Homme</td>
+			</tr>
+			<tr>
+				<td class="color"><div style="background-color:#00CA16"></div></td>
+				<td>Garçon</td>
+			</tr>		
+		</table>
+		<div class="loader"><img src="/img/ajax-loader.gif"></div>
+	</div>
+</div>
+
+<div class="widget-view last-message">
+	<div class="w-header">
+		<div class="w-title">Derniers Messages</div>
+		<div class="w-actions">
+		
+		</div>
+	</div>
+	<div class="w-body">
+		<div class="loader"><img src="/img/ajax-loader.gif"></div>
+	</div>
+</div>

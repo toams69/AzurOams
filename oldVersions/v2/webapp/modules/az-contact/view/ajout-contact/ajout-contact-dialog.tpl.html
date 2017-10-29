@@ -1,0 +1,89 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel"><%- i18n.inscription_membre_title %></h4>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+
+	      <table class="famille_table">
+
+	       <tr class="famille_existante_part">
+	          <td class="value" colspan="2">
+	          	<input type="checkbox" /> <%- i18n.inscription_membre_famille_existante_label %>
+	          </td>
+	        </tr>
+	      	<tr class="ajout_famille_part">
+	          <td>
+	            <%- i18n.inscription_membre_famille_label %> : 
+	          </td>
+	          <td class="value">
+	          	<input type="text" class="form-control" id="<%- id %>NomFamille" name="nom" placeholder="<%- i18n.nscription_membre_famille_label %>"/>
+	          </td>
+	        </tr>
+	       
+	        <tr class="famille_part">
+	            <td>
+	              <%- i18n.inscription_membre_famille_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <select class="form-control" name="typeReglement"></select>
+	            </td>
+	        </tr>
+	      </table>
+	      <hr/>
+	      <table class="contact_table">
+
+	      	<tr class="contact_type_part">
+	          <td class="value" colspan="2">
+	          	<input type="radio" name="contactType" checked="checked" class="adulte"/> <%- i18n.inscription_membre_adulte_label %>
+	          	<input type="radio" name="contactType" class="enfant"/> <%- i18n.inscription_membre_enfant_label %>
+	          </td>
+	        </tr>
+
+	          <tr class="contact_civilite_part">
+	            <td>
+	              <%- i18n.inscription_membre_civilite_label %> :
+	            </td>
+	             <td class="value form-group">
+	              <select class="form-control" name="civilite"></select>
+	            </td>
+	          </tr>
+
+	          <tr class="contact_nom_part">
+	            <td>
+	              <%- i18n.inscription_membre_nom_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>Nom" name="nom" placeholder="">
+	            </td>
+	          </tr>
+
+	          <tr class="contact_prenom_part">
+	            <td>
+	              <%- i18n.inscription_membre_prenom_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>Prenom" name="prenom" placeholder="">
+	            </td>
+	          </tr>
+
+	          <tr class="contact_naissance_part">
+	            <td>
+	              <%- i18n.inscription_membre_naissance_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>Date" name="date" placeholder="">
+	            </td>
+	          </tr>
+
+	       </table>
+	   </div>
+       <div class="loader"><img src="/img/ajax-loader.gif"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal"><%- i18n.inscription_membre_annuler_label %></button>
+      <button type="button" class="btn btn-primary submit"><%- i18n.inscription_membre_valider_label %></button>
+    </div>
+  </div>
+</div>

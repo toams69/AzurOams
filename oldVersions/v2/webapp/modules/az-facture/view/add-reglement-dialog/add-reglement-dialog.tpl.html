@@ -1,0 +1,100 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel"><%- i18n.ajout_reglement_title %></h4>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+	      <table class="contact_table">
+	        <tr class="facture_part">
+	          <td>
+	            <%- i18n.ajout_reglement_numero_facture_label %> : 
+	          </td>
+	          <td class="value"></td>
+	        </tr>
+	        <tr class="famille_part">
+	          <td>
+	            <%- i18n.ajout_reglement_famille_label %> :
+	          </td>
+	          <td class="value"></td>
+	        </tr>
+
+	        <tr class="montant_part">
+	          <td>
+	            <%- i18n.ajout_reglement_montant_restant_label %> :
+	          </td>
+	          <td class="value"></td>
+	        </tr>
+
+	      </table>
+	      <hr/>
+	      <table class="reglement_table">
+	          <tr class="code_ana_part">
+	            <td>
+	              <%- i18n.ajout_reglement_code_ana_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>CodeAna" name="codeAna" placeholder="">
+	            </td>
+	          </tr>
+
+	          <tr class="type_reglement_part">
+	            <td>
+	              <%- i18n.ajout_reglement_type_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <select class="form-control" name="typeReglement"></select>
+	            </td>
+	          </tr>
+
+	          <tr class="montant_reglement_part">
+	            <td>
+	              <%- i18n.ajout_reglement_montant_regle_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>Montant" name="montant" placeholder="">
+	            </td>
+	          </tr>
+
+	          <tr class="numero_cheque_reglement_part">
+	            <td>
+	              <%- i18n.ajout_reglement_numero_cheque_label %> :
+	            </td>
+	            <td class="value form-group" >
+	              <input type="text" class="form-control" id="<%- id %>NumeroCheque" name="numeroCheque" placeholder="">
+	            </td>
+	          </tr>
+
+	          <tr class="banque_part">
+	            <td>
+	              <%- i18n.ajout_reglement_banque_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <select class="form-control" name="banque"></select>
+	            </td>
+	          </tr>
+
+	          <tr class="date_reglement_part">
+	            <td>
+	              <%- i18n.ajout_reglement_date_label %> :
+	            </td>
+	            <td class="value form-group">
+	              <input type="text" class="form-control" id="<%- id %>Date" name="date" placeholder="">
+	            </td>
+	          </tr>
+
+	       </table>
+	       <hr/>
+	       <span><%- i18n.ajout_reglement_commentaire_label %> </span><br/>
+	       <textarea class="commentaire_reglement">
+	         
+	       </textarea>
+	   </div>
+       <div class="loader"><img src="/img/ajax-loader.gif"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal"><%- i18n.ajout_reglement_annuler_label %></button>
+      <button type="button" class="btn btn-primary submit"><%- i18n.ajout_reglement_valider_label %></button>
+    </div>
+  </div>
+</div>

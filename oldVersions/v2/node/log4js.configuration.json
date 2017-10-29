@@ -1,0 +1,13 @@
+{
+  "appenders": { 
+    "file":
+      {
+        "type": "file",
+        "filename": "./azuroams.log",
+        "maxLogSize": 1000000000,
+        "backups": 3,
+        "category": "AZ"
+      }
+    },
+    "categories": { "default": { "appenders": ["file"], "level": "debug" } }
+}

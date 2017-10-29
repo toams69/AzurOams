@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+db/
+oldVersions/AzuroamsV1
+uiTpl/

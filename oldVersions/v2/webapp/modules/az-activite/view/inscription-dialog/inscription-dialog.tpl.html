@@ -1,0 +1,82 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel"><%- i18n.inscription_titre %></h4>
+    </div>
+    <div class="modal-body">
+      <div class="content">
+	      <table class="contact_table">
+	        <tr class="contact_part">
+	          <td>
+	            <%- i18n.inscription_contact_label %> 
+	          </td>
+	          <td class="value"></td>
+	        </tr>
+	        <tr class="annee_part">
+	          <td>
+	            <%- i18n.inscription_annee_label %> 
+	          </td>
+	          <td class="value"></td>
+	        </tr>
+
+	      </table>
+	      <hr/>
+	      <table class="activite_table">
+	          <tr class="activite_part">
+	            <td>
+	              <%- i18n.inscription_activite_label %> :
+	            </td>
+	            <td class="value form-group input-group">
+	              <select class="form-control" name="activite"></select>
+	            </td>
+	          </tr>
+
+	          <tr class="montant_part">
+	            <td>
+	              <%- i18n.inscription_tarif_label %> :
+	            </td>
+	            <td class="value form-group input-group">
+	              <input type="text" class="form-control" id="<%- id %>Montant" name="montant" placeholder="">
+	              <span class="input-group-addon">€</span>
+	            </td>
+	          </tr>
+
+	          <tr class="montant_fourniture_part">
+	            <td>
+	              <%- i18n.inscription_fourniture_label %> :
+	            </td>
+	            <td class="value form-group input-group" >
+	              <input type="text" class="form-control" id="<%- id %>MontantF" name="montantF" placeholder="">
+	              <span class="input-group-addon">€</span>
+	            </td>
+	          </tr>
+
+	          <tr class="ristourne_part">
+	            <td>
+	              <%- i18n.inscription_ristourne_label %> :
+	            </td>
+	            <td class="value form-group input-group">
+	              <select class="form-control" name="ristourne"></select>
+	            </td>
+	          </tr>
+
+	          <tr class="total_reglement_part">
+	            <td>
+	              <%- i18n.inscription_total_label %> :
+	            </td>
+	            <td class="value form-group input-group">
+	              <input type="text" class="form-control" id="<%- id %>MontantT" name="montantT" placeholder="">
+	              <span class="input-group-addon">€</span>
+	            </td>
+	          </tr>
+
+	       </table>
+	   </div>
+       <div class="loader"><img src="/img/ajax-loader.gif"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal"><%- i18n.inscription_annuler_label %></button>
+      <button type="button" class="btn btn-primary submit"><%- i18n.inscription_valider_label %></button>
+    </div>
+  </div>
+</div>

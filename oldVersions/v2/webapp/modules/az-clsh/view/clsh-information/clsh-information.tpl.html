@@ -1,0 +1,56 @@
+<div class="az-clsh-information-toolbar">
+	<button class="btn btn-icon save-clsh" title="Sauvegarder les modifications" disabled>
+		<i class="fa fa-floppy-o"></i>
+	</button>
+	<button class="btn btn-icon reset-clsh" title="Annuler les modifications" disabled>
+		<i class="fa fa-undo"></i>
+	</button>
+</div>
+
+<div class="alert-container">
+</div>
+<div class="az-clsh-information-form">
+	<div class="az-clsh-information-empty-clsh">Selectionner un centre de loisir</div>
+	
+	<div class="az-clsh-information-content">
+		<div class="form-group az-clsh-information-nom">
+			<label for="<%- id %>Nom">Nom du séjour</label>
+			<input type="text" class="form-control" id="<%- id %>Nom" name="nom" placeholder="">
+		</div>
+		<div class="form-group az-clsh-information-code">
+			<label for="<%- id %>CodeAna">Code Analytique</label>
+			<input type="text" class="form-control" id="<%- id %>CodeAna" name="codeAna" placeholder="">
+		</div>
+		<div class="form-group az-clsh-information-agrementation">
+			<label for="<%- id %>Agrement">Numéro d'agrément</label>
+			<select class="form-control" id="<%- id %>Agrement" >
+				
+			</select>
+		</div>
+		<div class="form-group az-clsh-information-secteur">
+			<label for="<%- id %>Secteur">Secteur</label>
+			<select class="form-control" id="<%- id %>Secteur" >
+				
+			</select>
+		</div>
+		<hr />
+		<div class="az-clsh-information-journees">
+			<table class="table table-striped">
+				<thead>
+					<tr></tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+</div>
+
+<div class="loader"><img src="/img/ajax-loader.gif"></div>
+<div class="date-picker-dialog">
+	<div class="date-picker">
+	
+	</div>
+</div>
