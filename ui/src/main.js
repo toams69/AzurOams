@@ -7,10 +7,12 @@ import App from './App'
 import router from './router'
 import lang from 'element-ui/lib/locale/lang/fr'
 import locale from 'element-ui/lib/locale'
+import VueMoment from 'vue-moment'
 import GlobalComponents from './gloablComponents'
 import GlobalDirectives from './globalDirectives'
 import SideBar from './components/SidebarPlugin'
-
+import moment from 'moment'
+import 'moment/locale/fr'
 // library imports
 
 import './assets/sass/paper-dashboard.scss'
@@ -23,6 +25,7 @@ import sidebarLinks from './sidebarLinks'
 import store from '@/vuex/index'
 
 Vue.config.productionTip = false
+Vue.use(VueMoment, {moment})
 Vue.use(ElementUI)
 Vue.use(GlobalDirectives)
 Vue.use(GlobalComponents)

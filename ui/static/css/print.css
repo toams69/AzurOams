@@ -1,0 +1,76 @@
+@page {
+    size: 21.0cm 29.7cm;
+  }
+  body {
+    background: #fff;
+  }
+  .wrapper {
+    display: none!important;
+    opacity: 0;
+  }
+  .az-page-facture {
+    size: 21.0cm 29.7cm;
+  }
+  .az-page-facture table tr td {
+    white-space: pre-wrap;
+  }
+  .az-page-facture table tr td:first-child:not(.details) {
+    color: #007FB9!important;
+    font-weight: bold;
+    padding-right: 20px;
+    white-space: nowrap;
+  }
+  .az-page-facture table tr .details {
+    padding-top: 30px;
+  }
+  .az-page-facture .top-table {
+    margin-top: 30px;
+  }
+  .az-page-facture .contact-container {
+    position: absolute;
+    width: auto;
+    height: 110px;
+    right: 10px;
+    top: 168px;
+    min-width: 200px;
+    white-space: pre-wrap;
+  }
+  .az-page-facture .separator {
+    border-color: #143369!important;
+    border-top-width: 2px!important;
+  }
+  .az-page-facture .bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 672px;
+  }
+  .az-page-facture .bottom span {
+    color: #007FB9!important;
+    white-space: no-wrap;
+  }
+  .az-page-facture .total-table {
+    width: 100%;
+    border: 2px solid #143369!important;
+    border-top-width: 0px!important;
+  }
+  .az-page-facture .total-table tr td:first-child {
+    width: 1px;
+  }
+  .az-page-clsh-inscription {
+    size: 21.0cm 29.7cm;
+  }
+  .az-page-clsh-inscription .info-clsh-container {
+    position: absolute;
+    width: auto;
+    height: 110px;
+    left: 230px;
+    top: 100px;
+    min-width: 200px;
+    white-space: pre-wrap;
+    color: #007FB9!important;
+  }
+  .az-page-clsh-inscription .inscrits-list table tr td {
+    padding: 2px 8px;
+    border: 1px solid #007FB9;
+  }

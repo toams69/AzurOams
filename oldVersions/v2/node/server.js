@@ -22,7 +22,7 @@ var MysqlConnection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   database : 'azuroamsv1',
-  password : 'password'
+  password : ''
 });
 
 var currentVersion = version.getVersion();

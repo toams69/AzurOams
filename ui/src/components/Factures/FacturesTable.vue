@@ -22,10 +22,12 @@
                 border
                 style="width: 100%">
         <el-table-column v-for="column in tableColumns"
-                        :key="column.id"
-                          :min-width="column.minWidth"
-                          :prop="column.prop"
-                          :label="column.label"
+              :key="column.id"
+              :min-width="column.minWidth"
+              :prop="column.prop"
+              :label="column.label"
+              :filters='column.filters'
+              :formatter='column.formatter'
                           >
         </el-table-column>
       </el-table>
@@ -46,12 +48,12 @@
 </template>
 <script>
   import Vue from 'vue'
-  import {Table, TableColumn, Select, Option} from 'element-ui'
+  import {Table, TableColumn} from 'element-ui'
   import PPagination from '@/components/Pagination.vue'
+  import moment from 'moment'
+
   Vue.use(Table)
   Vue.use(TableColumn)
-  Vue.use(Select)
-  Vue.use(Option)
   export default{
     components: {
       PPagination
@@ -106,6 +108,7 @@
     },
     data () {
       return {
+        selectedId: -1,
         pagination: {
           perPage: 10,
           currentPage: 1,
@@ -116,6 +119,7 @@
         tableColumns: [
           {
             prop: 'ID_FACTURE',
+            minWidth: '30px',
             label: '#'
           },
           {
@@ -128,6 +132,7 @@
           },
           {
             prop: 'DATE_FACTURE',
+            formatter: this.dateFormater,
             label: 'Date'
           },
           {
@@ -138,6 +143,9 @@
       }
     },
     methods: {
+      dateFormater (row, column) {
+        return moment(row['DATE_FACTURE']).format('DD/MM/YYYY')
+      },
       handleDelete (index, row) {
         let indexToDelete = this.tableData.findIndex((tableRow) => tableRow.id === row.id)
         if (indexToDelete >= 0) {
@@ -145,7 +153,7 @@
         }
       },
       handleCurrentChange (elem) {
-        this.currentMembre = elem
+        this.$emit('factureSelected', elem)
       }
     }
   }
