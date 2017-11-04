@@ -25,6 +25,14 @@ const mutations = {
       })
       obj['MONTANT_RESTANT'] = restant
       state.list.splice(index, 1, obj)
+    } else {
+      let restant = Math.round(parseFloat(data['MONTANT_FACTURE']) * 100) / 100
+      each(data['reglements'], function (r) {
+        restant -= parseFloat(r['MONTANT_REGLEMENT'])
+        restant = Math.round(restant * 100) / 100
+      })
+      data['MONTANT_RESTANT'] = restant
+      state.list.push(data)
     }
   }
 }

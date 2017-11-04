@@ -3,7 +3,6 @@
     <el-table class="table table-striped table-no-bordered table-hover"
         :data="tableData"
         highlight-current-row
-        @current-change="handleCurrentChange"
         border
         style="width: 100%">
       <el-table-column v-for="column in tableColumns"

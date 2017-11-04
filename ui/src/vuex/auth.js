@@ -9,7 +9,7 @@ const state = {
 const mutations = {
   LOGIN (state, data) {
     state.isAuthenticated = true
-    state.user = Object.assign({}, extend(true, state.user, data))
+    extend(true, state.user, data)
   },
   LOGOUT (state) {
     state.isAuthenticated = false
@@ -31,8 +31,14 @@ const actions = {
   }
 }
 
+const getters = {
+  getUser: (state, getters) => () => {
+    return state.user || {}
+  }
+}
 export default {
   state,
+  getters,
   mutations,
   actions
 }

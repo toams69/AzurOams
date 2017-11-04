@@ -3,8 +3,7 @@ module.exports = function(app, connection, router){
 	router.route('/factures')
 	
 	.get(function(req, res) {
-		
-		connection.query('SELECT * FROM  `factures` LEFT JOIN types_factures USING (ID_TYPE_FACTURE) LEFT JOIN membres USING (ID_MEMBRE)', function(err, rows) {
+		connection.query('SELECT `ID_FACTURE`, `DATE_FACTURE`, `NOM_MEMBRE`, `PRENOM_MEMBRE`, NOM_TYPE_FACTURE, MONTANT_FACTURE, MONTANT_FACTURE - sum(`reglement`.`MONTANT_REGLEMENT`) AS `MONTANT_RESTANT` FROM  `factures` LEFT JOIN types_factures USING (ID_TYPE_FACTURE) LEFT JOIN membres USING (ID_MEMBRE) LEFT JOIN reglement USING (ID_FACTURE) group by `ID_FACTURE`', function(err, rows) {
 			if (err) throw err;
 			var json = JSON.stringify(rows);
 			res.send(json);

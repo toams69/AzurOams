@@ -85,7 +85,7 @@
     },
     data () {
       return {
-        defaultPagesToDisplay: 5
+        defaultPagesToDisplay: 3
       }
     },
     methods: {

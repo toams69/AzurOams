@@ -38,11 +38,11 @@
   }
   .detail-pane {
     padding: 15px;
-    .detail-table {
-      tr td:nth-child(1) {
-        font-weight: bold;
-        padding-right: 15px;
-      }
+  }
+  .detail-table {
+    tr td:nth-child(1) {
+      font-weight: bold;
+      padding-right: 15px;
     }
   }
   

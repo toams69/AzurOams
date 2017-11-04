@@ -1,7 +1,7 @@
 <template>
   <multipane class="custom-resizer" layout="vertical">
     <div class="pane" :style="{ minWidth: '30%', width: '50%' }">
-        <FacturesTable @factureSelected="onFactureSelected"></FacturesTable>
+        <FacturesTable @factureSelected="onFactureSelected" :factures='this.$store.state.factures.list'></FacturesTable>
     </div>
     <multipane-resizer></multipane-resizer>
     <div class="pane" :style="{ flexGrow: 1 }">
@@ -16,7 +16,7 @@
           </button>
         </div>  
         <br/>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" >
           <el-tab-pane label="Détails" name="first" class="detail-pane">
             <facture :facture='getFactureById(idFactureSelected)' ></facture>
           </el-tab-pane>
@@ -79,7 +79,7 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .hidden {
     display: none;
     opacity: 0;

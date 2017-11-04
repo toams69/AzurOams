@@ -2,7 +2,7 @@
   <div class="wrapper">
 
     <side-bar type="sidebar" :sidebar-links="$sidebar.sidebarLinks">
-      <user-menu></user-menu>
+      <user-menu :user="getUser()"></user-menu>
       <form class="navbar-form navbar-left navbar-search-form navbar-search-form-mobile" role="search">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -33,7 +33,7 @@
   import MovingArrow from '@/components/SidebarPlugin/MovingArrow.vue'
   import UserMenu from '@/components/SidebarPlugin/UserMenu.vue'
   import MobileMenu from '@/components/SidebarPlugin/MobileMenu.vue'
-
+  import { mapGetters } from 'vuex'
   export default {
     components: {
       TopNavbar,
@@ -42,6 +42,12 @@
       MovingArrow,
       UserMenu,
       MobileMenu
+    },
+    computed: {
+      // mix the getters into computed with object spread operator
+      ...mapGetters([
+        'getUser'
+      ])
     },
     methods: {
       toggleSidebar () {

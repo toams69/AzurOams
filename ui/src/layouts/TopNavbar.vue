@@ -61,6 +61,8 @@
     }
   }
 </script>
-<style>
-
+<style scoped>
+  .navbar-right {
+    display: none;
+  }
 </style>

@@ -9,8 +9,7 @@ module.exports = function(app, connection, router){
 		connection.query(query, function(err, rows, fields) {
 			if (err) throw err;
 			if (rows.length) {
-				var json = JSON.stringify(rows[0]);
-				res.respond(json, 200);
+				res.json(rows[0]);
 			} else {
 				res.respond(new Error('Bad/Missing Operation'), 403);
 			}

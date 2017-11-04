@@ -30,6 +30,16 @@
               :formatter='column.formatter'
                           >
         </el-table-column>
+        <el-table-column
+          label=""
+          prop="MONTANT_RESTANT"
+          min-width="30px"
+        >
+          <template slot-scope="scope">
+            <i v-if="scope.row['MONTANT_RESTANT'] <= 0" class="ti-check"></i>
+            <i v-else class="ti-close"></i>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
@@ -58,9 +68,14 @@
     components: {
       PPagination
     },
+    props: {
+      factures: {
+        type: Array
+      }
+    },
     computed: {
       pagedData () {
-        return this.tableData.slice(this.from, this.to)
+        return this.factures.slice(this.from, this.to)
       },
       /***
        * Searches through table data and returns a paginated array.
@@ -70,10 +85,10 @@
        */
       queriedData () {
         if (!this.searchQuery) {
-          this.pagination.total = this.tableData.length
+          this.pagination.total = this.factures.length
           return this.pagedData
         }
-        let result = this.tableData
+        let result = this.factures
           .filter((row) => {
             let isIncluded = false
             for (let key of this.propsToSearch) {
@@ -97,13 +112,9 @@
       from () {
         return this.pagination.perPage * (this.pagination.currentPage - 1)
       },
-
-      tableData () {
-        return this.$store.state.factures.list
-      },
       total () {
-        this.pagination.total = this.tableData.length
-        return this.tableData.length
+        this.pagination.total = this.factures.length
+        return this.factures.length
       }
     },
     data () {
@@ -147,9 +158,9 @@
         return moment(row['DATE_FACTURE']).format('DD/MM/YYYY')
       },
       handleDelete (index, row) {
-        let indexToDelete = this.tableData.findIndex((tableRow) => tableRow.id === row.id)
+        let indexToDelete = this.factures.findIndex((tableRow) => tableRow.id === row.id)
         if (indexToDelete >= 0) {
-          this.tableData.splice(indexToDelete, 1)
+          this.factures.splice(indexToDelete, 1)
         }
       },
       handleCurrentChange (elem) {

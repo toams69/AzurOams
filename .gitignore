@@ -60,3 +60,4 @@ typings/
 db/
 oldVersions/AzuroamsV1
 uiTpl/
+server/webapp/static

@@ -26,7 +26,7 @@ var MysqlConnection = mysql.createConnection({
 });
 
 var currentVersion = version.getVersion();
-var webappPath = __dirname + '/../webapp/';
+var webappPath = __dirname + '/webapp/';
 
 log4js.configure('log4js.configuration.json');
 

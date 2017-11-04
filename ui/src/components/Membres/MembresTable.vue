@@ -22,17 +22,11 @@
                 border
                 style="width: 100%">
         <el-table-column v-for="column in tableColumns"
-                        :key="column.id"
-                          :min-width="column.minWidth"
-                          :prop="column.prop"
-                          :label="column.label"
-                          >
-        </el-table-column>
-        <el-table-column
-          label="Actions">
-          <template slot-scope="props">
-            <a class="btn btn-simple btn-xs btn-danger btn-icon remove"  @click="handleDelete(props.$index, props.row)"><i class="ti-close"></i></a>
-          </template>
+              :key="column.id"
+              :min-width="column.minWidth"
+              :prop="column.prop"
+              :label="column.label"
+        >
         </el-table-column>
       </el-table>
     </div>
@@ -122,7 +116,8 @@
         tableColumns: [
           {
             prop: 'ABREVIATION_CIVILITE',
-            label: 'Civilité'
+            label: 'Civilité',
+            minWidth: '30px'
           },
           {
             prop: 'NOM_MEMBRE',
@@ -134,20 +129,16 @@
           },
           {
             prop: 'AGE_MEMBRE',
-            label: 'Age'
+            label: 'Age',
+            minWidth: '30px'
           }
         ]
       }
     },
     methods: {
-      handleDelete (index, row) {
-        let indexToDelete = this.tableData.findIndex((tableRow) => tableRow.id === row.id)
-        if (indexToDelete >= 0) {
-          this.tableData.splice(indexToDelete, 1)
-        }
-      },
       handleCurrentChange (elem) {
         this.currentMembre = elem
+        this.$emit('membreSelected', elem)
       }
     }
   }

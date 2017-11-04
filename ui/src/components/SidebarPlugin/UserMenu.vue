@@ -1,12 +1,12 @@
 <template>
   <div class="user">
     <div class="photo">
-      <img src="static/img/faces/face-2.jpg"/>
+      <img :src="'static/img/faces/' + user['LOGIN_PERSONNEL'].toLowerCase() + '.jpg'"/>
     </div>
     <div class="info">
       <a data-toggle="collapse" @click="toggleMenu" href="javascript:void(0)">
            <span>
-             {{user}}
+             {{user['NOM_PERSONNEL']}} {{user['PRENOM_PERSONNEL']}}
              <!-- <b class="caret"></b> -->
           </span>
       </a>
@@ -44,10 +44,15 @@
     components: {
       [CollapseTransition.name]: CollapseTransition
     },
+    props: {
+      user: {
+        type: Object,
+        default: {}
+      }
+    },
     data () {
       return {
-        isClosed: true,
-        user: this.$store.auth.user
+        isClosed: true
       }
     },
     methods: {

@@ -201,6 +201,9 @@
   border-top: 0;
   border-bottom: 0;
 }
+.el-table td, .el-table th {
+  padding: 5px 0;
+}
 .el-table tr{
   z-index: 10;
 }
@@ -223,6 +226,15 @@
 
 .el-table__body tr.current-row>td , .el-table__body tr.current-row:hover td{
   background: #25afff;
-  border-right: 1px solid #25afff;
+  // border-right: 1px solid #25afff;
   color: white;
+}
+
+.el-table td .cell {
+  white-space: pre;
+  word-break: break-all;
+  line-height: 20px;
+  height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
