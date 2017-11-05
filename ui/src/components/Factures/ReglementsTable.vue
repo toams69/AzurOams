@@ -14,6 +14,31 @@
           :formatter='column.formatter'
           >
       </el-table-column>
+      <el-table-column
+          label=""
+          min-width="50px"
+        >
+          <template slot-scope="scope">
+            <el-tooltip placement="top">
+              <div slot="content">
+                {{scope.row['NOM_TYPE_REGLEMENT']}}<br/>
+                Code Analytique {{scope.row['CODE_ANA']}}
+                <span v-if="scope.row['NOM_BANQUE']"><br/>Banque {{scope.row['NOM_BANQUE']}}</span>
+                <span v-if="scope.row['CHEQUE_NUM']"><br/>Numéro du chèque {{scope.row['CHEQUE_NUM']}}</span>
+              </div>
+              <i class="ti-info-alt"></i>
+            </el-tooltip>
+
+            <el-tooltip placement="top" v-if="scope.row['ENCAISSE_DATE']">
+              <div slot="content">
+                Encaissé le {{scope.row['ENCAISSE_DATE'] | moment("dddd D MMMM YYYY") }}
+                <span v-if="scope.row['BORDERAU_NUM']"><br/>Numéro du borderau {{scope.row['BORDERAU_NUM']}}</span>
+              </div>
+              &nbsp;&nbsp;<i class="ti-check"></i>
+            </el-tooltip>
+           
+          </template>
+        </el-table-column>
     </el-table>
   </div>
 </template>

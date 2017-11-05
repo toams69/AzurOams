@@ -7,25 +7,17 @@
     <div class="pane" :style="{ flexGrow: 1 }">
       <div class="membres-details">
         <el-tabs v-model="activeName">
-          <el-tab-pane label="Informations" name="informations" class="informations-pane">
-            <enfant v-if="idEnfantSelected" :enfant='getEnfantById(idEnfantSelected)'></enfant>
-            <enfant v-if="idAdulteSelected" :enfant='getAdulteById(idAdulteSelected)'></enfant>
-          </el-tab-pane>
-          <el-tab-pane label="Activités" name="activites">
-            
-          </el-tab-pane>
           <el-tab-pane label="Factures" name="factures">
-            <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
-            <div v-if="idFactureSelected" class="facture-details">
-              <div class="facture-id">
-                Facture #{{idFactureSelected}} -
-                <button class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
+            <div class="facture-details">
+                <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
                   <i class='ti-printer'></i>
                 </button>
-                <button class="btn btn-icon btn-simple" title="supprimer la facture">
+                <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="supprimer la facture">
                   <i class='ti-trash'></i>
                 </button>
-              </div>  
+            </div>
+            <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
+            <div v-if="idFactureSelected" class="facture-details">
               <br/>
               <el-tabs v-model="active2Name">
                 <el-tab-pane label="Détails" name="details">
@@ -78,7 +70,7 @@
     },
     data () {
       return {
-        activeName: 'informations',
+        activeName: 'factures',
         active2Name: 'details',
         idEnfantSelected: null,
         idAdulteSelected: null,
@@ -114,7 +106,7 @@
     }
   }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .custom-resizer {
     position: absolute;
     top: 15px;
