@@ -28,7 +28,7 @@ var MysqlConnection = mysql.createConnection({
 var currentVersion = version.getVersion();
 var webappPath = __dirname + '/webapp/';
 
-log4js.configure('log4js.configuration.json');
+log4js.configure(__dirname + '/log4js.configuration.json');
 
 
 
@@ -125,15 +125,15 @@ MysqlConnection.connect();
 
 
 //api Extension
-fs.readdir('./models', function (err, list) {
+fs.readdir(__dirname + '/models', function (err, list) {
 	if (err) {
 		console.log(err);
 		return;
 	}
 	list.forEach(function (file) {
-		if (!fs.lstatSync('./models/' + file).isDirectory())
+		if (!fs.lstatSync(__dirname + '/models/' + file).isDirectory())
 			return;
-		require('./models/' + file +'/api-extension')(app, MysqlConnection, router);
+		require(__dirname + '/models/' + file +'/api-extension')(app, MysqlConnection, router);
 	});
 });
 
