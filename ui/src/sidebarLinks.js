@@ -28,5 +28,16 @@ export default [
       path: '/factures'
     }
     ]
+  },
+  {
+    name: 'Exports',
+    icon: 'ti-cloud-down',
+    collapsed: true,
+    children: [{
+      name: 'Adherents',
+      isRoute: false,
+      path: 'http://localhost:8080/api/exports/adherents'
+    }
+    ]
   }
 ]

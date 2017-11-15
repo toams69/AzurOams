@@ -43,6 +43,7 @@ module.exports = function(app, connection, router){
                                             outputObj['ADR_MEMBRE'] = a['ADR_MEMBRE'];
                                             outputObj['CP_VILLE'] = a['CP_VILLE'];
                                             outputObj['NOM_VILLE'] = a['NOM_VILLE'];
+                                            outputObj['NUMERO_ADHERENT'] = a['NUMERO_ADHERENT'];
                                             var d = new Date(a['NAISSANCE_MEMBRE']);
                                             outputObj['NAISSANCE_MEMBRE'] = d.getDate() +'/'+ (d.getMonth() + 1) +'/' + d.getFullYear();
                                             _.each(enfs, function(e, i) {
@@ -50,6 +51,7 @@ module.exports = function(app, connection, router){
                                                 outputObj['PRENOM_ENFANT '+(i+1)] = e['PRENOM_ENFANT'];
                                                 var d = new Date(e['NAISSANCE_ENFANT']);
                                                 outputObj['NAISSANCE_ENFANT '+(i+1)] = d.getDate() +'/'+ (d.getMonth() + 1) +'/' + d.getFullYear(); 
+                                                outputObj['NUMERO_ADHERENT_ENFANT '+(i+1)] = e['NUMERO_ADHERENT'];
                                                 maxEnfant = maxEnfant > i ? maxEnfant : i;
                                                 idEnfants.push(e['ID_ENFANT']);
                                             });
@@ -66,6 +68,7 @@ module.exports = function(app, connection, router){
                                             outputObj['ADR_MEMBRE'] = e['ADR_MEMBRE'];
                                             outputObj['CP_VILLE'] = e['CP_VILLE'];
                                             outputObj['NOM_VILLE'] = e['NOM_VILLE'];
+                                            outputObj['NUMERO_ADHERENT'] = '';
                                             var d = new Date(e['NAISSANCE_MEMBRE']);
                                             outputObj['NAISSANCE_MEMBRE'] = d.getDate() +'/'+ (d.getMonth() + 1) +'/' + d.getFullYear();
                                             _.each(enfs, function(_e, i) {
@@ -74,6 +77,7 @@ module.exports = function(app, connection, router){
                                                 var d = new Date(_e['NAISSANCE_ENFANT']);
                                                 outputObj['NAISSANCE_ENFANT '+(i+1)] = d.getDate() +'/'+ (d.getMonth() + 1) +'/' + d.getFullYear(); 
                                                 maxEnfant = maxEnfant > i ? maxEnfant : i;
+                                                outputObj['NUMERO_ADHERENT_ENFANT '+(i+1)] = _e['NUMERO_ADHERENT'];
                                                 idEnfants.push(_e['ID_ENFANT']);
                                             });
                                             outputArray.push(outputObj);
@@ -85,7 +89,9 @@ module.exports = function(app, connection, router){
                         });
                         var csvWriter = require('csv-write-stream');
                         var fs = require('fs');
-                        var writer = csvWriter();
+                        var writer = csvWriter({
+                            separator: ';'
+                          });
                         res.setHeader("content-type", "application/octet-stream");
                         res.setHeader("Content-Disposition", "attachment; filename=export.csv");
                         writer.pipe(res);
@@ -99,6 +105,9 @@ module.exports = function(app, connection, router){
                                 }
                                 if (!o['NAISSANCE_ENFANT '+ (i+1)]) {
                                     o['NAISSANCE_ENFANT '+ (i+1)] = '';
+                                }
+                                if (!o['NUMERO_ADHERENT_ENFANT '+ (i+1)]) {
+                                    o['NUMERO_ADHERENT_ENFANT '+ (i+1)] = '';
                                 }
                             }
                             writer.write(o);

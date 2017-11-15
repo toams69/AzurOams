@@ -41,7 +41,7 @@
                                :to="subLink.path" tag="li"
                                :class="{active: subLink.active}"
                                :ref="subLink.name">
-                    <a :href="elementType(subLink) === 'li' ? subLink.path : '#'" :target="subLink.target">
+                    <a :title='subLink.path' :href="elementType(subLink) === 'li' ? subLink.path : '#'" :target="subLink.target">
                       <span class="sidebar-mini">{{linkAbbreviation(subLink.name)}}</span>
                       <span class="sidebar-normal">{{subLink.name}}</span>
                     </a>
