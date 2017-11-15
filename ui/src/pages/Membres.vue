@@ -7,6 +7,11 @@
     <div class="pane" :style="{ flexGrow: 1 }">
       <div class="membres-details">
         <el-tabs v-model="activeName">
+          <el-tab-pane label="Informations Générales" name="informations">
+            <enfant></enfant>
+          </el-tab-pane>
+          <el-tab-pane label="Activités" name="activites">
+          </el-tab-pane>
           <el-tab-pane label="Factures" name="factures">
             <div class="facture-details">
                 <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
