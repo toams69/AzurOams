@@ -8,7 +8,7 @@
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
-            <enfant></enfant>
+            <enfant :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)'></enfant>
           </el-tab-pane>
           <el-tab-pane label="Activités" name="activites">
           </el-tab-pane>
@@ -65,12 +65,14 @@
     computed: {
       // mix the getters into computed with object spread operator
       ...mapGetters([
+        'getFamilleById',
         'getEnfantById',
         'getAdulteById',
         'getFactureByEnfantId',
         'getFactureByAdulteId',
         'getReglemensByFactureId',
-        'getFactureById'
+        'getFactureById',
+        'getFullConfiguration'
       ])
     },
     data () {
@@ -84,6 +86,9 @@
     },
     methods: {
       onMembreSelected (membre) {
+        if (membre) {
+          this.$store.dispatch('GET_FAMILLE', membre['ID_FAMILLE'])
+        }
         if (membre['ID_ENFANT']) {
           this.$store.dispatch('GET_ENFANT', membre['ID_ENFANT'])
           this.idEnfantSelected = membre['ID_ENFANT']

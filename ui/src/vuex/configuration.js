@@ -1,5 +1,5 @@
 import axios from 'axios'
-import extend from 'extend'
+import { assignIn } from 'lodash'
 
 const state = {
   'version': '3.0.0',
@@ -18,7 +18,7 @@ const state = {
 
 const mutations = {
   SET_CONFIGURATION (state, data) {
-    state = Object.assign({}, extend(true, state, data.configuration))
+    state = assignIn(state, data.configuration)
   }
 }
 
@@ -32,8 +32,16 @@ const actions = {
   }
 }
 
+const getters = {
+  getFullConfiguration: (state, getters) => () => {
+    // check if the prenom is defined to be sure the enfant obj is complete
+    return state
+  }
+}
+
 export default {
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

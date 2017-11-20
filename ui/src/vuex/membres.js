@@ -2,7 +2,8 @@ import axios from 'axios'
 import { find, assignIn } from 'lodash'
 
 const state = {
-  'list': []
+  'list': [],
+  'groups': []
 }
 
 const mutations = {
@@ -34,6 +35,15 @@ const mutations = {
       obj.factures = data.factures
       state.list.splice(index, 1, obj)
     }
+  },
+  SET_FAMILLE (state, data) {
+    let obj = find(state.groups, ['ID_FAMILLE', data['ID_FAMILLE']])
+    let index = state.groups.indexOf(obj)
+    if (obj) {
+      obj = assignIn(obj, data)
+      state.groups.splice(index, 1, obj)
+    }
+    state.groups.push(obj)
   }
 }
 
@@ -58,6 +68,13 @@ const actions = {
     }, (err) => {
       console.log(err)
     })
+  },
+  GET_FAMILLE ({ commit }, id) {
+    axios.get('/api/familles/' + id).then((response) => {
+      commit('SET_FAMILLE', response.data)
+    }, (err) => {
+      console.log(err)
+    })
   }
 }
 
@@ -77,6 +94,10 @@ const getters = {
   getFactureByAdulteId: (state, getters) => (id) => {
     const adulte = state.list.find(m => m['ID_MEMBRE'] === id && !m['ID_ENFANT'])
     return adulte ? adulte.factures : []
+  },
+  getFamilleById: (state, getters) => (id) => {
+    // check if the prenom is defined to be sure the enfant obj is complete
+    return state.groups.find(m => m['ID_FAMILLE'] === id) || {}
   }
 }
 
