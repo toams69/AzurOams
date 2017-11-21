@@ -11,6 +11,10 @@ const mutations = {
     state.list.splice(0, state.list.length)
     data.forEach((membre) => {
       membre.type = membre['ID_ENFANT'] ? 'ENFANT' : 'ADULTE'
+      membre['CERTIFICAT'] = membre['CERTIFICAT'] === 1
+      membre['DROIT_IMAGE'] = membre['DROIT_IMAGE'] === 1
+      membre['RENTRE_SEUL'] = membre['RENTRE_SEUL'] === 1
+      membre['NAISSANCE_ENFANT'] = membre['NAISSANCE_ENFANT'] || ''
       state.list.push(membre)
     })
   },
@@ -19,6 +23,9 @@ const mutations = {
     let index = state.list.indexOf(obj)
     if (obj) {
       obj = assignIn(obj, data.enfant)
+      obj['CERTIFICAT'] = obj['CERTIFICAT'] === 1
+      obj['DROIT_IMAGE'] = obj['DROIT_IMAGE'] === 1
+      obj['RENTRE_SEUL'] = obj['RENTRE_SEUL'] === 1
       obj.adhesions = data.adhesions
       obj.activites = data.activites
       obj.factures = data.factures
@@ -42,8 +49,9 @@ const mutations = {
     if (obj) {
       obj = assignIn(obj, data)
       state.groups.splice(index, 1, obj)
+    } else {
+      state.groups.push(data)
     }
-    state.groups.push(obj)
   }
 }
 

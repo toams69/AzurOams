@@ -8,7 +8,7 @@
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
-            <enfant :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)'></enfant>
+            <enfant :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant>
           </el-tab-pane>
           <el-tab-pane label="Activités" name="activites">
           </el-tab-pane>
@@ -80,6 +80,7 @@
         activeName: 'factures',
         active2Name: 'details',
         idEnfantSelected: null,
+        idFamilleSelected: null,
         idAdulteSelected: null,
         idFactureSelected: null
       }
@@ -100,6 +101,7 @@
           this.idFactureSelected = null
           this.idAdulteSelected = membre['ID_MEMBRE']
         }
+        this.idFamilleSelected = membre['ID_FAMILLE']
       },
       onFactureSelected (facture) {
         this.$store.dispatch('GET_FACTURE', facture['ID_FACTURE'])

@@ -1,5 +1,16 @@
 <template>
   <div class="detail-pane">
+    <div class="toolbar">
+      <button class="btn btn-icon btn-simple" title="sauvegarder" @click="saveEnfant">
+        <i class='ti-save'></i>
+      </button>
+      <button class="btn btn-icon btn-simple" title="restaurer">
+        <i class='ti-reload'></i>
+      </button>
+      <button class="btn btn-icon btn-simple" title="imprimer la fiche">
+        <i class='ti-printer'></i>
+      </button>
+    </div>  
     <div class="form-group">
       <label class="col-md-2 control-label">Civilité</label>
       <div class="col-md-10">
@@ -27,15 +38,15 @@
     <div class="form-group">
       <label class="col-md-2 control-label">Né(e) le</label>
       <div class="col-md-10">
-        <el-date-picker type="date" placeholder="Date de naissance">
+        <el-date-picker type="date" placeholder="Date de naissance" v-model="enfant['NAISSANCE_ENFANT']">
         </el-date-picker>
       </div>
     </div>
     <div class="form-group">
       <label class="col-md-2 control-label">Réside chez</label>
       <div class="col-md-10">
-        <el-select placeholder="Réside chez" size="large">
-          <el-option v-for="option in civilites"
+        <el-select placeholder="Réside chez" size="large" v-model="enfant['ID_MEMBRE']">
+          <el-option v-for="option in parents"
                       :value="option.value"
                       :label="option.label"
                       :key="option.label">
@@ -50,10 +61,10 @@
       </div>
     </div>
     <br /><br />
-    <el-checkbox v-model="checked">Certificat Médical</el-checkbox>
-    <el-checkbox v-model="checked">Droit à l'image</el-checkbox>
-    <el-checkbox v-model="checked">Rentre seul</el-checkbox>&nbsp;
-    <el-time-select v-if="checked"
+    <el-checkbox v-model="enfant['CERTIFICAT']" >Certificat Médical</el-checkbox>
+    <el-checkbox v-model="enfant['DROIT_IMAGE']">Droit à l'image</el-checkbox>
+    <el-checkbox v-model="enfant['RENTRE_SEUL']" >Rentre seul</el-checkbox>&nbsp;
+    <el-time-select v-if="enfant['RENTRE_SEUL']"
       v-model="timePicker"
       :picker-options="{
         start: '16:00',
@@ -66,14 +77,14 @@
     <div class="form-group">
       <label class="control-label">Recommendation</label>
       <div>
-        <textarea class="form-control" placeholder="-" rows="3"></textarea>
+        <textarea class="form-control" placeholder="-" rows="3" v-model="enfant['INFORMATIONS_MEDICALES']"></textarea>
       </div>
     </div>
     <br /><br /><br /><br />
     <div class="form-group">
       <label class="control-label">Informations Médicales</label>
       <div>
-        <textarea class="form-control" placeholder="-" rows="3"></textarea>
+        <textarea class="form-control" placeholder="-" rows="3" v-model="enfant['RECOMMENDATIONS']"></textarea>
       </div>
     </div>
   </div>
@@ -86,16 +97,30 @@
       },
       configuration: {
         type: Object
+      },
+      famille: {
+        type: Object
       }
     },
     computed: {
       civilites () {
         return this.configuration.civilites.map(function (e) { return {value: e['ID_CIVILITE'], label: e['ABREVIATION_CIVILITE']} })
+      },
+      parents () {
+        return this.famille.membres ? this.famille.membres.filter(function (e) { return e['ID_ENFANT'] === 0 }).map(function (e) { return {value: e['ID_MEMBRE'], label: e['ABREVIATION_CIVILITE'] + ' ' + e['NOM_MEMBRE'] + ' ' + e['PRENOM_MEMBRE']} }) : []
+      }
+    },
+    methods: {
+      saveEnfant () {
+        console.log(this.enfant)
       }
     },
     data () {
       return {
-        checked: false,
+        droitImage: false,
+        rentreSeul: false,
+        certificat: false,
+        naissance: '',
         timePicker: '18:00'
       }
     }
@@ -103,7 +128,7 @@
 </script>
 <style scoped lang="scss">
   .detail-pane {
-    padding: 15px;
+    padding: 5px 15px 15px 15px;
     .control-label {
       padding-top: 10px!important;
     }
@@ -114,6 +139,24 @@
     }
     .form-group {
       height: 30px;
+    }
+    .toolbar {
+      background: white;
+      position: relative;
+      height: 100%;
+      padding-left: -15px;
+      padding-bottom: 15px;
+      .btn {
+        margin-left: 5px;
+        padding: 0px 0px;
+        vertical-align: text-bottom;
+        i {
+          color: #9A9A9A;
+          &:hover {
+            color: #409EFF;
+          }
+        }
+      }
     }
   }
   
