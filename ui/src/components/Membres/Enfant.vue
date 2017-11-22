@@ -4,7 +4,7 @@
       <button class="btn btn-icon btn-simple" title="sauvegarder" @click="saveEnfant">
         <i class='ti-save'></i>
       </button>
-      <button class="btn btn-icon btn-simple" title="restaurer">
+      <button class="btn btn-icon btn-simple" title="restaurer" @click="resetEnfant">
         <i class='ti-reload'></i>
       </button>
       <button class="btn btn-icon btn-simple" title="imprimer la fiche">
@@ -63,9 +63,9 @@
     <br /><br />
     <el-checkbox v-model="enfant['CERTIFICAT']" >Certificat Médical</el-checkbox>
     <el-checkbox v-model="enfant['DROIT_IMAGE']">Droit à l'image</el-checkbox>
-    <el-checkbox v-model="enfant['RENTRE_SEUL']" >Rentre seul</el-checkbox>&nbsp;
+    <el-checkbox v-model="enfant['RENTRE_SEUL']">Rentre seul</el-checkbox>&nbsp;
     <el-time-select v-if="enfant['RENTRE_SEUL']"
-      v-model="timePicker"
+      v-model="enfant['HORAIRE']"
       :picker-options="{
         start: '16:00',
         step: '00:15',
@@ -112,7 +112,10 @@
     },
     methods: {
       saveEnfant () {
-        console.log(this.enfant)
+        this.$emit('save', this.enfant)
+      },
+      resetEnfant () {
+        this.$emit('resetEnfant', this.enfant)
       }
     },
     data () {

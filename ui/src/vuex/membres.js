@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { find, assignIn } from 'lodash'
+import moment from 'moment'
 
 const state = {
   'list': [],
@@ -11,10 +12,11 @@ const mutations = {
     state.list.splice(0, state.list.length)
     data.forEach((membre) => {
       membre.type = membre['ID_ENFANT'] ? 'ENFANT' : 'ADULTE'
-      membre['CERTIFICAT'] = membre['CERTIFICAT'] === 1
-      membre['DROIT_IMAGE'] = membre['DROIT_IMAGE'] === 1
-      membre['RENTRE_SEUL'] = membre['RENTRE_SEUL'] === 1
+      membre['CERTIFICAT'] = membre['CERTIFICAT'] || 0
+      membre['DROIT_IMAGE'] = membre['DROIT_IMAGE'] || 0
+      membre['RENTRE_SEUL'] = membre['RENTRE_SEUL'] || 0
       membre['NAISSANCE_ENFANT'] = membre['NAISSANCE_ENFANT'] || ''
+      membre['HORAIRE'] = membre['HORAIRE'] || ''
       state.list.push(membre)
     })
   },
@@ -23,9 +25,11 @@ const mutations = {
     let index = state.list.indexOf(obj)
     if (obj) {
       obj = assignIn(obj, data.enfant)
-      obj['CERTIFICAT'] = obj['CERTIFICAT'] === 1
-      obj['DROIT_IMAGE'] = obj['DROIT_IMAGE'] === 1
-      obj['RENTRE_SEUL'] = obj['RENTRE_SEUL'] === 1
+      obj['CERTIFICAT'] = !!obj['CERTIFICAT']
+      obj['DROIT_IMAGE'] = !!obj['DROIT_IMAGE']
+      obj['RENTRE_SEUL'] = !!obj['RENTRE_SEUL']
+      obj['NOM_MEMBRE'] = obj['NOM_ENFANT']
+      obj['PRENOM_MEMBRE'] = obj['PRENOM_ENFANT']
       obj.adhesions = data.adhesions
       obj.activites = data.activites
       obj.factures = data.factures
@@ -80,6 +84,14 @@ const actions = {
   GET_FAMILLE ({ commit }, id) {
     axios.get('/api/familles/' + id).then((response) => {
       commit('SET_FAMILLE', response.data)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  SAVE_ENFANT ({ commit }, enfant) {
+    enfant['NAISSANCE_ENFANT'] = moment(enfant['NAISSANCE_ENFANT']).format('YYYY-MM-DD')
+    return axios.post('/api/contacts/enfants/' + enfant['ID_ENFANT'], {operation: 'Update', enfant: enfant}).then((response) => {
+      commit('SET_ENFANT', {enfant: enfant})
     }, (err) => {
       console.log(err)
     })

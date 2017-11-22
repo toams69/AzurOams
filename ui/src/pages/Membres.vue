@@ -8,7 +8,7 @@
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
-            <enfant :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant>
+            <enfant v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant>
           </el-tab-pane>
           <el-tab-pane label="Activités" name="activites">
           </el-tab-pane>
@@ -114,6 +114,22 @@
         copy.setAttribute('id', 'print')
         destination.parentNode.replaceChild(copy, destination)
         window.print()
+      },
+      saveEnfant (enfant) {
+        this.$store.dispatch('SAVE_ENFANT', enfant).then(() => {
+          this.$notify({
+            component: {
+              template: `<span>Sauvegarde effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+        })
+      },
+      resetEnfant (enfant) {
+        this.$store.dispatch('GET_ENFANT', enfant['ID_ENFANT'])
       }
     }
   }
