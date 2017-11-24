@@ -8,7 +8,8 @@
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
-            <enfant v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant>
+            <enfant-form v-if='idEnfantSelected' v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant-form>
+            <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
           </el-tab-pane>
           <el-tab-pane label="Activités" name="activites">
           </el-tab-pane>
@@ -44,7 +45,8 @@
 </template>
 <script>
   import { Multipane, MultipaneResizer } from 'vue-multipane'
-  import Enfant from '@/components/Membres/Enfant'
+  import EnfantForm from '@/components/Membres/EnfantForm'
+  import AdulteForm from '@/components/Membres/AdulteForm'
   import MembreTables from '@/components/Membres/MembresTable'
   import Facture from '@/components/Factures/Facture'
   import MembreFacturesTable from '@/components/Membres/MembreFacturesTable'
@@ -60,7 +62,8 @@
       ReglementsTable,
       Facture,
       FacturePrint,
-      Enfant
+      EnfantForm,
+      AdulteForm
     },
     computed: {
       // mix the getters into computed with object spread operator
@@ -77,7 +80,7 @@
     },
     data () {
       return {
-        activeName: 'factures',
+        activeName: 'informations',
         active2Name: 'details',
         idEnfantSelected: null,
         idFamilleSelected: null,
@@ -130,6 +133,12 @@
       },
       resetEnfant (enfant) {
         this.$store.dispatch('GET_ENFANT', enfant['ID_ENFANT'])
+      },
+      saveAdulte (adulte) {
+
+      },
+      resetAdulte (adulte) {
+        this.$store.dispatch('GET_ADULTE', adulte['ID_MEMBRE'])
       }
     }
   }

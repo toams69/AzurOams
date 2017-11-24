@@ -37,11 +37,14 @@ const mutations = {
     }
   },
   SET_ADULTE (state, data) {
-    let obj = find(state.list, ['ID_ENFANT', 0, 'ID_MEMBRE', data.adulte['ID_MEMBRE']])
+    let obj = find(state.list, (e) => { return e['ID_ENFANT'] === 0 && e['ID_MEMBRE'] === data.adulte['ID_MEMBRE'] })
     let index = state.list.indexOf(obj)
     if (obj) {
-      obj = assignIn(obj, data.enfant)
+      obj = assignIn(obj, data.adulte)
       obj.adhesions = data.adhesions
+      obj['PARENT'] = !!obj['PARENT']
+      obj['ALLOCATAIRE_CAF'] = !!obj['ALLOCATAIRE_CAF']
+      obj['ALLOCATAIRE_MSA'] = !!obj['ALLOCATAIRE_MSA']
       obj.activites = data.activites
       obj.factures = data.factures
       state.list.splice(index, 1, obj)

@@ -76,14 +76,14 @@
     <br /><br />
     <div class="form-group">
       <label class="control-label">Recommendation</label>
-      <div>
+      <div class="col-md-12">
         <textarea class="form-control" placeholder="-" rows="3" v-model="enfant['INFORMATIONS_MEDICALES']"></textarea>
       </div>
     </div>
     <br /><br /><br /><br />
     <div class="form-group">
       <label class="control-label">Informations Médicales</label>
-      <div>
+      <div class="col-md-12">
         <textarea class="form-control" placeholder="-" rows="3" v-model="enfant['RECOMMENDATIONS']"></textarea>
       </div>
     </div>
