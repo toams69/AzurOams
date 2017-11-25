@@ -1,40 +1,45 @@
 <template>
   <multipane class="custom-resizer" layout="vertical">
-    <div class="pane" :style="{ minWidth: '30%', width: '50%' }">
+    <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
         <membre-tables @membreSelected="onMembreSelected"></membre-tables>
     </div>
-    <multipane-resizer></multipane-resizer>
-    <div class="pane" :style="{ flexGrow: 1 }">
+    <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
+    <div class="pane" :style="{ flexGrow: 1 }" v-if="idEnfantSelected||idAdulteSelected">
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
             <enfant-form v-if='idEnfantSelected' v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant-form>
             <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
           </el-tab-pane>
-          <el-tab-pane label="Activités" name="activites">
+          <el-tab-pane label="Famille" name="famille">
+            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille"></famille-form>
           </el-tab-pane>
+          <!-- <el-tab-pane label="Activités" name="activites">
+          </el-tab-pane> -->
           <el-tab-pane label="Factures" name="factures">
-            <div class="facture-details">
-                <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
-                  <i class='ti-printer'></i>
-                </button>
-                <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="supprimer la facture">
-                  <i class='ti-trash'></i>
-                </button>
-            </div>
-            <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
-            <div v-if="idFactureSelected" class="facture-details">
-              <br/>
-              <el-tabs v-model="active2Name">
-                <el-tab-pane label="Détails" name="details">
-                  <facture :facture='getFactureById(idFactureSelected)' ></facture>
-                </el-tab-pane>
-                <el-tab-pane label="Réglements" name="reglements">
-                  <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)'></reglements-table>
-                </el-tab-pane>
-              </el-tabs>
-              <div class='hidden'>
-                <facture-print :facture='getFactureById(idFactureSelected)' id='facturePrint' ></facture-print>
+            <div v-if="idEnfantSelected||idAdulteSelected">
+              <div class="facture-details">
+                  <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
+                    <i class='ti-printer'></i>
+                  </button>
+                  <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="supprimer la facture">
+                    <i class='ti-trash'></i>
+                  </button>
+              </div>
+              <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
+              <div v-if="idFactureSelected" class="facture-details">
+                <br/>
+                <el-tabs v-model="active2Name">
+                  <el-tab-pane label="Détails" name="details">
+                    <facture :facture='getFactureById(idFactureSelected)' ></facture>
+                  </el-tab-pane>
+                  <el-tab-pane label="Réglements" name="reglements">
+                    <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)'></reglements-table>
+                  </el-tab-pane>
+                </el-tabs>
+                <div class='hidden'>
+                  <facture-print :facture='getFactureById(idFactureSelected)' id='facturePrint' ></facture-print>
+                </div>
               </div>
             </div>
           </el-tab-pane>
@@ -47,6 +52,7 @@
   import { Multipane, MultipaneResizer } from 'vue-multipane'
   import EnfantForm from '@/components/Membres/EnfantForm'
   import AdulteForm from '@/components/Membres/AdulteForm'
+  import FamilleForm from '@/components/Membres/FamilleForm'
   import MembreTables from '@/components/Membres/MembresTable'
   import Facture from '@/components/Factures/Facture'
   import MembreFacturesTable from '@/components/Membres/MembreFacturesTable'
@@ -63,7 +69,8 @@
       Facture,
       FacturePrint,
       EnfantForm,
-      AdulteForm
+      AdulteForm,
+      FamilleForm
     },
     computed: {
       // mix the getters into computed with object spread operator
@@ -135,10 +142,36 @@
         this.$store.dispatch('GET_ENFANT', enfant['ID_ENFANT'])
       },
       saveAdulte (adulte) {
-
+        this.$store.dispatch('SAVE_ADULTE', adulte).then(() => {
+          this.$notify({
+            component: {
+              template: `<span>Sauvegarde effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+        })
       },
       resetAdulte (adulte) {
         this.$store.dispatch('GET_ADULTE', adulte['ID_MEMBRE'])
+      },
+      saveFamille (famille) {
+        this.$store.dispatch('SAVE_FAMILLE', famille).then(() => {
+          this.$notify({
+            component: {
+              template: `<span>Sauvegarde effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+        })
+      },
+      resetFamille (famille) {
+        this.$store.dispatch('GET_FAMILLE', famille['ID_FAMILLE'])
       }
     }
   }
@@ -178,7 +211,7 @@
   }
   .membres-details {
     background: white;
-    padding: 25px 15px;
+    padding: 10px 15px;
     position: relative;
     height: 100%;
     overflow-y: auto;

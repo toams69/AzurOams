@@ -3,7 +3,7 @@ import Sidebar from './SideBar.vue'
 const SidebarStore = {
   showSidebar: false,
   sidebarLinks: [],
-  isMinimized: false,
+  isMinimized: true,
   displaySidebar (value) {
     this.showSidebar = value
   },

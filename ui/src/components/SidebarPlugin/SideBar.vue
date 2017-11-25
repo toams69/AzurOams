@@ -95,7 +95,7 @@
       },
       activeColor: {
         type: String,
-        default: 'success',
+        default: 'info',
         validator: (value) => {
           let acceptedValues = ['primary', 'info', 'success', 'warning', 'danger']
           return acceptedValues.indexOf(value) !== -1

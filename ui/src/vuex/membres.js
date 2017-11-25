@@ -98,6 +98,24 @@ const actions = {
     }, (err) => {
       console.log(err)
     })
+  },
+  SAVE_ADULTE ({ commit }, adulte) {
+    adulte['NAISSANCE_MEMBRE'] = moment(adulte['NAISSANCE_MEMBRE']).format('YYYY-MM-DD')
+    adulte['PARENT'] = adulte['PARENT'] || 0
+    adulte['ALLOCATAIRE_CAF'] = adulte['ALLOCATAIRE_CAF'] || 0
+    adulte['ALLOCATAIRE_MSA'] = adulte['ALLOCATAIRE_MSA'] || 0
+    return axios.post('/api/contacts/adultes/' + adulte['ID_MEMBRE'], {operation: 'Update', adulte: adulte}).then((response) => {
+      commit('SET_ADULTE', {adulte: adulte})
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  SAVE_FAMILLE ({ commit }, famille) {
+    return axios.post('/api/familles/' + famille['ID_FAMILLE'], {operation: 'Update', contact: famille}).then((response) => {
+      commit('SET_FAMILLE', famille)
+    }, (err) => {
+      console.log(err)
+    })
   }
 }
 
