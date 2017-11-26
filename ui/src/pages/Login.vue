@@ -20,8 +20,8 @@
     </nav>
 
     <div class="wrapper wrapper-full-page">
-      <div class="full-page login-page" data-color=""
-           data-image="static/img/background/background-2.jpg">
+      <div class="full-page login-page" data-color="azure"
+           data-image="static/img/background/background-5.jpg">
         <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
         <div class="content">
           <div class="container">
@@ -61,7 +61,7 @@
             </div>
           </div>
         </footer>
-        <div class="full-page-background" style="background-image: url(static/img/background/background-2.jpg) "></div>
+        <div class="full-page-background" style="background-image: url(static/img/background/background-5.jpg) "></div>
       </div>
     </div>
   </div>
