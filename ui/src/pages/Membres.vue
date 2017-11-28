@@ -34,7 +34,7 @@
                     <facture :facture='getFactureById(idFactureSelected)' ></facture>
                   </el-tab-pane>
                   <el-tab-pane label="Réglements" name="reglements">
-                    <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)'></reglements-table>
+                    <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)' :facture='getFactureById(idFactureSelected)'></reglements-table>
                   </el-tab-pane>
                 </el-tabs>
                 <div class='hidden'>

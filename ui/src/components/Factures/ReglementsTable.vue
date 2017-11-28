@@ -13,10 +13,12 @@
       :visible.sync="dialogVisible"
       width="30%"
       append-to-body >
-      <span></span>
+      <span>  
+        <reglement-form :facture='this.facture' :reglement='this.newReglement'></reglement-form>
+      </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Annuler</el-button>
-        <el-button type="primary" @click="dialogVisible = false">Ajouter</el-button>
+        <el-button type="primary" @click="addReglement">Ajouter</el-button>
       </span>
     </el-dialog>
     <el-table class="table table-striped table-no-bordered table-hover"
@@ -67,18 +69,29 @@
   import {Table, TableColumn} from 'element-ui'
   import moment from 'moment'
   import swal from 'sweetalert2'
+  import ReglementForm from '@/components/Factures/ReglementForm'
 
   Vue.use(Table)
   Vue.use(TableColumn)
   export default{
+    components: {
+      ReglementForm
+    },
     props: {
       tableData: {
         type: Array
+      },
+      facture: {
+        type: Object,
+        default: function () {
+          return {}
+        }
       }
     },
     data () {
       return {
         dialogVisible: false,
+        newReglement: {},
         tableColumns: [
           {
             prop: 'ID_REGLEMENT',
@@ -127,6 +140,20 @@
           buttonsStyling: false,
           confirmButtonClass: 'btn btn-success btn-fill',
           html: html
+        })
+      },
+      addReglement () {
+        this.$store.dispatch('ADD_REGLEMENT', {factureId: this.facture['ID_FACTURE'], reglement: this.newReglement}).then(() => {
+          this.dialogVisible = false
+          this.$notify({
+            component: {
+              template: `<span>Ajout effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
         })
       }
     }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import extend from 'extend'
 
 const state = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   user: {}
 }
 

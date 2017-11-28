@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { find, each } from 'lodash'
 import extend from 'extend'
+import moment from 'moment'
 
 const state = {
   'list': []
@@ -48,6 +49,13 @@ const actions = {
   GET_FACTURE ({ commit }, id) {
     axios.get('/api/factures/' + id).then((response) => {
       commit('SET_FACTURE', response.data)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  ADD_REGLEMENT ({ commit }, obj) {
+    obj.reglement['DATE_REGLEMENT'] = moment(obj.reglement['DATE_REGLEMENT']).format('YYYY-MM-DD')
+    return axios.post('/api/factures/' + obj.factureId, {operation: 'AddReglement', reglement: obj.reglement}).then((response) => {
     }, (err) => {
       console.log(err)
     })

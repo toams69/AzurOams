@@ -1,5 +1,13 @@
 /*jshint multistr: true */
 module.exports = function(app, connection, router){
+	var _    = require('underscore'); 
+	var nullToNull = function(val) {
+		if (!val && val !== 0 && val !== false && val !== '') {
+			return 'NULL';
+		}
+		return val;
+	};
+
 	router.route('/factures')
 	
 	.get(function(req, res) {
@@ -86,15 +94,25 @@ module.exports = function(app, connection, router){
 			});
 		} else if (req.body.operation === "AddReglement" && req.body.reglement) {
 
-			var query = "INSERT INTO `reglement` (`ID_REGLEMENT`, `ID_BANQUE`, `ID_TYPE_REGLEMENT`, `ID_FACTURE`, `MONTANT_REGLEMENT`, `DATE_REGLEMENT`, `COMMENTAIRE_REGLEMENT`, `CHEQUE_NUM`, `CODE_ANA`) VALUES (NULL \
-						, "+ (req.body.reglement.banque ? req.body.reglement.banque : "NULL") +","+req.body.reglement.type+","+req.params.facture_id+","+req.body.reglement.montant+",'"+req.body.reglement.date +"', \
-						'"+req.body.reglement.commentaire+"', "+(req.body.reglement.numeroCheque ? "'"+ req.body.reglement.numeroCheque +"'" : "NULL" )+ ",'"+ req.body.reglement.codeAna +"')";
-			connection.query(query, function(err, rows) {
-				if (err) throw err;
-				console.log("AddReglement: ");
-				var json = JSON.stringify(rows);
-				res.send(json);
-			});
+			var query= "INSERT INTO reglement (`ID_REGLEMENT`, `ID_BANQUE`, `ID_TYPE_REGLEMENT`, `ID_FACTURE`, `MONTANT_REGLEMENT`, `DATE_REGLEMENT`, `COMMENTAIRE_REGLEMENT`, `CHEQUE_NUM`, `CODE_ANA`) VALUES (NULL, \
+			<%= reglement[\"ID_BANQUE\"] %> , <%= reglement[\"ID_TYPE_REGLEMENT\"] %>, "+req.params.facture_id+", <%= reglement[\"MONTANT_REGLEMENT\"] %>, '<%= reglement[\"DATE_REGLEMENT\"] %>', '<%= reglement[\"COMMENTAIRE_REGLEMENT\"] %>', '<%= reglement[\"CHEQUE_NUM\"] %>', '<%= reglement[\"CODE_ANA\"] %>')";
+			for (var i in req.body.reglement) {
+				req.body.reglement[i] = nullToNull(req.body.reglement[i]);
+			}
+			req.body.reglement['ID_BANQUE'] = req.body.reglement['ID_BANQUE'] || 'NULL'; 
+			req.body.reglement['ID_TYPE_REGLEMENT'] = req.body.reglement['ID_TYPE_REGLEMENT'] || 'NULL'; 
+			if (req.body.reglement) {	
+				var finalQuery = _.template(query, {
+					reglement: req.body.reglement
+				});
+				console.log("--- AddReglement --- ");
+				connection.query(finalQuery, function(err, rows) {
+					if (err) throw err;
+					console.log("AddReglement: ");
+					var json = JSON.stringify(rows);
+					res.send(json);
+				});
+			}
 			
 		}
 	});

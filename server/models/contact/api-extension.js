@@ -3,7 +3,7 @@ module.exports = function(app, connection, router){
 	var _    = require('underscore'); 
 
 	var nullToEmpty = function(val) {
-		if (!val && val !== 0) {
+		if (!val && val !== 0 && val !== false) {
 			return '';
 		}
 		return val;
