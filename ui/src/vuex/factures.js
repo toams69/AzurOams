@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { find, each } from 'lodash'
-import extend from 'extend'
+import { find, each, assignIn } from 'lodash'
 import moment from 'moment'
 
 const state = {
@@ -18,7 +17,7 @@ const mutations = {
     let obj = find(state.list, ['ID_FACTURE', data['ID_FACTURE']])
     let index = state.list.indexOf(obj)
     if (obj) {
-      extend(true, obj, data)
+      obj = assignIn(obj, data)
       let restant = Math.round(parseFloat(obj['MONTANT_FACTURE']) * 100) / 100
       each(obj['reglements'], function (r) {
         restant -= parseFloat(r['MONTANT_REGLEMENT'])
@@ -53,9 +52,17 @@ const actions = {
       console.log(err)
     })
   },
-  ADD_REGLEMENT ({ commit }, obj) {
+  ADD_REGLEMENT (store, obj) {
     obj.reglement['DATE_REGLEMENT'] = moment(obj.reglement['DATE_REGLEMENT']).format('YYYY-MM-DD')
     return axios.post('/api/factures/' + obj.factureId, {operation: 'AddReglement', reglement: obj.reglement}).then((response) => {
+      store.dispatch('GET_FACTURE', obj.factureId)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  DELETE_REGLEMENT (store, obj) {
+    return axios.post('/api/factures/' + obj.factureId, {operation: 'DeleteReglement', idReglement: obj.idReglement}).then((response) => {
+      store.dispatch('GET_FACTURE', obj.factureId)
     }, (err) => {
       console.log(err)
     })

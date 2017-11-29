@@ -4,7 +4,7 @@
       <button class="btn btn-icon btn-simple" title="ajouter un réglement" @click="dialogVisible = true">
         <i class='ti-plus'></i>
       </button>
-      <button class="btn btn-icon btn-simple" title="supprimer le réglement">
+      <button class="btn btn-icon btn-simple" title="supprimer le réglement" @click="deleteReglement">
         <i class='ti-trash'></i>
       </button>
     </div>  
@@ -24,6 +24,7 @@
     <el-table class="table table-striped table-no-bordered table-hover"
         :data="tableData"
         highlight-current-row
+        @current-change="handleCurrentChange"
         border
         style="width: 100%">
       <el-table-column v-for="column in tableColumns"
@@ -91,6 +92,7 @@
     data () {
       return {
         dialogVisible: false,
+        reglementSelected: null,
         newReglement: {},
         tableColumns: [
           {
@@ -142,9 +144,17 @@
           html: html
         })
       },
+      handleCurrentChange (elem) {
+        this.reglementSelected = elem
+      },
       addReglement () {
+        if (this.newReglement['ID_TYPE_REGLEMENT'] !== 2 && this.newReglement['ID_TYPE_REGLEMENT'] !== 3) {
+          this.newReglement['ID_BANQUE'] = null
+          this.newReglement['CHEQUE_NUM'] = null
+        }
         this.$store.dispatch('ADD_REGLEMENT', {factureId: this.facture['ID_FACTURE'], reglement: this.newReglement}).then(() => {
           this.dialogVisible = false
+          this.newReglement = {}
           this.$notify({
             component: {
               template: `<span>Ajout effectué avec succès</span>`
@@ -155,6 +165,34 @@
             type: 'success'
           })
         })
+      },
+      deleteReglement () {
+        if (this.reglementSelected) {
+          swal({
+            title: 'Etes vous sure?',
+            text: `Voulez vous supprimer ce réglement!`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn btn-success btn-fill',
+            cancelButtonClass: 'btn btn-danger btn-fill',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
+            buttonsStyling: false
+          }).then(() => {
+            this.$store.dispatch('DELETE_REGLEMENT', {factureId: this.facture['ID_FACTURE'], idReglement: this.reglementSelected['ID_REGLEMENT']}).then(() => {
+              this.reglementSelected = null
+              this.$notify({
+                component: {
+                  template: `<span>Suppression effectué avec succès</span>`
+                },
+                icon: 'ti-thumb-up',
+                horizontalAlign: 'center',
+                verticalAlign: 'bottom',
+                type: 'success'
+              })
+            })
+          })
+        }
       }
     }
   }

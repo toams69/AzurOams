@@ -44,13 +44,13 @@
         <input type="number" placeholder="Montant" class="form-control" v-model="reglement['MONTANT_REGLEMENT']">
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="reglement['ID_TYPE_REGLEMENT'] === 2 || reglement['ID_TYPE_REGLEMENT'] === 3">
       <label class="col-sm-5 control-label">Numéro du Chèque</label>
       <div class="col-sm-7">
         <input type="text" placeholder="Numéro du Chèque" class="form-control" v-model="reglement['CHEQUE_NUM']">
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="reglement['ID_TYPE_REGLEMENT'] === 2 || reglement['ID_TYPE_REGLEMENT'] === 3">
       <label class="col-sm-5 control-label">Banque</label>
       <div class="col-sm-7">
         <el-select placeholder="Banque" size="large" v-model="reglement['ID_BANQUE']">

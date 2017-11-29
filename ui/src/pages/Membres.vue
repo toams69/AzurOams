@@ -1,6 +1,9 @@
 <template>
   <multipane class="custom-resizer" layout="vertical">
     <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
+        <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify">
+           Ajouter un membre
+        </button>
         <membre-tables @membreSelected="onMembreSelected"></membre-tables>
     </div>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
@@ -177,6 +180,12 @@
   }
 </script>
 <style lang="scss" scoped>
+  .add-member {
+    position: absolute;
+    z-index: 10;
+    top: 17px;
+    right: 17px;
+  }
   .custom-resizer {
     position: absolute;
     top: 15px;
