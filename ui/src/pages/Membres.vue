@@ -4,7 +4,7 @@
         <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify">
            Ajouter un membre
         </button>
-        <membre-tables @membreSelected="onMembreSelected"></membre-tables>
+        <membre-tables @membreSelected="onMembreSelected" ref="table" :tableData='this.$store.state.membres.list'></membre-tables>
     </div>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
     <div class="pane" :style="{ flexGrow: 1 }" v-if="idEnfantSelected||idAdulteSelected">
@@ -15,7 +15,7 @@
             <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
           </el-tab-pane>
           <el-tab-pane label="Famille" name="famille">
-            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille"></famille-form>
+            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay'></famille-form>
           </el-tab-pane>
           <!-- <el-tab-pane label="Activités" name="activites">
           </el-tab-pane> -->
@@ -99,7 +99,21 @@
       }
     },
     methods: {
+      onMembreToDisplay (membre) {
+        if (this.$refs && this.$refs.table) {
+          this.$refs.table.setCurrentRow(membre)
+          this.activeName = 'informations'
+          this.active2Name = 'details'
+        }
+      },
       onMembreSelected (membre) {
+        if (!membre) {
+          this.idEnfantSelected = null
+          this.idFamilleSelected = null
+          this.idAdulteSelected = null
+          this.idFactureSelected = null
+          return
+        }
         if (membre) {
           this.$store.dispatch('GET_FAMILLE', membre['ID_FAMILLE'])
         }

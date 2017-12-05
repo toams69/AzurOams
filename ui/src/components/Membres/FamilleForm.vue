@@ -74,7 +74,7 @@
       <label class="col-md-3 control-label">Membres</label>
       <ul class="col-md-9 liste-membre">
         <li v-for="contact in famille.membres">
-          <a>{{ contact['NOM_ENFANT'] || contact['NOM_MEMBRE'] }} {{ contact['PRENOM_ENFANT'] || contact['PRENOM_MEMBRE'] }}</a>
+          <a @click='membreSelected(contact)'>{{ contact['NOM_ENFANT'] || contact['NOM_MEMBRE'] }} {{ contact['PRENOM_ENFANT'] || contact['PRENOM_MEMBRE'] }}</a>
         </li>
       </ul>
     </div>
@@ -98,6 +98,9 @@
       ...mapFields(['avoir'])
     },
     methods: {
+      membreSelected (membre) {
+        this.$emit('membreSelected', membre)
+      },
       getError (fieldName) {
         return this.errors.first(fieldName)
       },

@@ -20,6 +20,7 @@
                 highlight-current-row
                 @current-change="handleCurrentChange"
                 border
+                ref="table"
                 style="width: 100%">
         <el-table-column v-for="column in tableColumns"
               :key="column.id"
@@ -56,7 +57,20 @@
     components: {
       PPagination
     },
+    props: {
+      tableData: {
+        type: Array
+      }
+    },
     computed: {
+      getMemberToDisplay () {
+        if (this.membreToDisplay) {
+          let result = this.tableData.find((row) => { return row['ID_ENFANT'] === this.membreToDisplay['ID_ENFANT'] && row['ID_MEMBRE'] === this.membreToDisplay['ID_MEMBRE'] })
+          return result
+        } else {
+          return null
+        }
+      },
       pagedData () {
         return this.tableData.slice(this.from, this.to)
       },
@@ -95,10 +109,6 @@
       from () {
         return this.pagination.perPage * (this.pagination.currentPage - 1)
       },
-
-      tableData () {
-        return this.$store.state.membres.list
-      },
       total () {
         this.pagination.total = this.tableData.length
         return this.tableData.length
@@ -108,9 +118,10 @@
       return {
         pagination: {
           perPage: 10,
-          currentPage: 1,
-          total: 0
+          total: 0,
+          currentPage: 1
         },
+        membreToDisplay: null,
         searchQuery: '',
         propsToSearch: ['ABREVIATION_CIVILITE', 'PRENOM_MEMBRE', 'NOM_MEMBRE', 'AGE_MEMBRE'],
         tableColumns: [
@@ -136,9 +147,30 @@
       }
     },
     methods: {
+      setCurrentRow (membreToDisplay) {
+        this.searchQuery = ''
+        this.membreToDisplay = membreToDisplay
+        setTimeout(() => {
+          if (this.$refs && this.$refs.table) {
+            this.$refs.table.setCurrentRow(this.getMemberToDisplay)
+          }
+        }, 500)
+      },
       handleCurrentChange (elem) {
-        this.currentMembre = elem
-        this.$emit('membreSelected', elem)
+        if (elem) {
+          if (this.membreToDisplay && (elem['ID_ENFANT'] !== this.membreToDisplay['ID_ENFANT'] || elem['ID_MEMBRE'] !== this.membreToDisplay['ID_MEMBRE'])) {
+            this.membreToDisplay = null
+          }
+          this.currentMembre = elem
+          this.$emit('membreSelected', elem)
+          if (elem && this.membreToDisplay) {
+            let result = this.tableData.find((row) => { return row['ID_ENFANT'] === elem['ID_ENFANT'] && row['ID_MEMBRE'] === elem['ID_MEMBRE'] })
+            let index = this.tableData.indexOf(result)
+            if (index > 0) {
+              this.pagination.currentPage = parseInt(index / this.pagination.perPage) + 1
+            }
+          }
+        }
       }
     }
   }
