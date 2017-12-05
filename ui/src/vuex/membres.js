@@ -150,8 +150,13 @@ const getters = {
     return adulte ? adulte.factures : []
   },
   getFamilleById: (state, getters) => (id) => {
-    // check if the prenom is defined to be sure the enfant obj is complete
     return state.groups.find(m => m['ID_FAMILLE'] === id) || {}
+  },
+  getMembresFamilleById: (state, getters) => (id) => {
+    if (state.groups.find(m => m['ID_FAMILLE'] === id)) {
+      return state.groups.find(m => m['ID_FAMILLE'] === id).membres
+    }
+    return []
   }
 }
 

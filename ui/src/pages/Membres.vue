@@ -24,7 +24,7 @@
             <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
           </el-tab-pane>
           <el-tab-pane label="Famille" name="famille">
-            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay'></famille-form>
+            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay'></famille-form>
           </el-tab-pane>
           <!-- <el-tab-pane label="Activités" name="activites">
           </el-tab-pane> -->
@@ -96,7 +96,8 @@
         'getFactureByAdulteId',
         'getReglemensByFactureId',
         'getFactureById',
-        'getFullConfiguration'
+        'getFullConfiguration',
+        'getMembresFamilleById'
       ])
     },
     data () {
