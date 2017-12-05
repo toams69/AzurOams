@@ -59,6 +59,12 @@ const mutations = {
     } else {
       state.groups.push(data)
     }
+  },
+  SET_FAMILLES (state, data) {
+    state.groups.splice(0, state.list.length)
+    data.forEach((famille) => {
+      state.groups.push(famille)
+    })
   }
 }
 
@@ -113,6 +119,13 @@ const actions = {
   SAVE_FAMILLE ({ commit }, famille) {
     return axios.post('/api/familles/' + famille['ID_FAMILLE'], {operation: 'Update', contact: famille}).then((response) => {
       commit('SET_FAMILLE', famille)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  GET_FAMILLES ({ commit }) {
+    return axios.get('/api/familles').then((response) => {
+      commit('SET_FAMILLES', response.data)
     }, (err) => {
       console.log(err)
     })

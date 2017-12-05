@@ -1,11 +1,20 @@
 <template>
   <multipane class="custom-resizer" layout="vertical">
     <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
-        <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify">
+        <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true">
            Ajouter un membre
         </button>
         <membre-tables @membreSelected="onMembreSelected" ref="table" :tableData='this.$store.state.membres.list'></membre-tables>
     </div>
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible"
+      width="60%"
+      append-to-body >
+      <span>  
+        <new-membre :familles='this.$store.state.membres.groups'></new-membre>
+      </span>
+    </el-dialog>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
     <div class="pane" :style="{ flexGrow: 1 }" v-if="idEnfantSelected||idAdulteSelected">
       <div class="membres-details">
@@ -57,6 +66,7 @@
   import AdulteForm from '@/components/Membres/AdulteForm'
   import FamilleForm from '@/components/Membres/FamilleForm'
   import MembreTables from '@/components/Membres/MembresTable'
+  import NewMembre from '@/components/Membres/NewMembre'
   import Facture from '@/components/Factures/Facture'
   import MembreFacturesTable from '@/components/Membres/MembreFacturesTable'
   import ReglementsTable from '@/components/Factures/ReglementsTable'
@@ -73,7 +83,8 @@
       FacturePrint,
       EnfantForm,
       AdulteForm,
-      FamilleForm
+      FamilleForm,
+      NewMembre
     },
     computed: {
       // mix the getters into computed with object spread operator
@@ -90,6 +101,7 @@
     },
     data () {
       return {
+        dialogVisible: false,
         activeName: 'informations',
         active2Name: 'details',
         idEnfantSelected: null,

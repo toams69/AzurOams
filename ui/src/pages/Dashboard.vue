@@ -12,6 +12,7 @@
     mounted () {
       this.$store.dispatch('GET_CONFIGURATION')
       this.$store.dispatch('GET_CONTACTS')
+      this.$store.dispatch('GET_FAMILLES')
     }
   }
 </script>
