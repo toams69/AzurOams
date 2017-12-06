@@ -1,105 +1,116 @@
 <template>
   <div>
     <h5 class="text-center">Please give us more details about your platform.</h5>
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        <div class="form-group">
-          <label class="control-label">Your Website</label>
-          <input class="form-control"
-                 type="text"
-                 name="website"
-                 v-validate="modelValidations.website"
-                 v-model="model.website"
-                 url="true"
-                 placeholder="ex: http://www.creative-tim.com"
-          />
-          <small class="text-danger" v-show="website.invalid">
-            {{ getError('website') }}
-          </small>
-        </div>
-      </div>
+    <center>
+        <el-switch
+            v-model="enfant"
+            active-text="Enfant"
+            inactive-text="Adulte">
+        </el-switch>
+    </center>
+    <div v-if="enfant">
     </div>
-    <div class="row">
-      <div class="col-md-5 col-md-offset-1">
-        <div class="form-group">
-          <label class="control-label">Framework Type</label>
-          <input class="form-control"
-                 type="text"
-                 name="framework"
-                 v-model="model.framework"
-                 placeholder="ex: http://www.creative-tim.com"
-          />
+    <div v-else>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-1">
+          <div class="form-group">
+            <label class="control-label">
+              Civilité
+            </label>
+            <select name="language"
+                    v-validate="modelValidations.language"
+                    v-model="model.language"
+                    class="form-control">
+            </select>
+            <!-- <small class="text-danger" v-show="language.invalid">
+              {{ getError('language') }}
+            </small> -->
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label">Nom</label>
+            <input class="form-control"
+                  type="text"
+                  name="nom"
+                  v-validate="modelValidations.nom"
+                  v-model="model.nom"
+                  placeholder="ex: Pariaud"
+            />
+            <small class="text-danger" v-show="nom.invalid">
+              {{ getError('nom') }}
+            </small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label">Prénom</label>
+            <input class="form-control"
+                  type="text"
+                  name="prenom"
+                  v-validate="modelValidations.prenom"
+                  v-model="model.prenom"
+                  placeholder="ex: Thomas"
+            />
+            <small class="text-danger" v-show="prenom.invalid">
+              {{ getError('prenom') }}
+            </small>
+          </div>
         </div>
       </div>
-      <div class="col-md-5">
-        <div class="form-group">
-          <label class="control-label">
-            Language
-          </label>
-          <select name="language"
-                  v-validate="modelValidations.language"
-                  v-model="model.language"
-                  class="form-control">
-            <option selected="" disabled="">- language -</option>
-            <option value="ms">Bahasa Melayu</option>
-            <option value="ca">Català</option>
-            <option value="da">Dansk</option>
-            <option value="de">Deutsch</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="el">Eλληνικά</option>
-            <option value="fr">Français</option>
-            <option value="it">Italiano</option>
-            <option value="hu">Magyar</option>
-            <option value="nl">Nederlands</option>
-            <option value="no">Norsk</option>
-            <option value="pl">Polski</option>
-            <option value="pt">Português</option>
-            <option value="fi">Suomi</option>
-            <option value="sv">Svenska</option>
-            <option value="tr">Türkçe</option>
-            <option value="is">Íslenska</option>
-            <option value="cs">Čeština</option>
-            <option value="ru">Русский</option>
-            <option value="th">ภาษาไทย</option>
-            <option value="zh">中文 (简体)</option>
-            <option value="zh-TW">中文 (繁體)</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-          </select>
-          <small class="text-danger" v-show="language.invalid">
-            {{ getError('language') }}
-          </small>
+
+      <div class="row">
+        <div class="col-md-3 col-md-offset-1">
+          <div class="form-group">
+            <label class="control-label">
+              Date de naissance
+            </label>
+            <select name="cities"
+                    v-validate="modelValidations.bootstrapVersion"
+                    v-model="model.bootstrapVersion"
+                    class="form-control">
+              <option selected="" disabled="">- version -</option>
+              <option value="1.1">Bootstrap 1.1</option>
+              <option value="2.0">Bootstrap 2.0</option>
+              <option value="3.0">Bootstrap 3.0</option>
+              <option value="4.0">Bootstrap 4.0(alpha)</option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-5 col-md-offset-1">
-        <div class="form-group">
-          <label class="control-label">
-            Bootstrap Version
-          </label>
-          <select name="cities"
-                  v-validate="modelValidations.bootstrapVersion"
-                  v-model="model.bootstrapVersion"
-                  class="form-control">
-            <option selected="" disabled="">- version -</option>
-            <option value="1.1">Bootstrap 1.1</option>
-            <option value="2.0">Bootstrap 2.0</option>
-            <option value="3.0">Bootstrap 3.0</option>
-            <option value="4.0">Bootstrap 4.0(alpha)</option>
-          </select>
+      <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+          <div class="form-group">
+            <label class="control-label">Adresse</label>
+            <input class="form-control"
+                  type="text"
+                  name="price"
+                  v-model="model.price"
+                  placeholder="ex: 19.00"
+            />
+          </div>
         </div>
-      </div>
-      <div class="col-md-5">
-        <div class="form-group">
-          <label class="control-label">Price</label>
-          <input class="form-control"
-                 type="text"
-                 name="price"
-                 v-model="model.price"
-                 placeholder="ex: 19.00"
-          />
+        <div class="col-md-2">
+          <div class="form-group">
+            <label class="control-label">Code Postal</label>
+            <input class="form-control"
+                  type="text"
+                  name="price"
+                  v-model="model.price"
+                  placeholder="ex: 19.00"
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="control-label">Ville</label>
+            <input class="form-control"
+                  type="text"
+                  name="price"
+                  v-model="model.price"
+                  placeholder="ex: 19.00"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -110,26 +121,24 @@
 
   export default {
     computed: {
-      ...mapFields(['website', 'language', 'bootstrapVersion'])
+      ...mapFields(['nom', 'prenom'])
     },
     data () {
       return {
+        enfant: false,
         model: {
           website: '',
-          frameworkType: '',
+          nom: '',
+          prenom: '',
           language: '',
           bootstrapVersion: '',
           price: ''
         },
         modelValidations: {
-          website: {
-            url: true,
+          nom: {
             required: true
           },
-          language: {
-            required: true
-          },
-          bootstrapVersion: {
+          prenom: {
             required: true
           }
         }

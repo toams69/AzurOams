@@ -1,6 +1,6 @@
 <template>
   <multipane class="custom-resizer" layout="vertical">
-    <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
+    <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { flexGrow: 1  } : { minWidth: '100%', width: '100%' } ">
         <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true">
            Ajouter un membre
         </button>
@@ -16,7 +16,7 @@
       </span>
     </el-dialog>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
-    <div class="pane" :style="{ flexGrow: 1 }" v-if="idEnfantSelected||idAdulteSelected">
+    <div class="pane" :style="{ minWidth: '711px', width: '711px'}" v-if="idEnfantSelected||idAdulteSelected">
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">

@@ -43,14 +43,11 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-2 control-label">Téléphone</label>
-      <div class="col-md-10">
+      <label class="col-md-2 control-label">Téléphone(s)</label>
+      <div class="col-md-5">
         <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['TEL1_MEMBRE']">
       </div>
-    </div>
-    <div class="form-group">
-      <label class="col-md-2 control-label">Téléphone 2</label>
-      <div class="col-md-10">
+      <div class="col-md-5">
         <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['TEL2_MEMBRE']">
       </div>
     </div>

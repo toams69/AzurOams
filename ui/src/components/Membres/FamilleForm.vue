@@ -12,14 +12,14 @@
       </button>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Nom</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Nom</label>
+      <div class="col-md-8">
         <input type="text" placeholder="Nom" class="form-control" v-model="famille['NOM_FAMILLE']">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Quartier de résidence</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Quartier de résidence</label>
+      <div class="col-md-8">
         <el-select placeholder="quartiers" size="large" v-model="famille['ID_QUARTIER']">
           <el-option v-for="option in quartiers" 
                       :value="option.value"
@@ -30,32 +30,32 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Numéro CAF</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Numéro CAF</label>
+      <div class="col-md-8">
         <input type="text" placeholder="Numéro CAF" class="form-control" v-model="famille['NUMERO_CAF']">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Quotient CAF</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Quotient CAF</label>
+      <div class="col-md-8">
         <input type="text" placeholder="Quotient CAF" class="form-control" v-model="famille['QUOTIENT_CAF_FAMILLE']">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Numéro MSA</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Numéro MSA</label>
+      <div class="col-md-8">
         <input type="text" placeholder="Numéro MSA" class="form-control" v-model="famille['NUMERO_MSA']">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Quotient MSA</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Quotient MSA</label>
+      <div class="col-md-8">
         <input type="text" placeholder="Quotient MSA" class="form-control" v-model="famille['QUOTIENT_MSA_FAMILLE']">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-3 control-label">Avoir</label>
-      <div class="col-md-9">
+      <label class="col-md-4 control-label">Avoir</label>
+      <div class="col-md-8">
         <input placeholder="Avoir" 
               class="form-control" 
               type="number" 
@@ -71,8 +71,8 @@
     <br/><br/>
     <hr/>
     <div class="form-group">
-      <label class="col-md-3 control-label">Membres</label>
-      <ul class="col-md-9 liste-membre">
+      <label class="col-md-4 control-label">Membres</label>
+      <ul class="col-md-8 liste-membre">
         <li v-for="contact in membres">
           <a @click='membreSelected(contact)'>{{ contact['NOM_ENFANT'] || contact['NOM_MEMBRE'] }} {{ contact['PRENOM_ENFANT'] || contact['PRENOM_MEMBRE'] }}</a>
         </li>
