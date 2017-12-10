@@ -89,25 +89,25 @@
     <div class="form-group">
       <label class="col-md-2 control-label">Sécu</label>
       <div class="col-md-10">
-        <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['NUM_SECU_MEMBRE']">
+        <input type="text" placeholder="Sécu" class="form-control" v-model="adulte['NUM_SECU_MEMBRE']">
       </div>
     </div>
     <div class="form-group">
       <label class="col-md-2 control-label">Employeur</label>
       <div class="col-md-10">
-        <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['NOM_EMPLOYEUR']">
+        <input type="text" placeholder="Employeur" class="form-control" v-model="adulte['NOM_EMPLOYEUR']">
       </div>
     </div>
     <div class="form-group">
       <label class="col-md-2 control-label">Travail à</label>
       <div class="col-md-10">
-        <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['LIEU_TRAVAIL']">
+        <input type="text" placeholder="Travail à" class="form-control" v-model="adulte['LIEU_TRAVAIL']">
       </div>
     </div>
     <div class="form-group">
       <label class="col-md-2 control-label">Tèl Travail</label>
       <div class="col-md-10">
-        <input type="text" placeholder="Téléphone" class="form-control" v-model="adulte['TELT_MEMBRE']">
+        <input type="text" placeholder="Tèl Travail" class="form-control" v-model="adulte['TELT_MEMBRE']">
       </div>
     </div>
   </div>

@@ -15,6 +15,7 @@
         <new-membre ref="wizzard" :familles='this.$store.state.membres.groups' :configuration='getFullConfiguration()' 
           v-on:createFamille="createFamille"
           v-on:addAdulte="createAdulte"
+          v-on:addEnfant="createEnfant"
         ></new-membre>
       </span>
     </el-dialog>
@@ -251,6 +252,27 @@
           this.$store.dispatch('GET_CONTACTS').then(() => {
             if (this.$refs && this.$refs.table) {
               this.$refs.table.setCurrentRow({'ID_ENFANT': 0, 'ID_MEMBRE': idMembre})
+              this.activeName = 'informations'
+              this.active2Name = 'details'
+            }
+          })
+        })
+      },
+      createEnfant (famille) {
+        this.dialogVisible = false
+        this.$store.dispatch('CREATE_ENFANT', famille).then((idEnfant) => {
+          this.$notify({
+            component: {
+              template: `<span>Création effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+          this.$store.dispatch('GET_CONTACTS').then(() => {
+            if (this.$refs && this.$refs.table) {
+              this.$refs.table.setCurrentRow({'ID_ENFANT': idEnfant, 'ID_MEMBRE': null})
               this.activeName = 'informations'
               this.active2Name = 'details'
             }

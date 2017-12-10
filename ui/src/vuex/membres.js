@@ -143,6 +143,13 @@ const actions = {
     }, (err) => {
       console.log(err)
     })
+  },
+  CREATE_ENFANT ({commit}, famille) {
+    return axios.post('/api/familles/' + famille.idFamille, {operation: 'CreateEnfant', contact: famille.contact}).then((response) => {
+      return response.data.idEnfant
+    }, (err) => {
+      console.log(err)
+    })
   }
 }
 

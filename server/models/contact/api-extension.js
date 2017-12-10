@@ -18,7 +18,7 @@ module.exports = function(app, connection, router){
 	 INSCRIPTION_DATE, 0, floor(((to_days(curdate()) - to_days(`NAISSANCE_ENFANT`)) / 365)), ABREVIATION_CIVILITE, NOM_CIVILITE, 0, 0 from enfants LEFT JOIN civilites USING (ID_CIVILITE)";
 
 
-	var UpdateAdulteQuery= "UPDATE membres set ID_VILLE = <%= contact[\"ID_VILLE\"] %>, ID_CIVILITE=<%= contact[\"ID_CIVILITE\"] %>, NOM_MEMBRE = '<%= contact[\"NOM_MEMBRE\"] %>', PRENOM_MEMBRE = '<%= contact[\"PRENOM_MEMBRE\"] %>', \
+	var UpdateAdulteQuery= "UPDATE membres set ID_VILLE = <%= contact[\"ID_VILLE\"] %>, ID_CIVILITE=<%= contact[\"ID_CIVILITE\"] %>, NOM_MEMBRE = UPPER('<%= contact[\"NOM_MEMBRE\"] %>'), PRENOM_MEMBRE = '<%= contact[\"PRENOM_MEMBRE\"] %>', \
 	ID_QUARTIER = <%= contact[\"ID_QUARTIER\"] %> , NAISSANCE_MEMBRE = '<%= contact[\"NAISSANCE_MEMBRE\"] %>' , ADR_MEMBRE = '<%= contact[\"ADR_MEMBRE\"] %>' , TEL1_MEMBRE = '<%=  contact[\"TEL1_MEMBRE\"] %>' , TEL2_MEMBRE = '<%= contact[\"TEL2_MEMBRE\"] %>' , \
 	MAIL_MEMBRE = '<%= contact[\"MAIL_MEMBRE\"] %>' , NUM_SECU_MEMBRE = '<%= contact[\"NUM_SECU_MEMBRE\"] %>' , NOM_EMPLOYEUR = '<%= contact[\"NOM_EMPLOYEUR\"] %>' , LIEU_TRAVAIL = '<%= contact[\"LIEU_TRAVAIL\"] %>' , TELT_MEMBRE = '<%= contact[\"TELT_MEMBRE\"] %>' , \
 	ALLOCATAIRE_CAF = <%= contact[\"ALLOCATAIRE_CAF\"] %> ,PARENT = <%= contact[\"PARENT\"] %> , ALLOCATAIRE_MSA = <%= contact[\"ALLOCATAIRE_MSA\"] %> WHERE ID_MEMBRE = <%= contact[\"ID_MEMBRE\"]  %>";
@@ -36,25 +36,25 @@ module.exports = function(app, connection, router){
 	})
 
 	.post(function(req, res) {
-		if (req.body.operation === "CreateAdulte") {
-			console.log("--- Create Adulte ---");
-			var post  = {"ID_FAMILLE": req.body.idFamille, "NOM_MEMBRE": req.body.nom, "PRENOM_MEMBRE": req.body.prenom, "NAISSANCE_MEMBRE": req.body.naissance, "ID_CIVILITE":req.body.civilite};
-			var query =  connection.query("INSERT INTO membres SET ?", post, function(err, info) {
-				if (err) throw err;
-				res.json({idMembre: info.insertId});
-			});
-			console.log("=> "+ query.sql);
-		} else if (req.body.operation === "CreateEnfant") {
-			console.log("--- Create Enfant ---");
-			var post  = {"ID_FAMILLE": req.body.idFamille, "NOM_ENFANT": req.body.nom, "PRENOM_ENFANT": req.body.prenom, "NAISSANCE_ENFANT": req.body.naissance, "ID_CIVILITE": req.body.civilite};
-			var query =  connection.query("INSERT INTO enfants SET ?", post, function(err, info) {
-				if (err) throw err;
-				res.json({idMembre: info.insertId});
-			});
-			console.log("=> "+ query.sql);
-		} else {
+		// if (req.body.operation === "CreateAdulte") {
+		// 	console.log("--- Create Adulte ---");
+		// 	var post  = {"ID_FAMILLE": req.body.idFamille, "NOM_MEMBRE": req.body.nom, "PRENOM_MEMBRE": req.body.prenom, "NAISSANCE_MEMBRE": req.body.naissance, "ID_CIVILITE":req.body.civilite};
+		// 	var query =  connection.query("INSERT INTO membres SET ?", post, function(err, info) {
+		// 		if (err) throw err;
+		// 		res.json({idMembre: info.insertId});
+		// 	});
+		// 	console.log("=> "+ query.sql);
+		// } else if (req.body.operation === "CreateEnfant") {
+		// 	console.log("--- Create Enfant ---");
+		// 	var post  = {"ID_FAMILLE": req.body.idFamille, "NOM_ENFANT": req.body.nom, "PRENOM_ENFANT": req.body.prenom, "NAISSANCE_ENFANT": req.body.naissance, "ID_CIVILITE": req.body.civilite};
+		// 	var query =  connection.query("INSERT INTO enfants SET ?", post, function(err, info) {
+		// 		if (err) throw err;
+		// 		res.json({idMembre: info.insertId});
+		// 	});
+		// 	console.log("=> "+ query.sql);
+		// } else {
 			res.respond(new Error('Bad/Missing Operation'), 400);
-		}
+		// }
 		//res.send("error");
 	});
 
@@ -167,7 +167,7 @@ module.exports = function(app, connection, router){
 		if (req.body.operation === "Update") { // Update Enfant
 			// Requete
 			console.log("--- Update Enfant ---" );
-			var UpdateEnfantQuery= "UPDATE enfants set ID_CIVILITE=<%= contact[\"ID_CIVILITE\"] %>, NOM_ENFANT = '<%= contact[\"NOM_ENFANT\"] %>', PRENOM_ENFANT = '<%= contact[\"PRENOM_ENFANT\"] %>', \
+			var UpdateEnfantQuery= "UPDATE enfants set ID_CIVILITE=<%= contact[\"ID_CIVILITE\"] %>, NOM_ENFANT = UPPER('<%= contact[\"NOM_ENFANT\"] %>'), PRENOM_ENFANT = '<%= contact[\"PRENOM_ENFANT\"] %>', \
 			NAISSANCE_ENFANT = '<%= contact[\"NAISSANCE_ENFANT\"] %>' , TEL_ENFANT = '<%=  contact[\"TEL_ENFANT\"] %>', ID_MEMBRE = <%= contact[\"ID_MEMBRE\"]  %>, \
 			INFORMATIONS_MEDICALES = '<%= contact[\"INFORMATIONS_MEDICALES\"] %>' , RECOMMENDATIONS = '<%= contact[\"RECOMMENDATIONS\"] %>' , HORAIRE = '<%= contact[\"HORAIRE\"] %>', \
 			DROIT_IMAGE = <%= contact[\"DROIT_IMAGE\"] %> , RENTRE_SEUL = <%= contact[\"RENTRE_SEUL\"] %>, CERTIFICAT = <%= contact[\"CERTIFICAT\"] %> WHERE ID_ENFANT = <%= contact[\"ID_ENFANT\"]  %>";
@@ -263,8 +263,10 @@ module.exports = function(app, connection, router){
 	//////////////////////
 
 	var CreateMembreQuery = "INSERT INTO `membres` (`ID_MEMBRE`, `ID_FAMILLE`, `ID_VILLE`, `ID_CIVILITE`, `ID_QUARTIER`, `NOM_MEMBRE`, `PRENOM_MEMBRE`, `NAISSANCE_MEMBRE`, `ADR_MEMBRE`, `TEL1_MEMBRE`, `TEL2_MEMBRE`, `MAIL_MEMBRE`, `NUM_SECU_MEMBRE`, `NOM_EMPLOYEUR`, `LIEU_TRAVAIL`, `TELT_MEMBRE`, `ALLOCATAIRE_CAF`, `ALLOCATAIRE_MSA`, `INSCRIPTION_DATE`, `PARENT`) VALUES \
-	 (NULL, <%= idFamille  %>, <%= contact[\"ID_VILLE\"] %>, <%= contact[\"ID_CIVILITE\"] %>, NULL, '<%= contact[\"NOM_MEMBRE\"] %>', '<%= contact[\"PRENOM_MEMBRE\"] %>', '<%= contact[\"NAISSANCE_MEMBRE\"] %>', '<%= contact[\"ADR_MEMBRE\"] %>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1');";
+	 (NULL, <%= idFamille  %>, <%= contact[\"ID_VILLE\"] %>, <%= contact[\"ID_CIVILITE\"] %>, NULL, UPPER('<%= contact[\"NOM_MEMBRE\"] %>'), '<%= contact[\"PRENOM_MEMBRE\"] %>', '<%= contact[\"NAISSANCE_MEMBRE\"] %>', '<%= contact[\"ADR_MEMBRE\"] %>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1');";
 
+	var CreateEnfantQuery = "INSERT INTO `enfants` (`ID_ENFANT`, `ID_CIVILITE`, `ID_FAMILLE`, `ID_MEMBRE`, `NOM_ENFANT`, `PRENOM_ENFANT`, `NAISSANCE_ENFANT`, `TEL_ENFANT`, `INFORMATIONS_MEDICALES`, `RECOMMENDATIONS`, `DROIT_IMAGE`, `RENTRE_SEUL`, `HORAIRE`, `INSCRIPTION_DATE`, `CERTIFICAT`) VALUES \
+	(NULL, <%= contact[\"ID_CIVILITE\"] %>, <%= idFamille  %>, NULL, UPPER('<%= contact[\"NOM_MEMBRE\"] %>'), '<%= contact[\"PRENOM_MEMBRE\"] %>', '<%= contact[\"NAISSANCE_MEMBRE\"] %>', NULL, NULL, NULL, '0', '0', NULL, NULL, '0')"
 
 	router.route('/familles')
 	
@@ -280,7 +282,7 @@ module.exports = function(app, connection, router){
 	.post(function(req, res) {
 		if (req.body.operation === "Create") {
 			console.log("--- Create Famille ---");
-			var post  = {"NOM_FAMILLE": req.body.nomFamille, "INSCRIPTION_FAMILLE": new Date(), "PRENOM_FAMILLE": '', "ID_QUARTIER": 1};
+			var post  = {"NOM_FAMILLE": req.body.nomFamille.toUpperCase(), "INSCRIPTION_FAMILLE": new Date(), "PRENOM_FAMILLE": '', "ID_QUARTIER": 1};
 			var query =  connection.query("INSERT INTO familles SET ?", post, function(err, info) {
 				if (err) throw err;
 				var finalQuery = _.template(CreateMembreQuery, {
@@ -308,7 +310,7 @@ module.exports = function(app, connection, router){
 		return contact["NOM_FAMILLE"] && contact["ID_FAMILLE"];
 	};
 
-	var UpdateFamilleQuery = "UPDATE familles set NOM_FAMILLE='<%= contact[\"NOM_FAMILLE\"] %>', \
+	var UpdateFamilleQuery = "UPDATE familles set NOM_FAMILLE=UPPER('<%= contact[\"NOM_FAMILLE\"] %>'), \
 	QUOTIENT_CAF_FAMILLE = <%= contact[\"QUOTIENT_CAF_FAMILLE\"] %>, QUOTIENT_MSA_FAMILLE = <%=  contact[\"QUOTIENT_MSA_FAMILLE\"] %>, ID_QUARTIER = <%= contact[\"ID_QUARTIER\"]  %>, \
 	NUMERO_CAF = '<%= contact[\"NUMERO_CAF\"] %>' , NUMERO_MSA = '<%= contact[\"NUMERO_MSA\"] %>' , AVOIR_FAMILLE = <%= contact[\"AVOIR_FAMILLE\"] %> WHERE ID_FAMILLE = <%= contact[\"ID_FAMILLE\"] %>";
 
@@ -353,6 +355,16 @@ module.exports = function(app, connection, router){
 			var query = connection.query(finalQuery, function(err, info) {
 				if (err) throw err;
 				res.json({idMembre: info.insertId});
+			});
+			console.log("=> "+ query.sql);
+		} else if (req.body.operation === "CreateEnfant") {
+			var finalQuery = _.template(CreateEnfantQuery, {
+				contact: req.body.contact,
+				idFamille: req.params.famille_id
+			});
+			var query = connection.query(finalQuery, function(err, info) {
+				if (err) throw err;
+				res.json({idEnfant: info.insertId});
 			});
 			console.log("=> "+ query.sql);
 		} else {
