@@ -24,15 +24,15 @@
 
             <tab-content title="Valider"
                          icon="ti-check">
-              <h2 class="text-center text-space">Yuhuuu!
+              <h2 class="text-center text-space">
                 <br>
-                <small>Click on "<b>Finish</b>" to join our community</small>
+                <small>Cliquer sur "<b>Terminer</b>" pour finaliser l'inscription</small>
               </h2>
             </tab-content>
 
-            <button slot="prev" class="btn btn-default btn-fill btn-wd btn-back">Back</button>
-            <button slot="next" class="btn btn-info btn-fill btn-wd btn-next">Next</button>
-            <button slot="finish" class="btn btn-info btn-fill btn-wd">Finish</button>
+            <button slot="prev" class="btn btn-default btn-fill btn-wd btn-back">Précédent</button>
+            <button slot="next" class="btn btn-info btn-fill btn-wd btn-next">Suivant</button>
+            <button slot="finish" class="btn btn-info btn-fill btn-wd">Terminer</button>
           </form-wizard>
         </div>
       </div>

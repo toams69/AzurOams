@@ -7,9 +7,9 @@
       <button class="btn btn-icon btn-simple" title="restaurer" @click="resetEnfant">
         <i class='ti-reload'></i>
       </button>
-      <button class="btn btn-icon btn-simple" title="imprimer la fiche">
+      <!-- <button class="btn btn-icon btn-simple" title="imprimer la fiche">
         <i class='ti-printer'></i>
-      </button>
+      </button> -->
     </div>  
     <div class="form-group">
       <label class="col-md-2 control-label">Civilité</label>
