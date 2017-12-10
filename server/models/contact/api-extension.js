@@ -262,6 +262,8 @@ module.exports = function(app, connection, router){
 	//// FAMILLE
 	//////////////////////
 
+	var CreateMembreQuery = "INSERT INTO `membres` (`ID_MEMBRE`, `ID_FAMILLE`, `ID_VILLE`, `ID_CIVILITE`, `ID_QUARTIER`, `NOM_MEMBRE`, `PRENOM_MEMBRE`, `NAISSANCE_MEMBRE`, `ADR_MEMBRE`, `TEL1_MEMBRE`, `TEL2_MEMBRE`, `MAIL_MEMBRE`, `NUM_SECU_MEMBRE`, `NOM_EMPLOYEUR`, `LIEU_TRAVAIL`, `TELT_MEMBRE`, `ALLOCATAIRE_CAF`, `ALLOCATAIRE_MSA`, `INSCRIPTION_DATE`, `PARENT`) VALUES \
+	 (NULL, <%= idFamille  %>, <%= contact[\"ID_VILLE\"] %>, <%= contact[\"ID_CIVILITE\"] %>, NULL, '<%= contact[\"NOM_MEMBRE\"] %>', '<%= contact[\"PRENOM_MEMBRE\"] %>', '<%= contact[\"NAISSANCE_MEMBRE\"] %>', '<%= contact[\"ADR_MEMBRE\"] %>', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1');";
 
 
 	router.route('/familles')
@@ -278,10 +280,18 @@ module.exports = function(app, connection, router){
 	.post(function(req, res) {
 		if (req.body.operation === "Create") {
 			console.log("--- Create Famille ---");
-			var post  = {"NOM_FAMILLE": req.body.nomFamille, "INSCRIPTION_FAMILLE": new Date(), "PRENOM_FAMILLE": "", "ID_QUARTIER": 1};
+			var post  = {"NOM_FAMILLE": req.body.nomFamille, "INSCRIPTION_FAMILLE": new Date(), "PRENOM_FAMILLE": '', "ID_QUARTIER": 1};
 			var query =  connection.query("INSERT INTO familles SET ?", post, function(err, info) {
 				if (err) throw err;
-				res.json({idFamille: info.insertId});
+				var finalQuery = _.template(CreateMembreQuery, {
+					contact: req.body.contact,
+					idFamille:info.insertId
+				});
+				var query = connection.query(finalQuery, function(err, info) {
+					if (err) throw err;
+					res.json({idMembre: info.insertId});
+				});
+				console.log("=> "+ query.sql);
 			});
 			console.log("=> "+ query.sql);
 		} else {
@@ -335,6 +345,16 @@ module.exports = function(app, connection, router){
 			} else {
 				res.respond(new Error('Missing mandatory parameters'), 400);
 			}
+		} else if (req.body.operation === "CreateAdulte") {
+			var finalQuery = _.template(CreateMembreQuery, {
+				contact: req.body.contact,
+				idFamille: req.params.famille_id
+			});
+			var query = connection.query(finalQuery, function(err, info) {
+				if (err) throw err;
+				res.json({idMembre: info.insertId});
+			});
+			console.log("=> "+ query.sql);
 		} else {
 			res.respond(new Error('Bad/Missing Operation'), 400);
 		}

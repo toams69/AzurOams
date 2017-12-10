@@ -6,19 +6,20 @@
           <form-wizard
                     title="Création de membre"
                     subtitle=''
+                    ref='wizard'
                     @on-complete="wizardComplete"
                     error-color="#EB5E28"
                     color="#66615B">
             <tab-content title="Choix de la famille"
                          :before-change="validateFirstStep"
                          icon="ti-user">
-              <first-step ref="firstStep" :familles='familles'></first-step>
+              <first-step ref="firstStep" :familles='familles' :idFamille='wizardModel.idFamille' :newFamille='wizardModel.newFamille'></first-step>
             </tab-content>
 
             <tab-content title="Informations"
                          :before-change="validateSecondStep"
                          icon="ti-settings">
-              <second-step ref="secondStep"></second-step>
+              <second-step ref="secondStep" :newFamille='wizardModel.newFamille' :configuration='configuration'></second-step>
             </tab-content>
 
             <tab-content title="Valider"
@@ -43,17 +44,23 @@
   import 'vue-form-wizard/dist/vue-form-wizard.min.css'
   import FirstStep from './Wizard/FirstStep.vue'
   import SecondStep from './Wizard/SecondStep.vue'
-  import swal from 'sweetalert2'
+  import moment from 'moment'
 
   export default {
     data () {
       return {
-        wizardModel: {}
+        wizardModel: {
+          newFamille: true,
+          idFamille: null
+        }
       }
     },
     props: {
       familles: {
         type: Array
+      },
+      configuration: {
+        type: Object
       }
     },
     components: {
@@ -69,13 +76,60 @@
       validateSecondStep () {
         return this.$refs.secondStep.validate()
       },
+      setFamilly (idFamille) {
+        this.wizardModel.newFamille = false
+        this.wizardModel.idFamille = idFamille
+      },
       wizardComplete () {
         // we gather models from all steps into one model
-        this.wizardModel = {
+        this.finalModel = {
           ...this.$refs.firstStep.model,
           ...this.$refs.secondStep.model
         }
-        swal('Good job!', 'You clicked the finish button!', 'success')
+        if (this.newFamille) {
+          const famille = {
+            nomFamille: this.finalModel.nomFamille,
+            contact: {
+              'ID_VILLE': this.finalModel.ville,
+              'ID_CIVILITE': this.finalModel.civilites,
+              'NOM_MEMBRE': this.finalModel.nom,
+              'PRENOM_MEMBRE': this.finalModel.prenom,
+              'NAISSANCE_MEMBRE': moment(this.finalModel.naissance).format('YYYY-MM-DD'),
+              'ADR_MEMBRE': this.finalModel.addresse
+            }
+          }
+          this.$emit('createFamille', famille)
+        } else if (!this.finalModel.enfant) {
+          const famille = {
+            idFamille: this.wizardModel.idFamille,
+            contact: {
+              'ID_VILLE': this.finalModel.ville,
+              'ID_CIVILITE': this.finalModel.civilites,
+              'NOM_MEMBRE': this.finalModel.nom,
+              'PRENOM_MEMBRE': this.finalModel.prenom,
+              'NAISSANCE_MEMBRE': moment(this.finalModel.naissance).format('YYYY-MM-DD'),
+              'ADR_MEMBRE': this.finalModel.addresse
+            }
+          }
+          this.$emit('addAdulte', famille)
+        } else {
+          const famille = {
+            idFamille: this.wizardModel.idFamille,
+            contact: {
+              'ID_CIVILITE': this.finalModel.civilites,
+              'NOM_MEMBRE': this.finalModel.nom,
+              'PRENOM_MEMBRE': this.finalModel.prenom,
+              'NAISSANCE_MEMBRE': moment(this.finalModel.naissance).format('YYYY-MM-DD')
+            }
+          }
+          this.$emit('addEnfant', famille)
+        }
+        this.reset()
+      },
+      reset () {
+        this.$refs.firstStep.reset()
+        this.$refs.secondStep.reset()
+        this.$refs.wizard.reset()
       }
     }
   }

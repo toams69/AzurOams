@@ -70,7 +70,7 @@ const mutations = {
 
 const actions = {
   GET_CONTACTS ({ commit }) {
-    axios.get('/api/contacts').then((response) => {
+    return axios.get('/api/contacts').then((response) => {
       commit('SET_CONTACTS', response.data)
     }, (err) => {
       console.log(err)
@@ -126,6 +126,20 @@ const actions = {
   GET_FAMILLES ({ commit }) {
     return axios.get('/api/familles').then((response) => {
       commit('SET_FAMILLES', response.data)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  CREATE_FAMILLE ({commit}, famille) {
+    return axios.post('/api/familles', {operation: 'Create', contact: famille.contact, nomFamille: famille.nomFamille}).then((response) => {
+      return response.data.idMembre
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  CREATE_ADULTE ({commit}, famille) {
+    return axios.post('/api/familles/' + famille.idFamille, {operation: 'CreateAdulte', contact: famille.contact}).then((response) => {
+      return response.data.idMembre
     }, (err) => {
       console.log(err)
     })

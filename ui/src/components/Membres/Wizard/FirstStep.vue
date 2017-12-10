@@ -18,13 +18,13 @@
             </label>
             <input class="form-control"
                     type="text"
-                    name="lastName"
-                    v-validate="modelValidations.lastName"
-                    v-model="model.lastName"
+                    name="nomFamille"
+                    v-validate="modelValidations.nomFamille"
+                    v-model="model.nomFamille"
                     placeholder="ex: Pariaud"
             />
-            <small class="text-danger" v-show="lastName.invalid">
-                {{ getError('lastName') }}
+            <small class="text-danger" v-show="nomFamille.invalid">
+                {{ getError('nomFamille') }}
             </small>
             </div>
         </div>
@@ -52,22 +52,26 @@
       _familles () {
         return this.familles.map(function (e) { return {value: e['ID_FAMILLE'], label: e['NOM_FAMILLE']} })
       },
-      ...mapFields(['lastName'])
+      ...mapFields(['nomFamille'])
     },
     props: {
       familles: {
         type: Array
+      },
+      idFamille: {
+        type: Number
+      },
+      newFamille: {
+        type: Boolean
       }
     },
     data () {
       return {
-        newFamille: true,
-        idFamille: null,
         model: {
-          lastName: ''
+          nomFamille: ''
         },
         modelValidations: {
-          lastName: {
+          nomFamille: {
             required: true,
             min: 5
           }
@@ -80,6 +84,11 @@
       },
       validate () {
         return this.$validator.validateAll()
+      },
+      reset () {
+        this.model.nomFamille = ''
+        this.idFamille = null
+        this.newFamille = true
       }
     }
   }

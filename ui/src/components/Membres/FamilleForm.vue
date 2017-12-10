@@ -76,8 +76,11 @@
         <li v-for="contact in membres">
           <a @click='membreSelected(contact)'>{{ contact['NOM_ENFANT'] || contact['NOM_MEMBRE'] }} {{ contact['PRENOM_ENFANT'] || contact['PRENOM_MEMBRE'] }}</a>
         </li>
+        <li><a @click="addMembreToFamilly()" title="ajouter un membre">+</a></li>
       </ul>
+      
     </div>
+    
   </div>
 </template>
 <script>
@@ -117,6 +120,9 @@
       },
       reset () {
         this.$emit('reset', this.famille)
+      },
+      addMembreToFamilly () {
+        this.$emit('addMembre', this.famille['ID_FAMILLE'])
       }
     },
     data () {

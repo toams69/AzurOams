@@ -1,30 +1,34 @@
 <template>
   <div>
-    <h5 class="text-center">Please give us more details about your platform.</h5>
-    <center>
+    <h5 class="text-center">Renseignez les informations du membre.</h5>
+    <center v-if="!newFamille">
         <el-switch
-            v-model="enfant"
+            v-model="model.enfant"
             active-text="Enfant"
             inactive-text="Adulte">
         </el-switch>
     </center>
-    <div v-if="enfant">
-    </div>
-    <div v-else>
+    <div>
       <div class="row">
         <div class="col-md-2 col-md-offset-1">
           <div class="form-group">
             <label class="control-label">
               Civilité
             </label>
-            <select name="language"
-                    v-validate="modelValidations.language"
-                    v-model="model.language"
+    
+            <select name="civilites"
+                    v-validate="modelValidations.civilites"
+                    v-model="model.civilites"
                     class="form-control">
+                    <option v-for="option in _civilites" 
+                          :value="option.value"
+                          :label="option.label"
+                          :key="option.label">{option.label}
+                    </option>
             </select>
-            <!-- <small class="text-danger" v-show="language.invalid">
-              {{ getError('language') }}
-            </small> -->
+            <small class="text-danger" v-show="civilites.invalid">
+              {{ getError('civilites') }}
+            </small>
           </div>
         </div>
         <div class="col-md-4">
@@ -65,28 +69,20 @@
             <label class="control-label">
               Date de naissance
             </label>
-            <select name="cities"
-                    v-validate="modelValidations.bootstrapVersion"
-                    v-model="model.bootstrapVersion"
-                    class="form-control">
-              <option selected="" disabled="">- version -</option>
-              <option value="1.1">Bootstrap 1.1</option>
-              <option value="2.0">Bootstrap 2.0</option>
-              <option value="3.0">Bootstrap 3.0</option>
-              <option value="4.0">Bootstrap 4.0(alpha)</option>
-            </select>
+            <el-date-picker type="date" placeholder="Date de naissance" v-model="model.naissance">
+            </el-date-picker>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="!model.enfant">
         <div class="col-md-5 col-md-offset-1">
           <div class="form-group">
             <label class="control-label">Adresse</label>
             <input class="form-control"
                   type="text"
-                  name="price"
-                  v-model="model.price"
-                  placeholder="ex: 19.00"
+                  name="addresse"
+                  v-model="model.addresse"
+                  placeholder="ex: 1 rue du general blecon"
             />
           </div>
         </div>
@@ -95,21 +91,28 @@
             <label class="control-label">Code Postal</label>
             <input class="form-control"
                   type="text"
-                  name="price"
-                  v-model="model.price"
-                  placeholder="ex: 19.00"
+                  name="cdp"
+                  v-model="model.cdp"
+                  placeholder="ex: 29200"
             />
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label class="control-label">Ville</label>
-            <input class="form-control"
-                  type="text"
-                  name="price"
-                  v-model="model.price"
-                  placeholder="ex: 19.00"
-            />
+            <select name="ville"
+                    v-validate="modelValidations.ville"
+                    v-model="model.ville"
+                    class="form-control">
+                    <option v-for="option in _villes" 
+                          :value="option.value"
+                          :label="option.label"
+                          :key="option.label">{option.label}
+                    </option>
+            </select>
+            <small class="text-danger" v-show="ville.invalid">
+              {{ getError('ville') }}
+            </small>
           </div>
         </div>
       </div>
@@ -121,18 +124,38 @@
 
   export default {
     computed: {
-      ...mapFields(['nom', 'prenom'])
+      _civilites () {
+        return this.configuration.civilites.map(function (e) { return {value: e['ID_CIVILITE'], label: e['ABREVIATION_CIVILITE']} })
+      },
+      _villes () {
+        if (this.model.cdp) {
+          var villes = this.configuration.villes.filter((e) => { return e['CP_VILLE'] === this.model.cdp })
+          return villes.map(function (e) { return {value: e['ID_VILLE'], label: e['NOM_VILLE']} })
+        } else {
+          return []
+        }
+      },
+      ...mapFields(['nom', 'prenom', 'civilites', 'ville'])
+    },
+    props: {
+      newFamille: {
+        type: Boolean
+      },
+      configuration: {
+        type: Object
+      }
     },
     data () {
       return {
-        enfant: false,
         model: {
-          website: '',
+          enfant: false,
+          addresse: '',
           nom: '',
           prenom: '',
-          language: '',
-          bootstrapVersion: '',
-          price: ''
+          civilites: '',
+          naissance: '',
+          ville: '',
+          cdp: ''
         },
         modelValidations: {
           nom: {
@@ -140,11 +163,26 @@
           },
           prenom: {
             required: true
+          },
+          civilites: {
+            required: true
+          },
+          ville: {
+            required: true
           }
         }
       }
     },
     methods: {
+      reset () {
+        this.model.addresse = ''
+        this.model.nom = ''
+        this.model.prenom = ''
+        this.model.civilites = ''
+        this.model.naissance = ''
+        this.model.ville = ''
+        this.model.cdp = ''
+      },
       getError (fieldName) {
         return this.errors.first(fieldName)
       },

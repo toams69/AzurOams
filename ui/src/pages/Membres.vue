@@ -12,7 +12,10 @@
       width="60%"
       append-to-body >
       <span>  
-        <new-membre :familles='this.$store.state.membres.groups'></new-membre>
+        <new-membre ref="wizzard" :familles='this.$store.state.membres.groups' :configuration='getFullConfiguration()' 
+          v-on:createFamille="createFamille"
+          v-on:addAdulte="createAdulte"
+        ></new-membre>
       </span>
     </el-dialog>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
@@ -24,7 +27,7 @@
             <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
           </el-tab-pane>
           <el-tab-pane label="Famille" name="famille">
-            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay'></famille-form>
+            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay' v-on:addMembre='onAddMembreToFamilly'></famille-form>
           </el-tab-pane>
           <!-- <el-tab-pane label="Activités" name="activites">
           </el-tab-pane> -->
@@ -112,6 +115,18 @@
       }
     },
     methods: {
+      onAddMembreToFamilly (idFamille) {
+        this.dialogVisible = true
+        if (this.$refs && this.$refs.wizzard) {
+          this.$refs.wizzard.setFamilly(idFamille)
+        } else {
+          setTimeout(() => {
+            if (this.$refs && this.$refs.wizzard) {
+              this.$refs.wizzard.setFamilly(idFamille)
+            }
+          })
+        }
+      },
       onMembreToDisplay (membre) {
         if (this.$refs && this.$refs.table) {
           this.$refs.table.setCurrentRow(membre)
@@ -197,6 +212,48 @@
             horizontalAlign: 'center',
             verticalAlign: 'bottom',
             type: 'success'
+          })
+        })
+      },
+      createFamille (famille) {
+        this.dialogVisible = false
+        this.$store.dispatch('CREATE_FAMILLE', famille).then((idMembre) => {
+          this.$notify({
+            component: {
+              template: `<span>Création effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+          this.$store.dispatch('GET_CONTACTS').then(() => {
+            if (this.$refs && this.$refs.table) {
+              this.$refs.table.setCurrentRow({'ID_ENFANT': 0, 'ID_MEMBRE': idMembre})
+              this.activeName = 'informations'
+              this.active2Name = 'details'
+            }
+          })
+        })
+      },
+      createAdulte (famille) {
+        this.dialogVisible = false
+        this.$store.dispatch('CREATE_ADULTE', famille).then((idMembre) => {
+          this.$notify({
+            component: {
+              template: `<span>Création effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+          this.$store.dispatch('GET_CONTACTS').then(() => {
+            if (this.$refs && this.$refs.table) {
+              this.$refs.table.setCurrentRow({'ID_ENFANT': 0, 'ID_MEMBRE': idMembre})
+              this.activeName = 'informations'
+              this.active2Name = 'details'
+            }
           })
         })
       },
