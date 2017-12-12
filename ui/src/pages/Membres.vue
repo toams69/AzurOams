@@ -21,6 +21,8 @@
     </el-dialog>
     <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
     <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }" v-if="idEnfantSelected||idAdulteSelected">
+      <div class="membres-header">
+      </div>
       <div class="membres-details">
         <el-tabs v-model="activeName">
           <el-tab-pane label="Informations Générales" name="informations">
@@ -30,8 +32,9 @@
           <el-tab-pane label="Famille" name="famille">
             <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay' v-on:addMembre='onAddMembreToFamilly'></famille-form>
           </el-tab-pane>
-          <!-- <el-tab-pane label="Activités" name="activites">
-          </el-tab-pane> -->
+          <el-tab-pane label="Activités" name="activites">
+            <activite-membre :configuration='getFullConfiguration()' :currentAnnee='getCurrentIdAnnee()' :membre='idEnfantSelected ? getEnfantById(idEnfantSelected) : getAdulteById(idAdulteSelected)'></activite-membre>
+          </el-tab-pane>
           <el-tab-pane label="Factures" name="factures">
             <div v-if="idEnfantSelected||idAdulteSelected">
               <div class="facture-details">
@@ -75,6 +78,7 @@
   import MembreFacturesTable from '@/components/Membres/MembreFacturesTable'
   import ReglementsTable from '@/components/Factures/ReglementsTable'
   import FacturePrint from '@/components/Factures/FacturePrint'
+  import ActiviteMembre from '@/components/Membres/ActiviteMembre'
   import { mapGetters } from 'vuex'
   export default {
     components: {
@@ -88,7 +92,8 @@
       EnfantForm,
       AdulteForm,
       FamilleForm,
-      NewMembre
+      NewMembre,
+      ActiviteMembre
     },
     computed: {
       // mix the getters into computed with object spread operator
@@ -101,7 +106,8 @@
         'getReglemensByFactureId',
         'getFactureById',
         'getFullConfiguration',
-        'getMembresFamilleById'
+        'getMembresFamilleById',
+        'getCurrentIdAnnee'
       ])
     },
     data () {
@@ -341,6 +347,9 @@
         }
       }
     }
+  }
+  .membres-header {
+    
   }
   .facture-details {
     background: white;

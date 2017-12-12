@@ -38,7 +38,7 @@
     <div class="form-group">
       <label class="col-md-2 control-label">Né(e) le</label>
       <div class="col-md-10">
-        <el-date-picker type="date" placeholder="Date de naissance" v-model="enfant['NAISSANCE_ENFANT']">
+        <el-date-picker type="date" placeholder="Date de naissance" v-model="enfant['NAISSANCE_ENFANT']" format="dd-MM-yyyy">
         </el-date-picker>
       </div>
     </div>

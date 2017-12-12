@@ -69,7 +69,7 @@
             <label class="control-label">
               Date de naissance
             </label>
-            <el-date-picker type="date" placeholder="Date de naissance" v-model="model.naissance">
+            <el-date-picker type="date" placeholder="Date de naissance" v-model="model.naissance" format="dd-MM-yyyy">
             </el-date-picker>
           </div>
         </div>

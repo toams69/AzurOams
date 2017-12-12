@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { assignIn } from 'lodash'
+import { assignIn, find } from 'lodash'
+import moment from 'moment'
 
 const state = {
   'version': '3.0.0',
@@ -36,6 +37,12 @@ const getters = {
   getFullConfiguration: (state, getters) => () => {
     // check if the prenom is defined to be sure the enfant obj is complete
     return state
+  },
+  getCurrentIdAnnee: (state, getters) => () => {
+    const f = find(state.annees, (a) => {
+      return moment().isBetween(moment(a['DATE_DEBUT']), moment(a['DATE_FIN']))
+    })
+    return f ? f['ID_ANNEE'] : null
   }
 }
 
