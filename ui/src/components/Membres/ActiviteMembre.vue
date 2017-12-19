@@ -1,5 +1,18 @@
 <template>
   <div>
+    <el-dialog
+      title="Création Adhésion"
+      :visible.sync="dialogAdhesionVisible"
+      width="40%"
+      append-to-body >
+      <span>  
+       <adhesion-form :membre='membre' :currentAnnee='currentAnnee' ref="adhesion"></adhesion-form>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogAdhesionVisible = false">Annuler</el-button>
+        <el-button type="primary" @click="createAdhesion">Ajouter</el-button>
+      </span>
+    </el-dialog>
     <el-select v-model="currentAnnee" placeholder="Année">
       <el-option
         v-for="item in annees"
@@ -12,7 +25,7 @@
     <div v-if="!numeroAdherent || !numeroAdherent['NUMERO_ADHERENT']">
       Le membre n'est pas adhérent pour l'année choisie
       <br/><br/>
-      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true" title="Créer une adhésion pour ce membre">
+      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogAdhesionVisible = true" title="Créer une adhésion pour ce membre">
           Créer une adhésion
       </button>
     </div>
@@ -27,7 +40,7 @@
         </li>
       </ul>
       <br/><br/>
-      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true" title="Créer une adhésion pour ce membre">
+      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogActiviteVisible = true" title="Créer une adhésion pour ce membre">
           Insription à une activité
       </button>
     </div>
@@ -35,11 +48,16 @@
 </template>
 <script>
   import moment from 'moment'
+  import AdhesionForm from '@/components/Activites/AdhesionForm.vue'
 
   export default {
+    components: {
+      AdhesionForm
+    },
     data () {
       return {
-        test: ''
+        dialogAdhesionVisible: false,
+        dialogActiviteVisible: false
       }
     },
     props: {
@@ -69,9 +87,13 @@
         return this.membre.activites.filter((e) => { return e['ID_ANNEE'] === this.currentAnnee }) || []
       }
     },
-    components: {
-    },
     methods: {
+      createAdhesion () {
+        if (this.$refs && this.$refs.adhesion) {
+          this.$refs.adhesion.reset()
+          this.dialogAdhesionVisible = false
+        }
+      }
     }
   }
 </script>
