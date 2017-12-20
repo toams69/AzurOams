@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <router-link class="navbar-brand" to="/">Azuroams V3</router-link>
+          <router-link class="navbar-brand" to="/">Azuroams</router-link>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -21,7 +21,7 @@
 
     <div class="wrapper wrapper-full-page">
       <div class="full-page login-page" data-color="azure"
-           data-image="static/img/background/background-5.jpg">
+           data-image="static/img/welcome/1.jpg">
         <!--   you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple" -->
         <div class="content">
           <div class="container">
@@ -61,7 +61,7 @@
             </div>
           </div>
         </footer>
-        <div class="full-page-background" style="background-image: url(static/img/background/background-5.jpg) "></div>
+        <div class="full-page-background" style="background-image: url(static/img/welcome/1.jpg) "></div>
       </div>
     </div>
   </div>

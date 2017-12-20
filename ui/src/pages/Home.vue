@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <!-- <img :src="'static/img/welcome/9.jpeg'"/> -->
-    <h1>Welcome on Azuroams V3</h1>
+    <h1>Bienvenue sur Azuroams V3</h1>
   </div>
 </template>
 <script>

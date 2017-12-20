@@ -21,7 +21,7 @@ var router = new VueRouter({
     {
       path: '/',
       component: Dashboard,
-      redirect: '/membres',
+      redirect: '/azuroams',
       children: [
         {
           path: 'azuroams',
