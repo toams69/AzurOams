@@ -13,7 +13,7 @@
         <el-button type="primary" @click="createAdhesion">Ajouter</el-button>
       </span>
     </el-dialog>
-    <el-select v-model="currentAnnee" placeholder="Année">
+    <el-select v-model="annee" placeholder="Année">
       <el-option
         v-for="item in annees"
         :key="item.value"
@@ -57,7 +57,8 @@
     data () {
       return {
         dialogAdhesionVisible: false,
-        dialogActiviteVisible: false
+        dialogActiviteVisible: false,
+        annee: ''
       }
     },
     props: {
@@ -66,11 +67,14 @@
       },
       membre: {
         type: Object
-      },
-      currentAnnee: {
       }
     },
     computed: {
+      currentAnnee () {
+        return this.configuration.annees.find((a) => {
+          return moment().isBetween(moment(a['DATE_DEBUT']), moment(a['DATE_FIN']))
+        })
+      },
       annees () {
         return this.configuration.annees.map(function (e) { return {value: e['ID_ANNEE'], label: moment(e['DATE_DEBUT']).format('YYYY') + ' - ' + moment(e['DATE_FIN']).format('YYYY')} })
       },
@@ -78,13 +82,13 @@
         if (!this.membre || !this.membre.adhesions) {
           return null
         }
-        return this.membre.adhesions.find((e) => { return e['ID_ANNEE'] === this.currentAnnee })
+        return this.membre.adhesions.find((e) => { return e['ID_ANNEE'] === this.annee })
       },
       activites () {
         if (!this.membre || !this.membre.activites) {
           return []
         }
-        return this.membre.activites.filter((e) => { return e['ID_ANNEE'] === this.currentAnnee }) || []
+        return this.membre.activites.filter((e) => { return e['ID_ANNEE'] === this.annee }) || []
       }
     },
     methods: {
@@ -93,6 +97,11 @@
           this.$refs.adhesion.reset()
           this.dialogAdhesionVisible = false
         }
+      }
+    },
+    mounted () {
+      if (this.currentAnnee) {
+        this.annee = this.currentAnnee['ID_ANNEE']
       }
     }
   }

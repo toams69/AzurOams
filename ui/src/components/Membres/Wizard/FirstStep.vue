@@ -89,6 +89,9 @@
         this.model.nomFamille = ''
         this.idFamille = null
         this.newFamille = true
+        this.errors.clear()
+        this.$validator.clean()
+        this.$validator.reset()
       }
     }
   }

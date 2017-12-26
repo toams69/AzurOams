@@ -6,7 +6,7 @@
           <form-wizard
                     title="Création de membre"
                     subtitle=''
-                    ref='wizard'
+                    ref='newMembreWizard'
                     @on-complete="wizardComplete"
                     error-color="#EB5E28"
                     color="#66615B">
@@ -86,7 +86,7 @@
           ...this.$refs.firstStep.model,
           ...this.$refs.secondStep.model
         }
-        if (this.newFamille) {
+        if (this.wizardModel.newFamille) {
           const famille = {
             nomFamille: this.finalModel.nomFamille,
             contact: {
@@ -127,9 +127,9 @@
         this.reset()
       },
       reset () {
+        this.$refs.newMembreWizard.changeTab(2, 0)
         this.$refs.firstStep.reset()
         this.$refs.secondStep.reset()
-        this.$refs.wizard.reset()
       }
     }
   }

@@ -1,11 +1,5 @@
 <template>
-  <multipane class="custom-resizer" layout="vertical">
-    <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
-        <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true">
-           Ajouter un membre
-        </button>
-        <membre-tables @membreSelected="onMembreSelected" ref="table" :tableData='this.$store.state.membres.list'></membre-tables>
-    </div>
+  <div>
     <el-dialog
       title=""
       :visible.sync="dialogVisible"
@@ -19,53 +13,61 @@
         ></new-membre>
       </span>
     </el-dialog>
-    <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
-    <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }" v-if="idEnfantSelected||idAdulteSelected">
-      <div class="membres-header">
+    <multipane class="custom-resizer" layout="vertical">
+      <div class="pane" :style="idEnfantSelected||idAdulteSelected ? { minWidth: '30%', width: '50%' } : { minWidth: '100%', width: '100%' } ">
+          <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogVisible = true">
+            Ajouter un membre
+          </button>
+          <membre-tables @membreSelected="onMembreSelected" ref="table" :tableData='this.$store.state.membres.list'></membre-tables>
       </div>
-      <div class="membres-details">
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="Informations Générales" name="informations">
-            <enfant-form v-if='idEnfantSelected' v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant-form>
-            <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
-          </el-tab-pane>
-          <el-tab-pane label="Famille" name="famille">
-            <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay' v-on:addMembre='onAddMembreToFamilly'></famille-form>
-          </el-tab-pane>
-          <el-tab-pane label="Activités" name="activites">
-            <activite-membre :configuration='getFullConfiguration()' :currentAnnee='getCurrentIdAnnee()' :membre='idEnfantSelected ? getEnfantById(idEnfantSelected) : getAdulteById(idAdulteSelected)'></activite-membre>
-          </el-tab-pane>
-          <el-tab-pane label="Factures" name="factures">
-            <div v-if="idEnfantSelected||idAdulteSelected">
-              <div class="facture-details">
-                  <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
-                    <i class='ti-printer'></i>
-                  </button>
-                  <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="supprimer la facture">
-                    <i class='ti-trash'></i>
-                  </button>
-              </div>
-              <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
-              <div v-if="idFactureSelected" class="facture-details">
-                <br/>
-                <el-tabs v-model="active2Name">
-                  <el-tab-pane label="Détails" name="details">
-                    <facture :facture='getFactureById(idFactureSelected)' ></facture>
-                  </el-tab-pane>
-                  <el-tab-pane label="Réglements" name="reglements">
-                    <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)' :facture='getFactureById(idFactureSelected)'></reglements-table>
-                  </el-tab-pane>
-                </el-tabs>
-                <div class='hidden'>
-                  <facture-print :facture='getFactureById(idFactureSelected)' id='facturePrint' ></facture-print>
+      <multipane-resizer v-if="idEnfantSelected||idAdulteSelected"></multipane-resizer>
+      <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }" v-if="idEnfantSelected||idAdulteSelected">
+        <div class="membres-header">
+        </div>
+        <div class="membres-details">
+          <el-tabs v-model="activeName">
+            <el-tab-pane label="Informations Générales" name="informations">
+              <enfant-form v-if='idEnfantSelected' v-on:save='saveEnfant' v-on:resetEnfant="resetEnfant" :configuration='getFullConfiguration()' :enfant='getEnfantById(idEnfantSelected)' :famille='getFamilleById(idFamilleSelected)'></enfant-form>
+              <adulte-form v-if='idAdulteSelected' v-on:save='saveAdulte' v-on:reset="resetAdulte" :configuration='getFullConfiguration()' :adulte='getAdulteById(idAdulteSelected)' :famille='getFamilleById(idFamilleSelected)'></adulte-form>            
+            </el-tab-pane>
+            <el-tab-pane label="Famille" name="famille">
+              <famille-form v-if='idFamilleSelected' :configuration='getFullConfiguration()' :famille='getFamilleById(idFamilleSelected)' :membres='getMembresFamilleById(idFamilleSelected)' v-on:save='saveFamille' v-on:reset="resetFamille" v-on:membreSelected='onMembreToDisplay' v-on:addMembre='onAddMembreToFamilly'></famille-form>
+            </el-tab-pane>
+            <el-tab-pane label="Activités" name="activites">
+              <activite-membre :configuration='getFullConfiguration()' :membre='idEnfantSelected ? getEnfantById(idEnfantSelected) : getAdulteById(idAdulteSelected)'></activite-membre>
+            </el-tab-pane>
+            <el-tab-pane label="Factures" name="factures">
+              <div v-if="idEnfantSelected||idAdulteSelected">
+                <div class="facture-details">
+                    <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="imprimer la facture" @click="imprimerFacture">
+                      <i class='ti-printer'></i>
+                    </button>
+                    <button :disabled="!idFactureSelected" class="btn btn-icon btn-simple" title="supprimer la facture">
+                      <i class='ti-trash'></i>
+                    </button>
+                </div>
+                <MembreFacturesTable :factures='idEnfantSelected ? getFactureByEnfantId(idEnfantSelected) : idAdulteSelected ? getFactureByAdulteId(idAdulteSelected) : []' @factureSelected="onFactureSelected"></MembreFacturesTable>
+                <div v-if="idFactureSelected" class="facture-details">
+                  <br/>
+                  <el-tabs v-model="active2Name">
+                    <el-tab-pane label="Détails" name="details">
+                      <facture :facture='getFactureById(idFactureSelected)' ></facture>
+                    </el-tab-pane>
+                    <el-tab-pane label="Réglements" name="reglements">
+                      <reglements-table :tableData='getReglemensByFactureId(idFactureSelected)' :facture='getFactureById(idFactureSelected)'></reglements-table>
+                    </el-tab-pane>
+                  </el-tabs>
+                  <div class='hidden'>
+                    <facture-print :facture='getFactureById(idFactureSelected)' id='facturePrint' ></facture-print>
+                  </div>
                 </div>
               </div>
-            </div>
-          </el-tab-pane>
-        </el-tabs>
+            </el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
-    </div>
-  </multipane>
+    </multipane>
+  </div>
 </template>
 <script>
   import { Multipane, MultipaneResizer } from 'vue-multipane'

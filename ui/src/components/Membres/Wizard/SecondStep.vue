@@ -182,6 +182,9 @@
         this.model.naissance = ''
         this.model.ville = ''
         this.model.cdp = ''
+        this.errors.clear()
+        this.$validator.clean()
+        this.$validator.reset()
       },
       getError (fieldName) {
         return this.errors.first(fieldName)

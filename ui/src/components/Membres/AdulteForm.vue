@@ -66,7 +66,7 @@
     <div class="form-group">
       <label class="col-md-2 control-label">Code Postal</label>
       <div class="col-md-10">
-        <input type="text" placeholder="Téléphone" class="form-control" v-model="cpVille">
+        <input type="text" placeholder="Téléphone" class="form-control" @input='updateVille' :value="this.configuration.villes.find((e) => { return e['ID_VILLE'] === this.adulte['ID_VILLE'] })['CP_VILLE']">
       </div>
     </div>
     <div class="form-group">
@@ -130,12 +130,9 @@
         return this.configuration.civilites.map(function (e) { return {value: e['ID_CIVILITE'], label: e['ABREVIATION_CIVILITE']} })
       },
       villes () {
-        if (this.cpVille) {
-          var villes = this.configuration.villes.filter((e) => { return e['CP_VILLE'] === this.cpVille })
-          return villes.map(function (e) { return {value: e['ID_VILLE'], label: e['NOM_VILLE']} })
-        } else {
-          return []
-        }
+        var cp = this.configuration.villes.find((e) => { return e['ID_VILLE'] === this.adulte['ID_VILLE'] })['CP_VILLE']
+        var villes = this.configuration.villes.filter((e) => { return e['CP_VILLE'] === cp })
+        return villes.map(function (e) { return {value: e['ID_VILLE'], label: e['NOM_VILLE']} })
       }
     },
     methods: {
@@ -144,12 +141,15 @@
       },
       reset () {
         this.$emit('reset', this.adulte)
+      },
+      updateVille (e) {
+        this.villes = this.configuration.villes.filter((e) => { return e['CP_VILLE'] === e.target.value })
       }
     },
     data () {
       return {
         naissance: '',
-        cpVille: this.configuration.villes.find((e) => { return e['ID_VILLE'] === this.adulte['ID_VILLE'] })['CP_VILLE']
+        _cpVille: ''
       }
     }
   }
