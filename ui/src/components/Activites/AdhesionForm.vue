@@ -20,7 +20,7 @@
     </div>
     <div class="form-group">
       <label class="">Tarif appliqué</label><br>
-      <el-select placeholder="Tarif" v-model="tarif">
+      <el-select placeholder="Tarif" v-model="tarif" @change="setMontant">
         <el-option v-for="tarif in annee.tarifs" 
                     :value="tarif.MONTANT"
                     :label="tarif.DESCRIPTION"
@@ -69,6 +69,9 @@
       }
     },
     methods: {
+      setMontant (value) {
+        this.montant = value
+      },
       reset () {
         this.numeroAdherent = ''
         this.montant = ''

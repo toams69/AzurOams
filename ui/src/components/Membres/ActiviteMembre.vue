@@ -6,7 +6,7 @@
       width="40%"
       append-to-body >
       <span>  
-       <adhesion-form :membre='membre' :currentAnnee='currentAnnee' ref="adhesion"></adhesion-form>
+       <adhesion-form :membre='membre' :currentAnnee='annee' ref="adhesion"></adhesion-form>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogAdhesionVisible = false">Annuler</el-button>
@@ -94,6 +94,23 @@
     methods: {
       createAdhesion () {
         if (this.$refs && this.$refs.adhesion) {
+          const form = {
+            annee: this.configuration.annees.find((e) => { return e['ID_ANNEE'] === this.annee }),
+            membre: this.membre,
+            montant: this.$refs.adhesion.montant || 0,
+            numeroAdherent: this.$refs.adhesion.numeroAdherent
+          }
+          this.$store.dispatch('CREATE_ADHESION', form).then(() => {
+            this.$notify({
+              component: {
+                template: `<span>Effectué avec succès</span>`
+              },
+              icon: 'ti-thumb-up',
+              horizontalAlign: 'center',
+              verticalAlign: 'bottom',
+              type: 'success'
+            })
+          })
           this.$refs.adhesion.reset()
           this.dialogAdhesionVisible = false
         }

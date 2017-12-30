@@ -17,6 +17,9 @@ const mutations = {
       membre['RENTRE_SEUL'] = membre['RENTRE_SEUL'] || 0
       membre['NAISSANCE_ENFANT'] = membre['NAISSANCE_ENFANT'] || ''
       membre['HORAIRE'] = membre['HORAIRE'] || ''
+      membre.adhesions = []
+      membre.activites = []
+      membre.factures = []
       state.list.push(membre)
     })
   },
@@ -40,7 +43,7 @@ const mutations = {
     let obj = find(state.list, (e) => { return e['ID_ENFANT'] === 0 && e['ID_MEMBRE'] === data.adulte['ID_MEMBRE'] })
     let index = state.list.indexOf(obj)
     if (obj) {
-      obj = assignIn(obj, data.adulte)
+      obj = Object.assign(obj, data.adulte) // trick to refresh
       obj.adhesions = data.adhesions
       obj['PARENT'] = !!obj['PARENT']
       obj['ALLOCATAIRE_CAF'] = !!obj['ALLOCATAIRE_CAF']
@@ -150,6 +153,38 @@ const actions = {
     }, (err) => {
       console.log(err)
     })
+  },
+  CREATE_ADHESION ({commit}, form) {
+    if (form.membre && form.membre['ID_ENFANT']) {
+      return axios.post('/api/contacts/enfants/' + form.membre['ID_ENFANT'], {
+        operation: 'CreateAdhesion',
+        idFamille: form.membre['ID_FAMILLE'],
+        montant: form.montant,
+        idMembre: form.membre['ID_MEMBRE'],
+        numeroAdherent: form.numeroAdherent,
+        motif: 'Adhésion  à l\'association pour l\'année  ' + moment(form.annee['DATE_DEBUT']).format('YYYY') + '-> ' + moment(form.annee['DATE_FIN']).format('YYYY'),
+        idAnnee: form.annee['ID_ANNEE']}).then((response) => {
+          form.membre.adhesions.push(response.data.adhesion)
+          form.membre = Object.assign({}, form.membre) // trick to refresh
+          return response.data.adhesion
+        }, (err) => {
+          console.log(err)
+        })
+    } else if (form.membre) {
+      return axios.post('/api/contacts/adultes/' + form.membre['ID_MEMBRE'], {
+        operation: 'CreateAdhesion',
+        idFamille: form.membre['ID_FAMILLE'],
+        idMembre: form.membre['ID_MEMBRE'],
+        numeroAdherent: form.numeroAdherent,
+        montant: form.montant,
+        motif: 'Adhésion  à l\'association pour l\'année  ' + moment(form.annee['DATE_DEBUT']).format('YYYY') + '-> ' + moment(form.annee['DATE_FIN']).format('YYYY'),
+        idAnnee: form.annee['ID_ANNEE']}).then((response) => {
+          form.membre.adhesions.push(response.data.adhesion)
+          return response.data.adhesion
+        }, (err) => {
+          console.log(err)
+        })
+    }
   }
 }
 

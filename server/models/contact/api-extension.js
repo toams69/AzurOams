@@ -91,8 +91,8 @@ module.exports = function(app, connection, router){
 		} else if (req.body.operation === "CreateAdhesion") { // Create Adhesion
 
 			var post  = {"ID_FAMILLE": req.body.idFamille, "ID_TYPE_FACTURE": 1, "DATE_FACTURE": new Date(), 
-						 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": req.body.idMembre,
-						 "REMBOURSEMENT": 0, "ANNULATION": 0};
+						 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": req.params.contact_id,
+						 "REMBOURSEMENT": 0, "ANNULATION": 0, 'NB_REGLEMENT': 0};
 
 			console.log("--- Create Adhesion Adulte --- ");
 			var query = connection.query("INSERT INTO factures SET ?", post, function(err, info) {
@@ -127,10 +127,10 @@ module.exports = function(app, connection, router){
 			obj.adulte = rows[0];
 			var query = connection.query('SELECT * FROM  `adherents_adultes` WHERE ID_MEMBRE='+req.params.contact_id, function(err, rows) {
 				if (err) throw err;
-				obj.adhesions = rows;
+				obj.adhesions = rows || [];
 				var query = connection.query('SELECT * FROM  `inscriptions_activites` LEFT JOIN activites USING (ID_ACTIVITE) WHERE ID_MEMBRE='+req.params.contact_id, function(err, rows) {
 					if (err) throw err;
-					obj.activites = rows;
+					obj.activites = rows || [];
 					var idFactures = [];
 					_.each(obj.adhesions, function(a) {idFactures.push(a["ID_FACTURE"]);});
 					_.each(obj.activites, function(a) {idFactures.push(a["ID_FACTURE"]);});
@@ -192,7 +192,7 @@ module.exports = function(app, connection, router){
 			console.log("--- Create Adhesion Enfant --- ");
 			var post  = {"ID_FAMILLE": req.body.idFamille, "ID_TYPE_FACTURE": 2, "DATE_FACTURE": new Date(), 
 						 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": req.body.idMembre,
-						 "REMBOURSEMENT": 0, "ANNULATION": 0};
+						 "REMBOURSEMENT": 0, "ANNULATION": 0, 'NB_REGLEMENT': 0};
 			var query = connection.query("INSERT INTO factures SET ?", post, function(err, info) {
 				var idFacture = info.insertId;
 				if (err) throw err;
@@ -226,10 +226,10 @@ module.exports = function(app, connection, router){
 			obj.enfant = rows[0];
 			var query = connection.query('SELECT * FROM  `adherents_enfants` WHERE ID_ENFANT='+req.params.contact_id, function(err, rows) {
 				if (err) throw err;
-				obj.adhesions = rows;
+				obj.adhesions = rows || [];
 				var query = connection.query('SELECT * FROM  `inscriptions_activites` LEFT JOIN activites USING (ID_ACTIVITE) WHERE ID_ENFANT='+req.params.contact_id, function(err, rows) {
 					if (err) throw err;
-					obj.activites = rows;
+					obj.activites = rows || [];
 					var query = connection.query('SELECT * FROM  `inscrits_cl` WHERE ID_ENFANT='+req.params.contact_id, function(err, rows) {
 						var idFactures = [];
 						_.each(obj.adhesions, function(a) {idFactures.push(a["ID_FACTURE"]);});
