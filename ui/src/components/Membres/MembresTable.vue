@@ -88,11 +88,25 @@
         let result = this.tableData
           .filter((row) => {
             let isIncluded = false
-            for (let key of this.propsToSearch) {
-              let rowValue = row[key].toString().toLowerCase()
-              if (rowValue.includes && rowValue.includes(this.searchQuery.toLowerCase())) {
-                isIncluded = true
+            let i = 0
+            for (let index of this.searchQuery.split(' ')) {
+              if (i === 0) {
+                for (let key of this.propsToSearch) {
+                  let rowValue = row[key].toString().toLowerCase()
+                  if (rowValue.includes && rowValue.includes(index.toLowerCase())) {
+                    isIncluded = true
+                  }
+                }
+              } else if (isIncluded) {
+                isIncluded = false
+                for (let key of this.propsToSearch) {
+                  let rowValue = row[key].toString().toLowerCase()
+                  if (rowValue.includes && rowValue.includes(index.toLowerCase())) {
+                    isIncluded = true
+                  }
+                }
               }
+              i++
             }
             return isIncluded
           })
