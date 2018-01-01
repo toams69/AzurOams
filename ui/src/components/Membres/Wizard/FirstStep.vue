@@ -46,6 +46,7 @@
 </template>
 <script>
   import {mapFields} from 'vee-validate'
+  import french from 'vee-validate/dist/locale/fr'
 
   export default {
     computed: {
@@ -93,6 +94,15 @@
         this.$validator.clean()
         this.$validator.reset()
       }
+    },
+    created () {
+      this.$validator.localize('fr', {
+        messages: french.messages,
+        attributes: {
+          nomFamille: 'Le nom de famille'
+        }
+      })
+      this.$validator.localize('fr')
     }
   }
 </script>

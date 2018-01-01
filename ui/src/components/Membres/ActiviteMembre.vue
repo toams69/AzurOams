@@ -9,7 +9,7 @@
        <adhesion-form :membre='membre' :currentAnnee='annee' ref="adhesion"></adhesion-form>
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogAdhesionVisible = false">Annuler</el-button>
+        <el-button @click="cancelCreateAdhesion">Annuler</el-button>
         <el-button type="primary" @click="createAdhesion">Ajouter</el-button>
       </span>
     </el-dialog>
@@ -40,9 +40,9 @@
         </li>
       </ul>
       <br/><br/>
-      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogActiviteVisible = true" title="Créer une adhésion pour ce membre">
+      <!-- <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogActiviteVisible = true" title="Créer une adhésion pour ce membre">
           Insription à une activité
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -92,27 +92,38 @@
       }
     },
     methods: {
+      cancelCreateAdhesion () {
+        if (this.$refs && this.$refs.adhesion) {
+          this.$refs.adhesion.reset()
+        }
+        this.dialogAdhesionVisible = false
+      },
       createAdhesion () {
         if (this.$refs && this.$refs.adhesion) {
           const form = {
             annee: this.configuration.annees.find((e) => { return e['ID_ANNEE'] === this.annee }),
             membre: this.membre,
-            montant: this.$refs.adhesion.montant || 0,
-            numeroAdherent: this.$refs.adhesion.numeroAdherent
+            montant: this.$refs.adhesion.model.montant || 0,
+            numeroAdherent: this.$refs.adhesion.model.numeroAdherent
           }
-          this.$store.dispatch('CREATE_ADHESION', form).then(() => {
-            this.$notify({
-              component: {
-                template: `<span>Effectué avec succès</span>`
-              },
-              icon: 'ti-thumb-up',
-              horizontalAlign: 'center',
-              verticalAlign: 'bottom',
-              type: 'success'
+          this.$refs.adhesion.validate().then((result) => {
+            if (!result) {
+              return
+            }
+            this.$store.dispatch('CREATE_ADHESION', form).then(() => {
+              this.$notify({
+                component: {
+                  template: `<span>Effectué avec succès</span>`
+                },
+                icon: 'ti-thumb-up',
+                horizontalAlign: 'center',
+                verticalAlign: 'bottom',
+                type: 'success'
+              })
             })
+            this.$refs.adhesion.reset()
+            this.dialogAdhesionVisible = false
           })
-          this.$refs.adhesion.reset()
-          this.dialogAdhesionVisible = false
         }
       }
     },

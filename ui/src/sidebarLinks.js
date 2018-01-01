@@ -19,11 +19,11 @@ export default [
     icon: 'ti-clipboard',
     path: '/membres'
   },
-  {
-    name: 'Statistiques',
-    icon: 'ti-bar-chart-alt',
-    path: '/stats'
-  },
+  // {
+  //   name: 'Statistiques',
+  //   icon: 'ti-bar-chart-alt',
+  //   path: '/stats'
+  // },
   {
     name: 'Administration',
     icon: 'ti-view-list-alt',

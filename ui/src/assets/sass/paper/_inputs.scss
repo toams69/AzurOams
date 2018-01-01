@@ -45,12 +45,12 @@
         background-color: $white-bg;
         border-color: $success-color;
     }
-    .has-error &,
-    &.error, &[aria-invalid="true"]{
-        background-color: $danger-input-bg;
-        color: $danger-color;
-        border-color: $danger-color;
-    }
+    // .has-error &,
+    // &.error, &[aria-invalid="true"]{
+    //     background-color: $danger-input-bg;
+    //     color: $danger-color;
+    //     border-color: $danger-color;
+    // }
     .has-error &:focus,
     &.error:focus{
         background-color: $white-bg;

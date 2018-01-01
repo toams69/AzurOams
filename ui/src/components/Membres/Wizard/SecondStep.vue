@@ -121,6 +121,7 @@
 </template>
 <script>
   import {mapFields} from 'vee-validate'
+  import french from 'vee-validate/dist/locale/fr'
 
   export default {
     computed: {
@@ -192,6 +193,18 @@
       validate () {
         return this.$validator.validateAll()
       }
+    },
+    created () {
+      this.$validator.localize('fr', {
+        messages: french.messages,
+        attributes: {
+          nom: 'Le nom',
+          prenom: 'Le prénom',
+          civilites: 'La civilité',
+          ville: 'La ville'
+        }
+      })
+      this.$validator.localize('fr')
     }
   }
 </script>

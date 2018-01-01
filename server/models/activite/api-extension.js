@@ -3,9 +3,9 @@ module.exports = function(app, connection, router){
 	
 	.get(function(req, res) {
 		console.log("--- Get Activites --- ");
-		var query = connection.query('SELECT a.*, SUM(PRIX_FOURNITURE) AS PRIX_FOURNITURE FROM  `activites` a LEFT JOIN fournitures_activites USING (ID_ACTIVITE) LEFT JOIN fournitures USING (ID_FOURNITURE) LEFT JOIN professeurs USING (ID_PROFESSEUR) GROUP BY(ID_ACTIVITE)', function(err, rows) {
+		var query = connection.query('SELECT a.*, professeurs.*, SUM(PRIX_FOURNITURE) AS PRIX_FOURNITURE, COUNT(ID_FACTURE) AS INSCRITS FROM  `activites` a LEFT JOIN fournitures_activites USING (ID_ACTIVITE) LEFT JOIN inscriptions_activites USING (ID_ACTIVITE) LEFT JOIN fournitures USING (ID_FOURNITURE) LEFT JOIN professeurs USING (ID_PROFESSEUR) GROUP BY(ID_ACTIVITE)', function(err, rows) {
 			if (err) throw err;
-			res.respond(JSON.stringify(rows), 200);
+			res.json(rows);
 		});
 		console.log("=> "+ query.sql);
 
@@ -35,7 +35,7 @@ module.exports = function(app, connection, router){
 					}
 					var query = connection.query("INSERT INTO inscriptions_activites SET ?", post, function(err) {
 						if (err) throw err;
-						res.respond(JSON.stringify({adhesion:{ID_ENFANT: req.params.contact_id, ID_ANNEE: req.body.idAnnee, ID_FACTURE: idFacture, NUMERO_ADHERENT: req.body.numeroAdherent}}), 200);
+						res.json({adhesion:{ID_ENFANT: req.params.contact_id, ID_ANNEE: req.body.idAnnee, ID_FACTURE: idFacture, NUMERO_ADHERENT: req.body.numeroAdherent}});
 					});
 					console.log("=> "+ query.sql);
 				});
