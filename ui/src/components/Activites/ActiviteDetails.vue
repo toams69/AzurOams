@@ -1,6 +1,10 @@
 <template>
   <div>
-    {{idActivite}}  
+    <ul>
+      <li v-for="item in inscrits" :key="item['ID_ENFANT'] || item['ID_MEMBRE']">
+        {{item['NOM_ENFANT'] || item['NOM_MEMBRE']}} {{item['PRENOM_ENFANT'] || item['PRENOM_MEMBRE']}}
+      </li>
+    </ul>
     <div class="row" v-if="activite">
         <stats-card>
           <div class="text-center" slot="header">
@@ -28,11 +32,14 @@
       // mix the getters into computed with object spread operator
       ...mapGetters([
         'getFullConfiguration',
+        'getActiviteMembers',
         'getActivite'
       ]),
       activite () {
-        console.log('test')
         return this.getActivite(this.idActivite)
+      },
+      inscrits () {
+        return this.getActiviteMembers(this.idActivite)
       }
     },
     data () {
@@ -87,6 +94,7 @@
       }
     },
     mounted () {
+      this.$store.dispatch('GET_ACTIVITE', this.idActivite)
     },
     created () {
     }

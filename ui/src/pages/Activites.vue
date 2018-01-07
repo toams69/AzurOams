@@ -1,7 +1,7 @@
 <template>
   <div>
-    <activites-list v-if="!this.$route.query.a"></activites-list>
-    <activite-details v-else :idActivite="this.$route.query.a"></activite-details>
+    <activites-list v-if="!this.$route.query.a || isNaN(parseInt(this.$route.query.a))"></activites-list>
+    <activite-details v-else :idActivite="parseInt(this.$route.query.a)"></activite-details>
   </div>
 </template>
 <script>

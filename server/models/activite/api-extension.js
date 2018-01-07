@@ -13,6 +13,25 @@ module.exports = function(app, connection, router){
 
 
 	router.route('/activites/:activite_id')
+	.get(function(req, res) {
+		console.log("--- Get Activite --- " + req.params.activite_id);
+		var result = {};
+		var query = connection.query('SELECT a.*, professeurs.*, SUM(PRIX_FOURNITURE) AS PRIX_FOURNITURE, COUNT(ID_FACTURE) AS INSCRITS FROM `activites` a LEFT JOIN fournitures_activites USING (ID_ACTIVITE) LEFT JOIN inscriptions_activites USING (ID_ACTIVITE) LEFT JOIN fournitures USING (ID_FOURNITURE) LEFT JOIN professeurs USING (ID_PROFESSEUR) GROUP BY(ID_ACTIVITE) HAVING (ID_ACTIVITE = '+ req.params.activite_id +')', function(err, rows) {
+			if (err) throw err;
+			if (rows[0]) {
+				result = rows[0];
+				var query = connection.query('SELECT membres.*, enfants.* FROM `inscriptions_activites` LEFT JOIN membres USING(ID_MEMBRE) LEFT JOIN enfants USING(ID_ENFANT) WHERE `ID_ACTIVITE` =' + req.params.activite_id, function(err, rows) {
+					if (err) throw err;
+					result['LISTE_INSCRITS'] = rows
+					res.json(result);
+				});
+				console.log("=> "+ query.sql);
+			} else {
+				res.json(rows);
+			}
+		});
+		console.log("=> "+ query.sql);
+	})
 	.post(function(req, res) {
 		if (req.body.operation === "Inscription") { // Update Enfant
 			// Requete
