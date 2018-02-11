@@ -43,6 +43,12 @@ const getters = {
       return moment().isBetween(moment(a['DATE_DEBUT']), moment(a['DATE_FIN']))
     })
     return f ? f['ID_ANNEE'] : null
+  },
+  getAnnee: (state, getters) => (idAnnee) => {
+    const f = find(state.annees, (a) => {
+      return a['ID_ANNEE'] === idAnnee
+    })
+    return f ? moment(f['DATE_DEBUT']).format('YYYY') + ' - ' + moment(f['DATE_FIN']).format('YYYY') : ''
   }
 }
 
