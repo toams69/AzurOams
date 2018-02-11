@@ -17,7 +17,7 @@
             
           </el-tab-pane>
           <el-tab-pane label="Inscrits" name="second">
-            <ul>
+            <ul class='liste-inscrits'>
               <li v-for="item in inscrits" :key="item['ID_ENFANT'] || item['ID_MEMBRE']">
                 {{item['NOM_ENFANT'] || item['NOM_MEMBRE']}} {{item['PRENOM_ENFANT'] || item['PRENOM_MEMBRE']}}
               </li>
@@ -133,8 +133,13 @@
     vertical-align: bottom;
   }
   .tabs {
-    margin: 10px 0;
     padding: 10px;
+    position: absolute;
+    top: 100px;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    overflow: auto;
   }
   .activite-details {
     position: absolute;
@@ -154,6 +159,28 @@
   }
   .btn-move-left {
     position: absolute;
-    bottom: 15px; 
+    bottom: 15px;
+    left: 20px;
   }
+</style>
+<style lang="scss">
+.activite-details {
+  .tabs {
+    padding: 10px;
+    position: absolute;
+    top: 100px;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    overflow: auto;
+    .el-tabs__content {
+       position: absolute;
+      bottom: 0;
+      top: 55px;
+      overflow: auto;
+      left: 0;
+      right: 0; 
+    }
+  }
+}
 </style>
