@@ -19,6 +19,12 @@
     overflow-x: hidden;
     padding: 15px 0 0 110px;
     background-color: white;
-    background-image: url("/static/img/welcome/9.jpeg");
+    background-image: url("/static/img/welcome/11.jpg");
+    //background-position-y: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  h1 {
+    color: #FDFDFD;
   }
 </style>
