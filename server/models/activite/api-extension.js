@@ -42,11 +42,11 @@ module.exports = function(app, connection, router){
 				var idFamille = req.body.membre["ID_FAMILLE"];
 				// Creation Facture
 				var post  = {"ID_FAMILLE": idFamille, "ID_TYPE_FACTURE": isEnfant ? 4 : 5, "DATE_FACTURE": new Date(), 
-						 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": idMembre, "REMBOURSEMENT": 0, "ANNULATION": 0};
+						 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": idMembre, "REMBOURSEMENT": 0, "ANNULATION": 0, "NB_REGLEMENT": 0};
 				var query = connection.query("INSERT INTO factures SET ?", post, function(err, info) {
 					var idFacture = info.insertId;
 					if (err) throw err;
-					var post = {"ID_ACTIVITE": req.params.activite_id, "ID_FACTURE": idFacture, "DATE_INSCRIPTION": new Date()};
+					var post = {"ID_ACTIVITE": req.params.activite_id, "ID_FACTURE": idFacture, "DATE_INSCRIPTION": new Date(), "LISTE_ATTENTE" : 0, "ANNULATION": 0};
 					if (isEnfant) {
 						post["ID_ENFANT"] = req.body.membre["ID_ENFANT"];
 					} else {

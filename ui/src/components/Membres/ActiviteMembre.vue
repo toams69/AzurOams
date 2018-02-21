@@ -13,6 +13,19 @@
         <el-button type="primary" @click="createAdhesion">Ajouter</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="Inscription Activité"
+      :visible.sync="dialogActiviteVisible"
+      width="40%"
+      append-to-body >
+      <span>  
+       <activite-inscription-form :membre='membre' :currentAnnee='annee' ref="inscriptionA"></activite-inscription-form>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelCreateInscription">Annuler</el-button>
+        <el-button type="primary" @click="createInscription">Ajouter</el-button>
+      </span>
+    </el-dialog>
     <el-select v-model="annee" placeholder="Année">
       <el-option
         v-for="item in annees"
@@ -35,24 +48,25 @@
       Activités auxquelles ce membre est inscrit
       <br/><br/>
       <ul>
-        <li v-for="activite in activites">
+        <li v-for="activite in activites" v-bind:key="activite['ID_ACTIVITE']">
           <b>{{activite['NOM_ACTIVITE']}}</b>
         </li>
       </ul>
       <br/><br/>
-      <!-- <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogActiviteVisible = true" title="Créer une adhésion pour ce membre">
+      <button type="button" class="add-member btn btn-wd btn-info btn-fill btn-magnify" @click="dialogActiviteVisible = true" title="Créer une adhésion pour ce membre">
           Insription à une activité
-      </button> -->
+      </button>
     </div>
   </div>
 </template>
 <script>
   import moment from 'moment'
   import AdhesionForm from '@/components/Activites/AdhesionForm.vue'
-
+  import ActiviteInscriptionForm from '@/components/Activites/ActiviteInscriptionForm.vue'
   export default {
     components: {
-      AdhesionForm
+      AdhesionForm,
+      ActiviteInscriptionForm
     },
     data () {
       return {
@@ -92,6 +106,43 @@
       }
     },
     methods: {
+      cancelCreateInscription () {
+        if (this.$refs && this.$refs.inscriptionA) {
+          this.$refs.inscriptionA.reset()
+        }
+        this.dialogActiviteVisible = false
+      },
+      createInscription () {
+        if (this.$refs && this.$refs.inscriptionA) {
+          const form = {
+            annee: this.configuration.annees.find((e) => { return e['ID_ANNEE'] === this.annee }),
+            membre: this.membre,
+            montant: this.$refs.inscriptionA.montant || 0,
+            montantA: this.$refs.inscriptionA.montantA || 0,
+            montantF: this.$refs.inscriptionA.montantF || 0,
+            activite: this.$refs.inscriptionA._activite
+          }
+          this.$refs.inscriptionA.validate().then((result) => {
+            if (!result) {
+              return
+            }
+            this.$store.dispatch('INSCRIPTION_ACTIVITE', form).then(() => {
+              this.$notify({
+                component: {
+                  template: `<span>Inscription à l'activité <br/>
+                  Effectué avec succès</span>`
+                },
+                icon: 'ti-thumb-up',
+                horizontalAlign: 'center',
+                verticalAlign: 'bottom',
+                type: 'success'
+              })
+            })
+            this.$refs.inscriptionA.reset()
+          })
+        }
+        this.dialogActiviteVisible = false
+      },
       cancelCreateAdhesion () {
         if (this.$refs && this.$refs.adhesion) {
           this.$refs.adhesion.reset()
@@ -113,7 +164,8 @@
             this.$store.dispatch('CREATE_ADHESION', form).then(() => {
               this.$notify({
                 component: {
-                  template: `<span>Effectué avec succès</span>`
+                  template: `<span>Adhésion pour l'année <br/>
+                  Effectué avec succès</span>`
                 },
                 icon: 'ti-thumb-up',
                 horizontalAlign: 'center',

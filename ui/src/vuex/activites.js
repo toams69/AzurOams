@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { find, assignIn } from 'lodash'
+import moment from 'moment'
 
 const state = {
   'list': []
@@ -36,6 +37,25 @@ const actions = {
   GET_ACTIVITE ({ commit }, id) {
     axios.get('/api/activites/' + id).then((response) => {
       commit('SET_ACTIVITE', response.data)
+    }, (err) => {
+      console.log(err)
+    })
+  },
+  INSCRIPTION_ACTIVITE ({commit, dispatch}, form) {
+    const motif = `Inscription  à l'activité ${form.activite['NOM_ACTIVITE']} pour l'année ${moment(form.annee['DATE_DEBUT']).format('YYYY')} -> ${moment(form.annee['DATE_FIN']).format('YYYY')}
+    Activité  ${form.montantA} euros
+    Fourniture ${form.montantF} euros`
+    return axios.post('/api/activites/' + form.activite['ID_ACTIVITE'], {
+      operation: 'Inscription',
+      membre: form.membre,
+      montant: form.montant,
+      motif: motif
+    }).then((response) => {
+      if (form.membre['ID_ENFANT']) {
+        dispatch('GET_ENFANT', form.membre['ID_ENFANT'])
+      } else {
+        dispatch('GET_ADULTE', form.membre['ID_MEMBRE'])
+      }
     }, (err) => {
       console.log(err)
     })
