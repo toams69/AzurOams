@@ -28,7 +28,7 @@
           <span class="btn-label">
               <i class="ti-angle-left"></i>
           </span>
-          Back
+          Retour
         </button>
       </div>
   </div>

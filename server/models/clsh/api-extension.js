@@ -6,8 +6,7 @@ module.exports = function(app, connection, router){
 	.get(function(req, res) {		
 		var query = connection.query('SELECT * FROM `secteurs_cl`', function(err, rows) {
 			if (err) throw err;
-			var json = JSON.stringify(rows);
-			res.respond(json, 200);
+			res.json(rows);
 		});
 		console.log("=> "+ query.sql);
 	});
@@ -15,10 +14,9 @@ module.exports = function(app, connection, router){
 	router.route('/clsh/sejours')
 	
 	.get(function(req, res) {		
-		var query = connection.query('SELECT * FROM `sejours_cl` LEFT JOIN agrementations USING (ID_AGREMENTATION)', function(err, rows) {
+		var query = connection.query('SELECT *, YEAR(MIN(`DATE_JOURNEE`)) as ANNEE FROM `sejours_cl` LEFT JOIN agrementations USING (ID_AGREMENTATION) LEFT JOIN journees_cl USING (ID_SEJOUR) GROUP BY ID_SEJOUR', function(err, rows) {
 			if (err) throw err;
-			var json = JSON.stringify(rows);
-			res.respond(json, 200);
+			res.json(rows);
 		});
 		console.log("=> "+ query.sql);
 	});
@@ -95,8 +93,7 @@ module.exports = function(app, connection, router){
 							}
 						});
 						sejour.journees = journeesCl;
-						var json = JSON.stringify(sejour);
-						res.respond(json, 200);
+						res.json(sejour);
 					});
 				});
 				console.log("=> "+ query.sql);

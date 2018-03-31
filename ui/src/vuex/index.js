@@ -5,6 +5,7 @@ import membres from './membres'
 import factures from './factures'
 import configuration from './configuration'
 import activites from './activites'
+import clsh from './clsh'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     configuration,
     membres,
     factures,
-    activites
+    activites,
+    clsh
   }
 })
