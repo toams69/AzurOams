@@ -37,7 +37,7 @@
                     :data="dateSelected.inscrits"
                     highlight-current-row
                     border
-                    :default-sort = "{prop: 'NOM_ENFANT', order: 'descending'}"
+                    :default-sort = "{prop: 'NOM_ENFANT', order: 'ascending'}"
                     style="width: 100%">
                   <el-table-column v-for="column in tableMembreColumns"
                       :key="column.id"
