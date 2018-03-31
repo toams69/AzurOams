@@ -18,6 +18,7 @@
                     @row-click="handleCalendarCurrentChange"
                     border
                     ref="table"
+                    max-height='300px'
                     style="width: 100%">
                   <el-table-column v-for="column in tableCalendarColumns"
                       :key="column.id"
@@ -32,11 +33,12 @@
               </div>
               <multipane-resizer v-if="dateSelected"></multipane-resizer>
               <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }" v-if="dateSelected">
-                <h5>Inscrits</h5>
+                <h5>Inscrits ({{dateSelected.inscrits.length }})</h5>
                 <el-table v-if="dateSelected" class="table table-striped table-no-bordered table-hover"
                     :data="dateSelected.inscrits"
                     highlight-current-row
                     border
+                    max-height=500
                     :default-sort = "{prop: 'NOM_ENFANT', order: 'ascending'}"
                     style="width: 100%">
                   <el-table-column v-for="column in tableMembreColumns"
@@ -104,6 +106,12 @@
               prop: 'DATE_JOURNEE',
               label: 'Date',
               formatter: this.dateFormater
+            },
+            {
+              prop: 'count',
+              label: '',
+              minWidth: 20,
+              formatter: this.nbInscrit
             }
           ]
         }
@@ -116,6 +124,11 @@
               prop: 'DATE_JOURNEE',
               label: 'Date',
               formatter: this.dateFormater
+            },
+            {
+              prop: 'count',
+              label: 'Inscrits',
+              formatter: this.nbInscrit
             },
             {
               prop: 'AM',
@@ -247,6 +260,9 @@
       dateFormater (row, column) {
         return moment(row['DATE_JOURNEE']).format('dddd DD MMMM YYYY')
       },
+      nbInscrit (row, column) {
+        return row.inscrits.length
+      },
       periodeFormater (row, column) {
         if (['AM', 'PM', 'REPAS'].indexOf(column.property) >= 0) {
           switch (column.property) {
@@ -322,12 +338,12 @@
     text-align: left;
     padding: 0px;
     overflow: hidden; 
-    .table {
-      overflow-y: auto;
-      position: absolute;
-      top: 50px;
-      bottom: 0px;
-    }
+    // .table {
+    //   overflow-y: auto;
+    //   position: absolute;
+    //   top: 50px;
+    //   bottom: 0px;
+    // }
   }
   .custom-resizer > .multipane-resizer {
     margin: 0; left: 0;
