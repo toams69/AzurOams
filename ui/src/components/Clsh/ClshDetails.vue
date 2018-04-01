@@ -6,11 +6,34 @@
         <span><i style='height:40px; vertical-align: bottom;'>({{sejour['NUMERO_AGREMENTATION']}})</i></span>
         <el-tabs v-model="activeName" class='tabs'>
           <el-tab-pane label="Informations" name="first">
-            
+            <br/>
+            <h6>Séjour</h6>
+            {{sejour['NOM_SEJOUR'] ? sejour['NOM_SEJOUR'] : '-'}}
+            <h6>Code Analytique</h6>
+            {{sejour['CODE_ANA'] ? sejour['CODE_ANA'] : '-'}}
+            <h6>Numéro d'agrément</h6>
+            {{sejour['NUMERO_AGREMENTATION'] ? sejour['NUMERO_AGREMENTATION'] : '-'}}
+            <br/><br/>
+            <h6>Dates du séjour</h6>
+            <el-table class="table table-striped table-no-bordered table-hover"
+                :data="tableData"
+                border
+                max-height=300
+                style="width: 100%">
+              <el-table-column v-for="column in tableSejourColumns"
+                  :key="column.id"
+                  :min-width="column.minWidth"
+                  :prop="column.prop"
+                  :label="column.label"
+                  :filters='column.filters'
+                  :formatter='column.formatter'
+                  >
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <el-tab-pane label="Calendrier" name="second">
             <multipane class="custom-resizer" layout="vertical">
-              <div class="pane" :style="dateSelected ? { minWidth: '250px', width: '300px' } : { minWidth: '100%', width: '100%' } ">
+              <div class="pane" :style="{ minWidth: '250px', width: '300px' }">
                 <h5>Dates du séjour</h5>
                 <el-table class="table table-striped table-no-bordered table-hover"
                     :data="tableData"
@@ -31,15 +54,20 @@
                   </el-table-column>
                 </el-table>
               </div>
-              <multipane-resizer v-if="dateSelected"></multipane-resizer>
-              <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }" v-if="dateSelected">
-                <h5>Inscrits ({{dateSelected.inscrits.length }})</h5>
-                <el-table v-if="dateSelected" class="table table-striped table-no-bordered table-hover"
-                    :data="dateSelected.inscrits"
+              <multipane-resizer></multipane-resizer>
+              <div class="pane" :style="{ flexGrow: 1,  minWidth: '711px' }">
+                <h5>Inscrits ({{dateSelected ? dateSelected.inscrits.length : "-"}})</h5>
+                <button v-if="dateSelected" class="btn btn-icon btn-simple btn-imprimer" title="imprimer la liste" @click="imprimerInscrits">
+                  <i class='ti-printer'></i>
+                </button>
+                <el-table class="table table-striped table-no-bordered table-hover"
+                    :data="dateSelected ? dateSelected.inscrits : []"
                     highlight-current-row
                     border
                     max-height=500
                     :default-sort = "{prop: 'NOM_ENFANT', order: 'ascending'}"
+                    :summary-method="getSummaries"
+                    show-summary
                     style="width: 100%">
                   <el-table-column v-for="column in tableMembreColumns"
                       :key="column.id"
@@ -52,6 +80,9 @@
                       >
                   </el-table-column>
                 </el-table>
+                <div class='hidden' v-if="dateSelected">
+                  <clsh-inscrits-print :dateSelected='dateSelected' :sejour='sejour' id='clshInscritsPrint' ></clsh-inscrits-print>
+                </div>
               </div>
            </multipane>
           </el-tab-pane>
@@ -76,6 +107,7 @@
   import moment from 'moment'
   import { find } from 'lodash'
   import { Multipane, MultipaneResizer } from 'vue-multipane'
+  import ClshInscritsPrint from '@/components/Clsh/ClshInscritsPrint.vue'
   
   Vue.use(Table)
   Vue.use(TableColumn)
@@ -84,6 +116,7 @@
     components: {
       Multipane,
       MultipaneResizer,
+      ClshInscritsPrint,
       StatsCard
     },
     computed: {
@@ -100,21 +133,21 @@
         return this.getSejourDate(this.idSejour)
       },
       tableCalendarColumns () {
-        if (this.dateSelected) {
-          return [
-            {
-              prop: 'DATE_JOURNEE',
-              label: 'Date',
-              formatter: this.dateFormater
-            },
-            {
-              prop: 'count',
-              label: '',
-              minWidth: 20,
-              formatter: this.nbInscrit
-            }
-          ]
-        }
+        return [
+          {
+            prop: 'DATE_JOURNEE',
+            label: 'Date',
+            formatter: this.dateFormater
+          },
+          {
+            prop: 'count',
+            label: '',
+            minWidth: 20,
+            formatter: this.nbInscrit
+          }
+        ]
+      },
+      tableSejourColumns () {
         var periodes = this.getPeriodesSejour(this.idSejour)
         if (!find(periodes, function (p) {
           return ['M', 'M+R', 'JC', 'JC+R', 'AM', 'AM+R'].indexOf(p['ABREVIATION_PERIODE']) === -1
@@ -181,21 +214,26 @@
             },
             {
               prop: 'AGE_MEMBRE',
-              label: 'Age'
+              label: 'Age',
+              minWidth: 30,
+              formatter: this.ageFormater
             },
             {
               prop: 'AM',
               label: 'Matin',
+              minWidth: 30,
               formatter: this.periodeFormater
             },
             {
               prop: 'PM',
               label: 'Après Midi',
+              minWidth: 30,
               formatter: this.periodeFormater
             },
             {
               prop: 'REPAS',
               label: 'Repas',
+              minWidth: 30,
               formatter: this.periodeFormater
             }
           ]
@@ -211,7 +249,9 @@
             },
             {
               prop: 'AGE_MEMBRE',
-              label: 'Age'
+              label: 'Age',
+              minWidth: 30,
+              formatter: this.ageFormater
             },
             ...periodes.map((periode) => {
               return {
@@ -248,14 +288,7 @@
         window.history.back()
       },
       handleCalendarCurrentChange (elem) {
-        if (this.dateSelected && this.dateSelected['ID_JOURNEE'] === elem['ID_JOURNEE']) {
-          this.dateSelected = null
-          if (this.$refs && this.$refs.table) {
-            this.$refs.table.clearSelection()
-          }
-        } else {
-          this.dateSelected = elem
-        }
+        this.dateSelected = elem
       },
       dateFormater (row, column) {
         return moment(row['DATE_JOURNEE']).format('dddd DD MMMM YYYY')
@@ -276,6 +309,38 @@
         } else {
           return find(row.periodes, (p) => { return '' + p['ID_PERIODE_QUOTIDIENNE'] === column.property }) ? 'X' : ''
         }
+      },
+      ageFormater (row, column) {
+        return moment(Date.now()).diff(moment(row['NAISSANCE_ENFANT']), 'years')
+      },
+      getSummaries (param) {
+        const { columns, data } = param
+        const sums = []
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = 'Total'
+            return
+          }
+          if (index < 3) {
+            sums[index] = ''
+            return
+          }
+          sums[index] = data.reduce((prev, curr) => {
+            if (this.periodeFormater(curr, column) === 'X') {
+              return prev + 1
+            }
+            return prev
+          }, 0)
+        })
+        return sums
+      },
+      imprimerInscrits () {
+        var source = document.getElementById('clshInscritsPrint')
+        var destination = document.getElementById('print')
+        var copy = source.cloneNode(true)
+        copy.setAttribute('id', 'print')
+        destination.parentNode.replaceChild(copy, destination)
+        window.print()
       }
     },
     mounted () {
@@ -326,7 +391,13 @@
     bottom: 15px;
     left: 20px;
   }
-
+  .btn-imprimer {
+    display: inline;
+    float: right;
+  }
+  h5 {
+    display: inline-block;
+  }
   .custom-resizer {
     position: absolute;
     top: 15px;
