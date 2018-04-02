@@ -1,5 +1,14 @@
 <template>
   <div class="row" v-if="sejour">
+      <el-dialog
+        :title="'Résumé pour le séjour : ' + this.sejour['NOM_SEJOUR']"
+        :visible.sync="dialogMembreVisible"
+        width="60%"
+        append-to-body >
+        <span>  
+          <sejour-membre v-if="membreSelected" :sejour="sejour" :membre="membreSelected"></sejour-membre>
+        </span>
+      </el-dialog>
       <div class="sejour-details">
         <img class="sejour-icon" :src="getIcon(sejour['ID_SECTEUR'])" />
         <h3>{{sejour['NOM_SEJOUR']}}</h3>
@@ -19,8 +28,25 @@
                 :data="tableData"
                 border
                 max-height=300
-                style="width: 100%">
+                style="width: 90%">
               <el-table-column v-for="column in tableSejourColumns"
+                  :key="column.id"
+                  :min-width="column.minWidth"
+                  :prop="column.prop"
+                  :label="column.label"
+                  :filters='column.filters'
+                  :formatter='column.formatter'
+                  >
+              </el-table-column>
+            </el-table>
+            <br/><br/>
+            <h6>Liste des Inscrits</h6>
+            <el-table class="table table-striped table-no-bordered table-hover"
+                :data="tableInscrits"
+                border
+                max-height=300
+                style="width: 450px">
+              <el-table-column v-for="column in tableInscritsColumns"
                   :key="column.id"
                   :min-width="column.minWidth"
                   :prop="column.prop"
@@ -63,6 +89,7 @@
                 <el-table class="table table-striped table-no-bordered table-hover"
                     :data="dateSelected ? dateSelected.inscrits : []"
                     highlight-current-row
+                    @row-dblclick='handleMemberClicked'
                     border
                     max-height=500
                     :default-sort = "{prop: 'NOM_ENFANT', order: 'ascending'}"
@@ -86,7 +113,10 @@
               </div>
            </multipane>
           </el-tab-pane>
-          <el-tab-pane label="Présences" name="third">
+          <el-tab-pane label="Inscription" name="third">
+            
+          </el-tab-pane>
+          <el-tab-pane label="Présences" name="fourth">
             
           </el-tab-pane>
         </el-tabs>
@@ -105,9 +135,10 @@
   import StatsCard from '@/components/Cards/StatsCard.vue'
   import {Table, TableColumn} from 'element-ui'
   import moment from 'moment'
-  import { find } from 'lodash'
+  import { find, uniqBy, each } from 'lodash'
   import { Multipane, MultipaneResizer } from 'vue-multipane'
   import ClshInscritsPrint from '@/components/Clsh/ClshInscritsPrint.vue'
+  import SejourMembre from '@/components/Clsh/SejourMembre.vue'
   
   Vue.use(Table)
   Vue.use(TableColumn)
@@ -117,6 +148,7 @@
       Multipane,
       MultipaneResizer,
       ClshInscritsPrint,
+      SejourMembre,
       StatsCard
     },
     computed: {
@@ -131,6 +163,29 @@
       },
       tableData () {
         return this.getSejourDate(this.idSejour)
+      },
+      tableInscrits () {
+        if (this.getSejour(this.idSejour)) {
+          let result = []
+          each(this.getSejour(this.idSejour).journees, (j) => {
+            result = result.concat(j.inscrits)
+          })
+          return uniqBy(result, (e) => {
+            return e['ID_ENFANT']
+          })
+        }
+      },
+      tableInscritsColumns () {
+        return [
+          {
+            prop: 'NOM_ENFANT',
+            label: 'Nom'
+          },
+          {
+            prop: 'PRENOM_ENFANT',
+            label: 'Prénom'
+          }
+        ]
       },
       tableCalendarColumns () {
         return [
@@ -268,6 +323,8 @@
     data () {
       return {
         activeName: 'first',
+        dialogMembreVisible: false,
+        membreSelected: null,
         dateSelected: null
       }
     },
@@ -289,6 +346,10 @@
       },
       handleCalendarCurrentChange (elem) {
         this.dateSelected = elem
+      },
+      handleMemberClicked (elem) {
+        this.membreSelected = elem
+        this.dialogMembreVisible = true
       },
       dateFormater (row, column) {
         return moment(row['DATE_JOURNEE']).format('dddd DD MMMM YYYY')
