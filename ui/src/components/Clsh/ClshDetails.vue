@@ -23,7 +23,7 @@
             <h6>Numéro d'agrément</h6>
             {{sejour['NUMERO_AGREMENTATION'] ? sejour['NUMERO_AGREMENTATION'] : '-'}}
             <br/><br/>
-            <h6>Dates du séjour</h6>
+            <h6>Dates du séjour ({{tableData.length}})</h6>
             <el-table class="table table-striped table-no-bordered table-hover"
                 :data="tableData"
                 border
@@ -40,11 +40,13 @@
               </el-table-column>
             </el-table>
             <br/><br/>
-            <h6>Liste des Inscrits</h6>
+            <h6>Liste des Inscrits ({{tableInscrits.length}})</h6>
             <el-table class="table table-striped table-no-bordered table-hover"
                 :data="tableInscrits"
                 border
+                :default-sort = "{prop: 'NOM_ENFANT', order: 'ascending'}"
                 max-height=300
+                @row-dblclick='handleMemberClicked'
                 style="width: 450px">
               <el-table-column v-for="column in tableInscritsColumns"
                   :key="column.id"
@@ -114,18 +116,18 @@
            </multipane>
           </el-tab-pane>
           <el-tab-pane label="Inscription" name="third">
-            
+            <clsh-inscription :sejour='sejour'></clsh-inscription>
           </el-tab-pane>
           <el-tab-pane label="Présences" name="fourth">
             
           </el-tab-pane>
         </el-tabs>
-        <button type="button" class="btn btn-wd btn-default btn-fill btn-move-left" @click="onBackPressed">
+        <!-- <button type="button" class="btn btn-wd btn-default btn-fill btn-move-left" @click="onBackPressed">
           <span class="btn-label">
               <i class="ti-angle-left"></i>
           </span>
           Retour
-        </button>
+        </button> -->
       </div>
   </div>
 </template> 
@@ -138,6 +140,7 @@
   import { find, uniqBy, each } from 'lodash'
   import { Multipane, MultipaneResizer } from 'vue-multipane'
   import ClshInscritsPrint from '@/components/Clsh/ClshInscritsPrint.vue'
+  import ClshInscription from '@/components/Clsh/ClshInscription.vue'
   import SejourMembre from '@/components/Clsh/SejourMembre.vue'
   
   Vue.use(Table)
@@ -148,6 +151,7 @@
       Multipane,
       MultipaneResizer,
       ClshInscritsPrint,
+      ClshInscription,
       SejourMembre,
       StatsCard
     },

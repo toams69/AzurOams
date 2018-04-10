@@ -193,6 +193,10 @@ const getters = {
     // check if the prenom is defined to be sure the enfant obj is complete
     return state.list.find(m => m['ID_ENFANT'] === id && m['PRENOM_ENFANT']) || {}
   },
+  getAllEnfant: (state, getters) => () => {
+    // check if the prenom is defined to be sure the enfant obj is complete
+    return state.list.filter(m => m['ID_ENFANT']) || []
+  },
   getFactureByEnfantId: (state, getters) => (id) => {
     const enfant = state.list.find(m => m['ID_ENFANT'] === id)
     return enfant ? enfant.factures : []
