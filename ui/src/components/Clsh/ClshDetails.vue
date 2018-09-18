@@ -116,7 +116,7 @@
            </multipane>
           </el-tab-pane>
           <el-tab-pane label="Inscription" name="third">
-            <clsh-inscription :sejour='sejour'></clsh-inscription>
+            <clsh-inscription :sejour='sejour' :idSejour='idSejour'></clsh-inscription>
           </el-tab-pane>
           <el-tab-pane label="Présences" name="fourth">
             

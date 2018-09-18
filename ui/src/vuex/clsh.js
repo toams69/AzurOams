@@ -71,6 +71,14 @@ const getters = {
     var find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)
     return find && find.journees ? find.journees : []
   },
+  getSejourDateForMembre: (state, getters) => (idSejour, idEnfant) => {
+    var find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)
+    return find && find.journees ? find.journees.map(function (e) {
+      return assignIn(e, {
+        _periodes: []
+      })
+    }) : []
+  },
   getPeriodesSejour: (state, getters) => (idSejour) => {
     var ret = []
     var find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)

@@ -26,6 +26,7 @@
 
         <el-table class="table table-striped table-no-bordered table-hover"
             :data="tableData"
+            @cell-click='handleCellClicked'
             border
             max-height=300
             style="width: 90%">
@@ -43,7 +44,50 @@
 
       <tab-content title="Facturation"
                   icon="ti-book">
-      
+        
+        <div class="form-group">
+          <label class="">Membre</label>
+          <div style="display:inline-block; margin-left:10px;">
+            {{membreSelected['NOM_MEMBRE']}} {{membreSelected['PRENOM_MEMBRE']}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="">Table Tarifaire</label>
+          <div style="display:inline-block; margin-left:10px;">
+            {{sejour.tableTarif['NOM_TABLE']}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="">Coeficient Caf à appliquer</label>
+          <div style="display:inline-block; margin-left:10px;">
+            <input type='number'/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="">Montant par journée</label>
+          <el-table class="table table-striped table-no-bordered table-hover"
+            :data="tableData2"
+            border
+            max-height=300
+            style="width: 90%">
+            <el-table-column v-for="column in tableSejourColumns2"
+                :key="column.id"
+                :min-width="column.minWidth"
+                :prop="column.prop"
+                :label="column.label"
+                :filters='column.filters'
+                :formatter='column.formatter'
+                >
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="form-group">
+          <label class="">Total</label>
+          <div style="display:inline-block; margin-left:10px;">
+            <input />
+          </div>
+        </div>
+
       </tab-content>
 
       <tab-content title="Valider"
@@ -67,6 +111,9 @@
     props: {
       sejour: {
         type: Object
+      },
+      idSejour: {
+        type: Number
       }
     },
     components: {
@@ -77,15 +124,21 @@
       // mix the getters into computed with object spread operator
       ...mapGetters([
         'getAllEnfant',
-        'getSejourDate',
+        'getSejourDateForMembre',
         'getPeriodesSejour'
       ]),
-      tableData () {
-        return this.getSejourDate(this.sejour['ID_SEJOUR'])
+      // tableData () {
+      //   return this.getSejourDateForMembre(this.idSejour, this.membreSelected['ID_ENFANT'])
+      // },
+      tableData2 () {
+        return this.tableData.filter((e) => {
+          return e._periodes.length
+        })
       },
       tableSejourColumns () {
         var periodes = this.getPeriodesSejour(this.idSejour)
-        if (!find(periodes, function (p) {
+        console.log(periodes)
+        if (periodes.length === 6 && !find(periodes, function (p) {
           return ['M', 'M+R', 'JC', 'JC+R', 'AM', 'AM+R'].indexOf(p['ABREVIATION_PERIODE']) === -1
         })) {
           return [
@@ -117,7 +170,7 @@
               label: 'Date',
               formatter: this.dateFormater
             },
-            ...this.getPeriodesSejour(this.idSejour).map((periode) => {
+            ...periodes.map((periode) => {
               return {
                 prop: '' + periode['ID_PERIODE_QUOTIDIENNE'],
                 label: periode['INTITULE_PERIODE'],
@@ -127,11 +180,24 @@
             })
           ]
         }
+      },
+      tableSejourColumns2 () {
+        var ret = this.tableSejourColumns.slice(0)
+        ret.push({
+          prop: 'PRIX',
+          label: 'Prix'
+        })
+        return ret
+      },
+      dateSelected () {
+        return {}
       }
     },
     data () {
       return {
         membre: '',
+        membreSelected: {},
+        tableData: [],
         active: 0
       }
     },
@@ -153,10 +219,20 @@
         return moment(row['DATE_JOURNEE']).format('dddd DD MMMM YYYY')
       },
       periodeFormater (row, column) {
-        return ''
+        return row._periodes.indexOf(column.property) !== -1 ? 'X' : ''
+      },
+      handleCellClicked (row, column) {
+        var i = row._periodes.indexOf(column.property)
+        if (i !== -1) {
+          row._periodes.splice(i, 1)
+        } else {
+          row._periodes.push(column.property)
+        }
+        this.tableData = this.tableData.slice(0)
       },
       handleSelect (item) {
-        console.log(item)
+        this.membreSelected = item.model
+        this.tableData = this.getSejourDateForMembre(this.idSejour, this.membreSelected['ID_ENFANT'])
       }
     }
   }
@@ -168,7 +244,7 @@
   .sejour-details {
     .vue-form-wizard {
       .wizard-tab-content {
-        height: 400px;
+        min-height: 400px;
       }
       .wizard-card-footer {
         text-align: center;
