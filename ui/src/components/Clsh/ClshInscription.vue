@@ -4,6 +4,7 @@
       title="Nouvelle inscription"
       subtitle=''
       shape="square"
+      @on-complete="wizardComplete"
       error-color="#EB5E28"
       step-size="xs"
       color="#3498db">
@@ -28,11 +29,11 @@
             :data="tableData"
             @cell-click='handleCellClicked'
             border
-            max-height=300
             style="width: 90%">
           <el-table-column v-for="column in tableSejourColumns"
               :key="column.id"
               :min-width="column.minWidth"
+              :width="column.width"
               :prop="column.prop"
               :label="column.label"
               :filters='column.filters'
@@ -60,7 +61,13 @@
         <div class="form-group">
           <label class="">Coeficient Caf à appliquer</label>
           <div style="display:inline-block; margin-left:10px;">
-            <input type='number'/>
+            <input type='number' v-model="coefCaf"/>
+          </div>
+        </div>
+        <div v-if='idFacture' class="form-group">
+          <label class=""># Facture</label>
+          <div style="display:inline-block; margin-left:10px;">
+            {{idFacture}}
           </div>
         </div>
         <div class="form-group">
@@ -68,23 +75,41 @@
           <el-table class="table table-striped table-no-bordered table-hover"
             :data="tableData2"
             border
-            max-height=300
             style="width: 90%">
             <el-table-column v-for="column in tableSejourColumns2"
                 :key="column.id"
                 :min-width="column.minWidth"
+                :width="column.width"
                 :prop="column.prop"
                 :label="column.label"
                 :filters='column.filters'
                 :formatter='column.formatter'
                 >
             </el-table-column>
+            <el-table-column
+            v-if='this.ristournes.length'
+            label="Ristourne"
+            width="110">
+            <template slot-scope="scope">
+              <el-select placeholder="%" v-model="scope.row.ristourne" @change="setMontant">
+                <el-option  :key="0"
+                            :label="none"
+                            :value="null">
+                </el-option>
+                <el-option v-for="item in scope.row.ristournes" 
+                            :key="item['ID_RISTOURNE']"
+                            :label="item['PRCT_RISTOURNE'] + '%'"
+                            :value="item['ID_RISTOURNE']">
+                </el-option>
+              </el-select>
+            </template>
+          </el-table-column>
           </el-table>
         </div>
         <div class="form-group">
           <label class="">Total</label>
           <div style="display:inline-block; margin-left:10px;">
-            <input />
+            <input v-model="prix" />
           </div>
         </div>
 
@@ -92,12 +117,17 @@
 
       <tab-content title="Valider"
                   icon="ti-check">
-      
+        <div v-if='idFacture'>
+          La facture <b>#{{idFacture}}</b> pour l'enfant <b>{{membreSelected['NOM_MEMBRE']}} {{membreSelected['PRENOM_MEMBRE']}}</b> va être mise à jour avec les informations suivantes
+          <br/><br/>
+          Jour(s) d'activités - <b>{{ this.tableData.filter((e) => e._periodes.length).length}}</b> <br/><br/>
+          Prix - <b>{{this.prix}} €</b>
+        </div>
       </tab-content>
 
-      <button slot="prev" class="btn btn-default btn-fill btn-wd btn-back">Précédent</button>
-      <button slot="next" class="btn btn-info btn-fill btn-wd btn-next">Suivant</button>
-      <button slot="finish" class="btn btn-info btn-fill btn-wd">Terminer</button>
+        <button slot="prev" class="btn btn-default btn-fill btn-wd btn-back">Précédent</button>
+        <button slot="next" class="btn btn-info btn-fill btn-wd btn-next">Suivant</button>
+        <button slot="finish" class="btn btn-info btn-fill btn-wd">Terminer</button>
       </form-wizard>
   </div>
 </template>
@@ -125,14 +155,33 @@
       ...mapGetters([
         'getAllEnfant',
         'getSejourDateForMembre',
-        'getPeriodesSejour'
+        'getPeriodesSejour',
+        'getTarifForPeriodes',
+        'getFamilleById'
       ]),
-      // tableData () {
-      //   return this.getSejourDateForMembre(this.idSejour, this.membreSelected['ID_ENFANT'])
-      // },
+      ristournes () {
+        if (this.sejour && this.sejour.tableTarif && this.sejour.tableTarif.ristournes) {
+          return this.sejour.tableTarif.ristournes
+        } else {
+          return []
+        }
+      },
+      prix () {
+        return this.tableData2.reduce((accumulator, item) => accumulator + item.PRIX, 0)
+      },
       tableData2 () {
         return this.tableData.filter((e) => {
           return e._periodes.length
+        }).map((item) => {
+          let price = this.getTarifForPeriodes(this.idSejour, this.coefCaf, item._periodes.map((p) => parseInt(p)))
+          if (item.ristourne) {
+            const r = this.ristournes.find((r) => r['ID_RISTOURNE'] === item.ristourne)
+            price = price - (price * r['PRCT_RISTOURNE'] / 100)
+          }
+          return {
+            ...item,
+            PRIX: price
+          }
         })
       },
       tableSejourColumns () {
@@ -144,6 +193,7 @@
           return [
             {
               prop: 'DATE_JOURNEE',
+              width: 200,
               label: 'Date',
               formatter: this.dateFormater
             },
@@ -168,6 +218,7 @@
             {
               prop: 'DATE_JOURNEE',
               label: 'Date',
+              width: 200,
               formatter: this.dateFormater
             },
             ...periodes.map((periode) => {
@@ -184,6 +235,7 @@
       tableSejourColumns2 () {
         var ret = this.tableSejourColumns.slice(0)
         ret.push({
+          width: 100,
           prop: 'PRIX',
           label: 'Prix'
         })
@@ -196,12 +248,17 @@
     data () {
       return {
         membre: '',
+        idFacture: null,
+        coefCaf: 0,
         membreSelected: {},
         tableData: [],
         active: 0
       }
     },
     methods: {
+      setMontant () {
+        this.tableData = this.tableData2.slice(0)
+      },
       querySearch (queryString, cb) {
         var links = this.getAllEnfant().map((e) => {
           return {value: e['NOM_MEMBRE'] + ' ' + e['PRENOM_MEMBRE'], model: e}
@@ -233,6 +290,21 @@
       handleSelect (item) {
         this.membreSelected = item.model
         this.tableData = this.getSejourDateForMembre(this.idSejour, this.membreSelected['ID_ENFANT'])
+        this.tableData.forEach((d) => { d.ristournes = this.ristournes })
+        const fam = this.getFamilleById(this.membreSelected['ID_FAMILLE'])
+        this.coefCaf = fam ? fam['QUOTIENT_CAF_FAMILLE'] : 0
+        this.idFacture = null
+        this.sejour.journees.forEach((j) => {
+          const i = j.inscrits.find((i) => {
+            return i['ID_ENFANT'] === this.membreSelected['ID_ENFANT']
+          })
+          if (i) {
+            this.idFacture = i['ID_FACTURE']
+            return false
+          }
+        })
+      },
+      wizardComplete () {
       }
     }
   }
@@ -254,5 +326,21 @@
         }
       }
     }
+    .clsh-inscription {
+      .wizard-header {
+        padding: 5px;
+      }
+      .vue-form-wizard .wizard-tab-content {
+        padding: 15px 20px 10px;
+      }
+      .el-table td .cell {
+        height: 40px;
+        line-height: 40px;
+      }
+      .el-input__inner {
+        padding: 0 9px;
+      }
+    }
   }
+  
 </style>

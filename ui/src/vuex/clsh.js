@@ -74,8 +74,14 @@ const getters = {
   getSejourDateForMembre: (state, getters) => (idSejour, idEnfant) => {
     var find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)
     return find && find.journees ? find.journees.map(function (e) {
+      const inscrit = e.inscrits.find((i) => i['ID_ENFANT'] === idEnfant)
+      let ristourne = null
+      if (inscrit && find.tableTarif && find.tableTarif.ristournes) {
+        ristourne = find.tableTarif.ristournes.find((r) => r['PRCT_RISTOURNE'] === inscrit['RISTOURNE'])
+      }
       return assignIn(e, {
-        _periodes: []
+        ristourne: ristourne ? ristourne['ID_RISTOURNE'] : null,
+        _periodes: inscrit ? inscrit.periodes.map((p) => '' + p['ID_PERIODE_QUOTIDIENNE']) : []
       })
     }) : []
   },
@@ -86,6 +92,24 @@ const getters = {
       ret = uniqWith(find.journees.reduce(function (a, val) { return a.concat(val.periodes) }, ret), isEqual)
     }
     return ret
+  },
+  getTableTarifsSejour: (state, getters) => (idSejour) => {
+    var find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)
+    return find ? find.tableTarif : null
+  },
+  getTarifForPeriodes: (state, getters) => (idSejour, coefCaf, periodes) => {
+    let find = state.sejours.find(s => s['ID_SEJOUR'] === idSejour)
+    find = find ? find.tableTarif : null
+    let prix = 0
+    if (find && find.table) {
+      periodes.forEach((periode) => {
+        const _p = find.table.find((item) => {
+          return (item.ID_PERIODE_QUOTIDIENNE === periode && item.MAX_FOURCHETTE >= coefCaf && item.MIN_FOURCHETTE <= coefCaf)
+        })
+        prix += (_p ? _p.PRIX : 0)
+      })
+    }
+    return prix
   }
 }
 export default {

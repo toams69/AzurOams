@@ -17,6 +17,29 @@ module.exports = function(app, connection, router){
 			res.send(json);
 		});
 
+	})
+	.post(function(req, res) {
+		const query = `INSERT INTO FACTURES (
+			ID_FACTURE
+		   ,ID_FAMILLE
+		   ,ID_TYPE_FACTURE
+		   ,DATE_FACTURE
+		   ,MONTANT_FACTURE
+		   ,DATE_REGLEMENT
+		   ,ANNULATION
+		   ,NB_REGLEMENT
+		   ,DATE_ANNULATION
+		   ,REMBOURSEMENT
+		   ,MOTIF_FACTURE
+		   ,ID_MEMBRE 
+		 ) VALUES (
+			NULL, ${req.params.idFamille}, ${req.params.idType},  ${req.params.dateF}, ${req.params.montant}, '', 0, 0, '', 0, ${req.params.motif}, ${req.params.idMembre}
+		 );`;
+		var q = connection.query(query, function(err, info) {
+			var idFacture = info.insertId;
+			res.json({idFacture: idFacture});
+		});
+		console.log("=> "+ q.sql);
 	});
 
 	router.route('/factures/:facture_id')
