@@ -41,7 +41,7 @@ export default [
     children: [{
       name: 'Adherents',
       isRoute: false,
-      path: 'http://localhost:8080/api/exports/adherents'
+      path: window.location.origin + '/api/exports/adherents'
     }
     ]
   }

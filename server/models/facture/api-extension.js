@@ -49,13 +49,13 @@ module.exports = function(app, connection, router){
 			if (err) throw err;
 			obj = rows[0];
 
-			var query = "SELECT ID_FACTURE as isAdhesionAdulte, 0 as isAdhesionEnfant, 0 as isActivtie, 0 as isCL FROM `adherents_adultes` WHERE ID_FACTURE = "+req.params.facture_id+" GROUP BY(ID_FACTURE)\
-						union \
-						SELECT 0,ID_FACTURE, 0, 0 FROM `adherents_enfants`  WHERE ID_FACTURE = "+req.params.facture_id+" GROUP BY(ID_FACTURE) \
-						union\
-						SELECT 0, 0, ID_FACTURE, 0 FROM `inscriptions_activites`  WHERE ID_FACTURE = "+req.params.facture_id+" GROUP BY(ID_FACTURE)\
-						union\
-						SELECT 0, 0, 0, ID_FACTURE FROM `inscrits_cl`  WHERE ID_FACTURE = "+req.params.facture_id+" GROUP BY(ID_FACTURE)";
+			var query = `SELECT ID_FACTURE as isAdhesionAdulte, 0 as isAdhesionEnfant, 0 as isActivtie, 0 as isCL FROM \`adherents_adultes\` WHERE ID_FACTURE = ${req.params.facture_id} GROUP BY(ID_FACTURE)
+						union
+						SELECT 0,ID_FACTURE, 0, 0 FROM \`adherents_enfants\`  WHERE ID_FACTURE = ${req.params.facture_id} GROUP BY(ID_FACTURE)
+						union
+						SELECT 0, 0, ID_FACTURE, 0 FROM \`inscriptions_activites\`  WHERE ID_FACTURE =  ${req.params.facture_id} GROUP BY(ID_FACTURE)
+						union
+						SELECT 0, 0, 0, ID_FACTURE FROM \`inscrits_cl\`  WHERE ID_FACTURE =  ${req.params.facture_id} GROUP BY(ID_FACTURE)`;
 			var reglement = "SELECT * FROM  `reglement` LEFT JOIN type_reglement USING (ID_TYPE_REGLEMENT) LEFT JOIN banque USING (ID_BANQUE) WHERE ID_FACTURE = "+req.params.facture_id +" ORDER BY ID_REGLEMENT DESC";
 
 
@@ -64,7 +64,7 @@ module.exports = function(app, connection, router){
 				obj.reglements = rows;
 				connection.query(query, function(err, rows) {
 					if (err) throw err;
-					var table = rows[0].isAdhesionAdulte ? "adherents_adultes" : rows[0].isAdhesionEnfant ? "adherents_enfants" : rows[0].isActivtie ? "inscriptions_activites" : rows[0].isCL ? "inscrits_cl" : "";
+					var table = rows.length ? rows[0].isAdhesionAdulte ? "adherents_adultes" : rows[0].isAdhesionEnfant ? "adherents_enfants" : rows[0].isActivtie ? "inscriptions_activites" : rows[0].isCL ? "inscrits_cl" : "" : '';
 					switch (table) {
 						case 'adherents_adultes':
 						case 'adherents_enfants':

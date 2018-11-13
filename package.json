@@ -1,0 +1,18 @@
+{
+  "name": "azuroams-app",
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "csv-write-stream": "^2.0.0",
+    "express": "~4.0.0",
+    "fs.extra": "*",
+    "http": "*",
+    "log4js": "*",
+    "morgan": "~1.0.0",
+    "mysql": "*",
+    "request": "*",
+    "supervisor": "*",
+    "underscore": "1.4.2",
+    "unzip": "*",
+    "util": "*"
+  }
+}

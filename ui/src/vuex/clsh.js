@@ -51,6 +51,27 @@ const actions = {
     }, (err) => {
       console.log(err)
     })
+  },
+  INSCRIPTION_CLSH ({commit, dispatch}, form) {
+    if (!form.idSejour) {
+      return
+    }
+    const id = form.idSejour
+    const sejour = state.sejours.find(s => s['ID_SEJOUR'] === id)
+    const nomSejour = sejour ? sejour['NOM_SEJOUR'] : ''
+    return axios.post(`/api/clsh/sejours/${id}/inscrits`, {
+      idEnfant: form.idEnfant,
+      idMembre: form.idMembre,
+      journees: form.journees,
+      montant: form.montant,
+      motif: `Inscription Centre de loisir ${nomSejour}`,
+      idFamille: form.idFamille,
+      idFacture: form.idFacture
+    }).then((response) => {
+      commit('SET_SEJOUR', response.data)
+    }, (err) => {
+      console.log(err)
+    })
   }
 }
 

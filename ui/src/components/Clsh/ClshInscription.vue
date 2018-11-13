@@ -109,7 +109,7 @@
         <div class="form-group">
           <label class="">Total</label>
           <div style="display:inline-block; margin-left:10px;">
-            <input v-model="prix" />
+            <input :value="total !== '' ? total : prix" @input="updateTotal" />
           </div>
         </div>
 
@@ -248,6 +248,7 @@
     data () {
       return {
         membre: '',
+        total: '',
         idFacture: null,
         coefCaf: 0,
         membreSelected: {},
@@ -258,6 +259,12 @@
     methods: {
       setMontant () {
         this.tableData = this.tableData2.slice(0)
+      },
+      updateTotal (e) {
+        this.total = parseFloat(e.target.value)
+        if (isNaN(this.total)) {
+          this.total = ''
+        }
       },
       querySearch (queryString, cb) {
         var links = this.getAllEnfant().map((e) => {
@@ -305,6 +312,34 @@
         })
       },
       wizardComplete () {
+        const form = {}
+        form.idSejour = this.idSejour
+        form.idEnfant = this.membreSelected['ID_ENFANT']
+        form.idFamille = this.membreSelected['ID_FAMILLE']
+        form.idMembre = this.membreSelected['ID_MEMBRE']
+        form.idFacture = this.idFacture
+        form.motifFacture = 'Inscription Centre de loisir Centre de loisirs 3-6 ans - Mercredis Sept. à Déc.2010 CL 3-6 ans'
+        form.journees = this.tableData2.map((item) => {
+          return {
+            periodes: item._periodes.filter((i) => !isNaN(i)),
+            ristourne: item.ristournes.find((r) => r['ID_RISTOURNE'] === item.ristourne) ? item.ristournes.find((r) => r['ID_RISTOURNE'] === item.ristourne)['PRCT_RISTOURNE'] : 0,
+            ID_JOURNEE: item['ID_JOURNEE'],
+            PRIX: item['PRIX']
+          }
+        })
+        form.montant = this.total !== '' ? this.total : this.prix
+        this.$store.dispatch('INSCRIPTION_CLSH', form).then(() => {
+          this.$notify({
+            component: {
+              template: `<span>Inscription au séjour <br/>
+              Effectué avec succès</span>`
+            },
+            icon: 'ti-thumb-up',
+            horizontalAlign: 'center',
+            verticalAlign: 'bottom',
+            type: 'success'
+          })
+        })
       }
     }
   }

@@ -113,74 +113,79 @@ module.exports = function(app, connection, router){
 		console.log("=> "+ query.sql);
 	});
 	
-	// router.route('/clsh/sejours/:sejour_id/inscrits')
-	// .post(function(req, res) {
-	// 	console.log("--- add inscrit CL ---" );
+	router.route('/clsh/sejours/:sejour_id/inscrits')
+	 .post(function(req, res) {
+	 	console.log("--- add inscrit CL ---" );
+		const create = (idFacture, idEnfant, idJournee, idPeriode, ristourne, prix) => {
+			const query = `INSERT INTO \`INSCRITS_CL\` (
+				ID_ENFANT
+			   ,ID_JOURNEE
+			   ,ID_PERIODE_QUOTIDIENNE
+			   ,ID_FACTURE
+			   ,DATE_INSCRIPTION
+			   ,LISTE_ATTENTE
+			   ,PRESENT
+			   ,ANNULATION
+			   ,RISTOURNE
+			   ,PRIX
+			 ) VALUES (
+				idE     ,idJ     ,idP     ,idF     ,CURRENT_TIMESTAMP     ,0     ,0     ,0 	, ristourne 	, prix   
+			 )`
+		}
+		if (!req.body.idMembre || !req.body.idFamille || !req.body.idEnfant ||
+			 (!req.params.idFacture && (!req.body.journees || !req.body.journees.length)) // no facture no days
+			) {
+			res.respond(new Error('Missing mandatory parameters'), 400);
+			return;
+		}
+		if (!req.params.idFacture) {
+			// create the facture
+				var idMembre = req.body.idMembre;
+				var idFamille = req.body.idFamille;
+				var facture = {
+					"ID_FAMILLE": idFamille,
+					"ID_TYPE_FACTURE": 3,
+					"DATE_FACTURE": new Date(),
+					"MONTANT_FACTURE":req.body.montant,
+					"MOTIF_FACTURE": req.body.motif,
+					"ID_MEMBRE": idMembre,
+					"REMBOURSEMENT": 0,
+					"ANNULATION": 0,
+					"NB_REGLEMENT": 0
+				};
+				var query = connection.query("INSERT INTO factures SET ?", facture, function(err, info) {
+					var idFacture = info.insertId;
+					if (err) throw err;
+					if (idFacture) {
+						req.body.journees.forEach(j => {
+							if (j.periodes) {
+								j.periodes.forEach(p => {
+									var inscrit = {
+										"ID_ENFANT": req.body.idEnfant,
+										"ID_JOURNEE": j['ID_JOURNEE'],
+										"ID_PERIODE_QUOTIDIENNE": p,
+										"ID_FACTURE": idFacture,
+										"DATE_INSCRIPTION": new Date(),
+										"PRIX": j['PRIX'],
+										"RISTOURNE": j.ristourne,
+										"LISTE_ATTENTE": 0,
+										"PRESENT": 0,
+										"ANNULATION": 0
+									}
+									query = connection.query("INSERT INTO inscrits_cl SET ?", inscrit, function(err, info) {
+										if (err) console.error(err);
+									});
+									console.log("=> "+ query.sql);
+								});
+							}
+						});
+					}
+				});
+				console.log("=> "+ query.sql);
+		} else {
 
-	// 	const create = (idFacture, idEnfant, idJournee, idPeriode, ristourne, prix) => {
-	// 		const query = `INSERT INTO \`INSCRITS_CL\` (
-	// 			ID_ENFANT
-	// 		   ,ID_JOURNEE
-	// 		   ,ID_PERIODE_QUOTIDIENNE
-	// 		   ,ID_FACTURE
-	// 		   ,DATE_INSCRIPTION
-	// 		   ,LISTE_ATTENTE
-	// 		   ,PRESENT
-	// 		   ,ANNULATION
-	// 		   ,RISTOURNE
-	// 		   ,PRIX
-	// 		 ) VALUES (
-	// 			idE     ,idJ     ,idP     ,idF     ,CURRENT_TIMESTAMP     ,0     ,0     ,0 	, ristourne 	, prix   
-	// 		 )`
-	// 	}
-
-
-
-
-	// 	if (!req.params.idFacture) {
-	// 		// create the facture
-	// 		if (req.body.membre && req.params.activite_id) {
-	// 			var idMembre = req.body.membre["ID_MEMBRE"];
-	// 			var idFamille = req.body.membre["ID_FAMILLE"];
-	// 			// Creation Facture
-	// 			var post  = {"ID_FAMILLE": idFamille, "ID_TYPE_FACTURE": 4, "DATE_FACTURE": new Date(), 
-	// 					 "MONTANT_FACTURE":req.body.montant, "MOTIF_FACTURE": req.body.motif, "ID_MEMBRE": idMembre, "REMBOURSEMENT": 0, "ANNULATION": 0, "NB_REGLEMENT": 0};
-	// 			var query = connection.query("INSERT INTO factures SET ?", post, function(err, info) {
-	// 				var idFacture = info.insertId;
-	// 				if (err) throw err;
-	// 				var post = {"ID_ACTIVITE": req.params.activite_id, "ID_FACTURE": idFacture, "DATE_INSCRIPTION": new Date(), "LISTE_ATTENTE" : 0, "ANNULATION": 0};
-	// 				if (isEnfant) {
-	// 					post["ID_ENFANT"] = req.body.membre["ID_ENFANT"];
-	// 				} else {
-	// 					post["ID_MEMBRE"] = req.body.membre["ID_MEMBRE"];
-	// 				}
-	// 				var query = connection.query("INSERT INTO inscriptions_activites SET ?", post, function(err) {
-	// 					if (err) throw err;
-	// 					res.json({adhesion:{ID_ENFANT: req.params.contact_id, ID_ANNEE: req.body.idAnnee, ID_FACTURE: idFacture, NUMERO_ADHERENT: req.body.numeroAdherent}});
-	// 				});
-	// 				console.log("=> "+ query.sql);
-	// 			});
-	// 			console.log("=> "+ query.sql);
-	// 		} else {
-	// 			res.respond(new Error('Missing mandatory parameters'), 400);
-	// 		}
-	// 	} else {
-
-	// 	}
-	// 	var AllContactsQuery =  `INSERT INTO \`INSCRITS_CL\` (
-	// 		ID_ENFANT
-	// 	   ,ID_JOURNEE
-	// 	   ,ID_PERIODE_QUOTIDIENNE
-	// 	   ,ID_FACTURE
-	// 	   ,DATE_INSCRIPTION
-	// 	   ,LISTE_ATTENTE
-	// 	   ,PRESENT
-	// 	   ,ANNULATION
-	// 	   ,RISTOURNE
-	// 	   ,PRIX
-	// 	 )`
-
-	// });
+		}
+	});
 
 
 	//SELECT * FROM  `planning_journee_cl` LEFT JOIN periodes_quotidiennes USING (  `ID_PERIODE_QUOTIDIENNE` ) LEFT JOIN journees_cl USING (  `ID_JOURNEE` )  WHERE ID_SEJOUR =
